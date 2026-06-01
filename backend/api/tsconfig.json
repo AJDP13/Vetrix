@@ -4,8 +4,8 @@
     "module": "CommonJS",
     "strict": true,
     "esModuleInterop": true,
-    "types": ["node"],
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "types": ["node"]
   }
 }
