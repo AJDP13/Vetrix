@@ -1,4 +1,6 @@
-module.exports = (sequelize, DataTypes) => {
+import { Sequelize, DataTypes } from "sequelize";
+
+export default (sequelize: Sequelize) => {
     const User = sequelize.define("User", {
         id: {
             type: DataTypes.UUID,
@@ -11,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true
         },
-        
+
         email: {
             type: DataTypes.STRING,
-            allowNull:true,
+            allowNull: true,
             unique: true
         },
 

@@ -1,12 +1,12 @@
 import express from "express";
-import sequelize from "./config/database.js";
-import env from "./config/env.js";
+import sequelize from "./config/database";
+import env from "./config/env";
 
 const app = express();
 
 const {port} = env;
 
-async function start(){
+async function start(): Promise<void> {
     try{
         await sequelize.authenticate();
 
@@ -17,6 +17,7 @@ async function start(){
         })
     }catch(err){
         console.error(err)
+        process.exit(1);
     }
 }
 

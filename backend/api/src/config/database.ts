@@ -1,7 +1,7 @@
 import {Sequelize, DataTypes} from "sequelize";
 
 
-import env from "./env.js";
+import env from "./env";
 
 const {db} = env;
 
