@@ -9,6 +9,8 @@ import userRoutes from "./modules/users/user.routes";
 
 const app = express();
 
+app.use(express.json());
+
 const {port} = env;
 
 async function start(): Promise<void> {
@@ -16,7 +18,7 @@ async function start(): Promise<void> {
         await sequelize.authenticate();
 
         await sequelize.sync({
-            alter:true
+            // alter:true
         });
 
         console.log("Database connection success");

@@ -1,8 +1,15 @@
 import {Request, Response, NextFunction} from "express";
 import Joi from "joi";
+import ApiError from "../shared/errors/ApiError";
 
 export function validateBody(schema: Joi.ObjectSchema) {
     return (req: Request, res: Response, next: NextFunction) => {
+        if (!req.body) {
+            throw new ApiError(
+                400,
+                "Request body is required"
+            );
+        }
 
         const { error, value } = schema.validate(req.body, {
             abortEarly: false,
@@ -10,15 +17,10 @@ export function validateBody(schema: Joi.ObjectSchema) {
         });
 
         if (error) {
-            return res.status(400).json({
-                success: false,
-                status_code: 400,
-                message: "Validation failed",
-                errors: error.details.map(d => ({
-                    field: d.path.join("."),
-                    message: d.message
-                }))
-            });
+            throw new ApiError(
+                400,
+                error.details.map(d => d.message).join(", ")
+            )
         }
 
         req.body = value;
