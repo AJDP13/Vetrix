@@ -24,5 +24,15 @@ export interface LoginResponse {
         id: string;
         username: string;
         email: string;
+        first_name: string;
+        last_name: string;
     };
+}
+
+export interface JwtPayload {
+    sub: string;
+    username: string;
+    first_name: string;
+    last_name?: string;
+    email: string;
 }

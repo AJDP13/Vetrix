@@ -5,6 +5,8 @@ export default class User extends Model<InferAttributes<User>,InferCreationAttri
     declare id: CreationOptional<string>;
 
     declare username: string;
+    declare first_name: string;
+    declare last_name: CreationOptional<string>;
     declare email: string;
     declare password_hash: string;
 
@@ -25,6 +27,16 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+    },
+
+    first_name:{
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
 
     email: {

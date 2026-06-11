@@ -18,7 +18,12 @@ export default class AuthController {
     }
 
     login = async (req: Request, res: Response)=>{
+        const result = await this.authService.login(req.body);
 
+        return res.status(201).json({
+            success:true,
+            data:result
+        })
     }
 
 }
