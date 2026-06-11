@@ -25,13 +25,19 @@ router.post(
     authController.login
 );
 
-router.post("/forgot-password", async (req: Request, res: Response) => {
+router.post(
+    "/forgot-password",
+    async (req: Request, res: Response) => {
     
-})
+    }
+);
 
-router.post("/reset-password", async (req: Request, res: Response) => {
+router.post(
+    "/reset-password",
+    async (req: Request, res: Response) => {
     
-})
+    }
+);
 
 router.post("/refresh", async (req: Request, res: Response) => {
     
