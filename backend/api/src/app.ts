@@ -6,12 +6,21 @@ import { errorHandler } from "./middleware/error.middleware";
 
 import authRoutes from "./modules/auth/auth.routes";
 import userRoutes from "./modules/users/user.routes";
+import { JwtPayload } from "jsonwebtoken";
 
 const app = express();
 
 app.use(express.json());
 
 const {port} = env;
+
+declare global {
+    namespace Express {
+        export interface Request {
+            user?: JwtPayload;
+        }
+    }
+}
 
 async function start(): Promise<void> {
     try{

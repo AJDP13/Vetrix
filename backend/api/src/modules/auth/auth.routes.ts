@@ -1,14 +1,29 @@
 import express, { Request, Response, Router } from "express";
 import AuthController from "./auth.controller";
 import { validateBody } from "../../middleware/validateBody.middleware";
+import { authenticateJwt } from "../../middleware/authenticateJwt.middleware";
 import { loginSchema, registerSchema } from "./auth.validation";
 
 const router: Router = express.Router();
 const authController: AuthController = new AuthController();
 
-router.post("/register", validateBody(registerSchema), authController.register)
+router.get(
+    "/me",
+    authenticateJwt,
+    authController.me
+);
 
-router.post("/login", validateBody(loginSchema), authController.login)
+router.post(
+    "/register",
+    validateBody(registerSchema),
+    authController.register
+);
+
+router.post(
+    "/login",
+    validateBody(loginSchema),
+    authController.login
+);
 
 router.post("/forgot-password", async (req: Request, res: Response) => {
     

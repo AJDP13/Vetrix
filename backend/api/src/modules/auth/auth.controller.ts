@@ -26,4 +26,13 @@ export default class AuthController {
         })
     }
 
+    me = async(req: Request, res: Response) => {
+        const result = await this.authService.me(req.user!.sub ||"");
+
+        return res.status(200).json({
+            success:true,
+            data: result
+        });
+    }
+
 }
