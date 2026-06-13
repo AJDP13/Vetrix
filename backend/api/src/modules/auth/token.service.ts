@@ -12,13 +12,13 @@ export default class TokenService {
         return await bcrypt.hash(token_str, 10);
     }
 
-    async createRefreshToken(userId: string): Promise<string>{
+    async createToken(userId: string, type: TokenType): Promise<string>{
         const token_str = this.generateToken();
         const token_hash =  await this.hashToken(token_str);
 
         const token = await Token.create({
             token_hash: token_hash,
-            token_type: TokenType.REFRESH,
+            token_type: type,
             user_id: userId,
             expires_at: new Date(
                 Date.now() + (30 * 24 * 60 * 60 * 1000)
