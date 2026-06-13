@@ -4,7 +4,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../users/user.model";
 import env from "../../config/env";
 
-import { LoginDto, LoginResponse, LogoutDto, MeResponse, RegisterDto } from "./auth.types";
+import { LoginDto, LoginResponse, LogoutDto, RegisterDto } from "./auth.types";
+import {UserResponse} from "../users/user.types";
 import ApiError from "../../shared/errors/ApiError";
 import TokenService from "./token.service";
 import Token, { TokenType } from "./token.model";
@@ -22,7 +23,7 @@ export default class AuthService {
         })
     }
 
-    private buildMeResponse(user: User): MeResponse{
+    private buildUserResponse(user: User): UserResponse{
         return {
             id: user.id,
             username: user.username,
@@ -36,11 +37,11 @@ export default class AuthService {
         return {
             access_token,
             refresh_token,
-            user: this.buildMeResponse(user)
+            user: this.buildUserResponse(user)
         }
     }
 
-    async register(data: RegisterDto): Promise<MeResponse>{
+    async register(data: RegisterDto): Promise<UserResponse>{
         const existingUsername = await User.findOne({
             where: { username: data.username }
         });
@@ -68,7 +69,7 @@ export default class AuthService {
             password_hash
         });
 
-        return this.buildMeResponse(user);
+        return this.buildUserResponse(user);
     }
 
     async login(data: LoginDto): Promise<LoginResponse>{
@@ -106,12 +107,12 @@ export default class AuthService {
         return;
     }
 
-    async me(id: string): Promise<MeResponse>{
+    async me(id: string): Promise<UserResponse>{
         const user = await User.findByPk(id);
 
         if(!user) throw new ApiError(404, "User not found");
 
-        return this.buildMeResponse(user);
+        return this.buildUserResponse(user);
     }
 
     async refreshToken(token_str: string): Promise<LoginResponse>{

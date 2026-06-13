@@ -6,8 +6,26 @@ export interface UserAttributes {
     is_active: boolean;
 }
 
-export interface UserResponseDto {
-    id: string;
+export interface UserResponse {
+    id:string;
     username: string;
     email: string;
+    first_name: string;
+    last_name: string;
+}
+
+export interface CreateUserDto{
+
+}
+
+export interface UpdateUserDto{
+
+}
+
+export interface ChangePasswordDto{
+
+}
+
+export interface UserListResponse{
+
 }

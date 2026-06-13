@@ -1,3 +1,5 @@
+import {UserResponse} from "../users/user.types";
+
 export interface RegisterDto {
     username: string;
     email: string;
@@ -14,7 +16,7 @@ export interface LoginDto {
 export interface LoginResponse {
     access_token: string;
     refresh_token: string;
-    user: MeResponse
+    user: UserResponse
 }
 
 export interface LogoutDto{
@@ -24,12 +26,4 @@ export interface LogoutDto{
 export interface JwtPayload {
     sub: string;
     username: string;
-}
-
-export interface MeResponse{
-    id:string;
-    username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
 }

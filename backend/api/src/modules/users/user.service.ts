@@ -1,6 +1,10 @@
 import User from "./user.model";
+import {UserResponse} from "./user.types";
+import AuthService from "../auth/auth.service";
 
-class UserService {
+export default class UserService {
+    private authService: AuthService = new AuthService();
+
     async getUserById (id: string){
         return User.findOne({
             where: {id}
@@ -14,6 +18,8 @@ class UserService {
             }
         });
     }
-}
 
-export default new UserService()
+    async getAllUsers(): Promise<[UserResponse]>{
+        const users = await User.findAll();
+    }
+}

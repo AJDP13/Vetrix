@@ -1,19 +1,27 @@
 import {Request, Response} from "express";
-
-import userService from "./user.service";
+import UserService from "./user.service";
 import NotFoundError from "../../shared/errors/NotFoundError";
 import { IdParam } from "../../shared/types/route.types";
+import User from "./user.model";
 
-export async function getUser(req: Request<IdParam>, res: Response) {
-    const {id} = req.params;
+export default class UserController{
+    private userService: UserService = new UserService();
 
-    const user = await userService.getUserById(id);
+    getUser = async (req: Request, res: Response) => {
+        // const {id} = req.params;
+        //
+        // const user = await this.userService.getUserById(id);
+        //
+        // if(user == null) throw new NotFoundError ("User not found");
+        //
+        // return res.json(user)
+    }
 
-    if(user == null) throw new NotFoundError ("User not found");
+    updateUser = async (req: Request, res: Response) => {
+        const {id} = req.params;
+    }
 
-    return res.json(user)
-}
+    getAllUsers = async(req: Request, res: Response) => {
 
-export async function updateUser(req: Request<IdParam>, res:Response){
-    const {id} = req.params;
+    }
 }
