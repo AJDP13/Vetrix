@@ -6,12 +6,6 @@ export interface RegisterDto {
     last_name?: string;
 }
 
-export interface RegisterResponse{
-    id: string,
-    username: string,
-    email: string
-}
-
 export interface LoginDto {
     username: string;
     password: string;
@@ -20,13 +14,11 @@ export interface LoginDto {
 export interface LoginResponse {
     access_token: string;
     refresh_token: string;
-    user: {
-        id: string;
-        username: string;
-        email: string;
-        first_name: string;
-        last_name: string;
-    };
+    user: MeResponse
+}
+
+export interface LogoutDto{
+    refresh_token: string;
 }
 
 export interface JwtPayload {

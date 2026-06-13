@@ -8,8 +8,20 @@ export default class TokenService {
         return crypto.randomBytes(64).toString("hex");
     }
 
-    private async hashToken(token_str: string){
+    async hashToken(token_str: string){
         return await bcrypt.hash(token_str, 10);
+    }
+
+    async useToken(token: Token): Promise<Token>{
+        token.used_at = new Date();
+        await token.save();
+        return token;
+    }
+
+    async revokeToken(token: Token): Promise<Token>{
+        token.revoked_at = new Date();
+        await token.save();
+        return token;
     }
 
     async createToken(userId: string, type: TokenType): Promise<string>{
@@ -25,7 +37,7 @@ export default class TokenService {
             )
         })
 
-        return token.id + token_str;
+        return `${token.id}.${token_str}`;
     }
 
     async validateToken(tokenId: string, token_str: string, required_type: TokenType): Promise<Token | null>{
@@ -45,21 +57,13 @@ export default class TokenService {
             token.token_hash
         );
 
-        if (!valid) {
-            return null;
-        }
+        if (!valid) return null;
 
-        if (token.revoked_at) {
-            return null;
-        }
+        if (token.revoked_at) return null;
 
-        if (token.used_at) {
-            return null;
-        }
+        if (token.used_at) return null;
 
-        if (token.expires_at < new Date()) {
-            return null;
-        }
+        if (token.expires_at < new Date()) return null;
 
         return token;
     }

@@ -4,11 +4,43 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../users/user.model";
 import env from "../../config/env";
 
-import { LoginDto, LoginResponse, MeResponse, RegisterDto, RegisterResponse } from "./auth.types";
+import { LoginDto, LoginResponse, LogoutDto, MeResponse, RegisterDto } from "./auth.types";
 import ApiError from "../../shared/errors/ApiError";
+import TokenService from "./token.service";
+import Token, { TokenType } from "./token.model";
 
 export default class AuthService {
-    async register(data: RegisterDto): Promise<RegisterResponse>{
+    private tokenService: TokenService = new TokenService();
+
+    private generateAccessToken(user: User): string{
+        const payload: JwtPayload = {
+            sub:user.id,
+            username: user.username
+        }
+        return jwt.sign(payload, env.jwt.secret, {
+            expiresIn: env.jwt.expiry
+        })
+    }
+
+    private buildMeResponse(user: User): MeResponse{
+        return {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name ?? ""
+        }
+    }
+
+    private buildLoginResponse(user: User, access_token: string, refresh_token: string): LoginResponse{
+        return {
+            access_token,
+            refresh_token,
+            user: this.buildMeResponse(user)
+        }
+    }
+
+    async register(data: RegisterDto): Promise<MeResponse>{
         const existingUsername = await User.findOne({
             where: { username: data.username }
         });
@@ -36,11 +68,7 @@ export default class AuthService {
             password_hash
         });
 
-        return {
-            id: user.id,
-            username: user.username,
-            email: user.email
-        }
+        return this.buildMeResponse(user);
     }
 
     async login(data: LoginDto): Promise<LoginResponse>{
@@ -60,30 +88,22 @@ export default class AuthService {
             throw new ApiError(401, "Invalid Username or Password")
         }
 
-        const payload: JwtPayload = {
-            sub: user.id,
-            username: user.username
-        }
+        const signed = this.generateAccessToken(user);
+        const refresh_token = await this.tokenService.createToken(user.id, TokenType.REFRESH);
 
-        const signed = jwt.sign(
-            payload,
-            env.jwt.secret,
-            {
-                expiresIn: env.jwt.expiry
-            }
-        );
+        return this.buildLoginResponse(user, signed, refresh_token);
+    }
 
-        return {
-            access_token: signed,
-            refresh_token: "",//To be done
-            user:{
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                first_name: user.first_name,
-                last_name: user.last_name || ""
-            }
-        }
+    async logout(data: LogoutDto): Promise<void>{
+        const [tokenId, tokenSecret] = data.refresh_token.split(".");
+
+        if(!tokenId || !tokenSecret) return;
+
+        const token = await this.tokenService.validateToken(tokenId, tokenSecret, TokenType.REFRESH);
+
+        if(token) await this.tokenService.revokeToken(token);
+
+        return;
     }
 
     async me(id: string): Promise<MeResponse>{
@@ -91,12 +111,27 @@ export default class AuthService {
 
         if(!user) throw new ApiError(404, "User not found");
 
-        return{
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name || ""
-        };
+        return this.buildMeResponse(user);
+    }
+
+    async refreshToken(token_str: string): Promise<LoginResponse>{
+        const [tokenId, tokenSecret] = token_str.split(".");
+
+        if(!tokenId || !tokenSecret) throw new ApiError(401, "Refresh token invalid");
+
+        const token = await this.tokenService.validateToken(tokenId, tokenSecret, TokenType.REFRESH);
+
+        if(!token) throw new ApiError(401, "Refresh Token Unauthorised");
+
+        const user = await User.findByPk(token.user_id);
+        if(!user) throw new ApiError(401, "Invalid refresh token");
+
+        await this.tokenService.revokeToken(token);
+
+        //Generate new token and return to user in LoginResponse format
+        const refresh_token = await this.tokenService.createToken(user.id, TokenType.REFRESH);
+        const access_token: string = this.generateAccessToken(user);
+
+        return this.buildLoginResponse(user, access_token, refresh_token);
     }
 }

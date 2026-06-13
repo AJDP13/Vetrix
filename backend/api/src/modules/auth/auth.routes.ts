@@ -2,7 +2,7 @@ import express, { Request, Response, Router } from "express";
 import AuthController from "./auth.controller";
 import { validateBody } from "../../middleware/validateBody.middleware";
 import { authenticateJwt } from "../../middleware/authenticateJwt.middleware";
-import { loginSchema, registerSchema } from "./auth.validation";
+import { loginSchema, registerSchema, refreshTokenSchema, logoutSchema } from "./auth.validation";
 
 const router: Router = express.Router();
 const authController: AuthController = new AuthController();
@@ -26,6 +26,12 @@ router.post(
 );
 
 router.post(
+    "/logout",
+    validateBody(logoutSchema),
+    authController.logout
+)
+
+router.post(
     "/forgot-password",
     async (req: Request, res: Response) => {
     
@@ -39,9 +45,11 @@ router.post(
     }
 );
 
-router.post("/refresh", async (req: Request, res: Response) => {
-    
-})
+router.post(
+    "/refresh",
+    validateBody(refreshTokenSchema),
+    authController.refresh
+);
 
 router.post("/logout", async (req: Request, res: Response) => {
     
