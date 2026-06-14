@@ -18,8 +18,12 @@ export interface GetUserParams{
     id: string;
 }
 
-export interface CreateUserDto{
-
+export interface SearchUsersParams{
+    id?: string;
+    username?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
 }
 
 export interface UpdateUserDto{
