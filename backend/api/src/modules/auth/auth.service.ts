@@ -29,7 +29,8 @@ export default class AuthService {
             username: user.username,
             email: user.email,
             first_name: user.first_name,
-            last_name: user.last_name ?? ""
+            last_name: user.last_name ?? "",
+            is_active: user.is_active
         }
     }
 
@@ -88,6 +89,8 @@ export default class AuthService {
         if(!pw_verify){
             throw new ApiError(401, "Invalid Username or Password")
         }
+
+        if(!user.is_active) throw new ApiError(401, "User has been deactivated");
 
         const signed = this.generateAccessToken(user);
         const refresh_token = await this.tokenService.createToken(user.id, TokenType.REFRESH);

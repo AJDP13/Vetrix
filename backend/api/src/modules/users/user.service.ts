@@ -23,6 +23,15 @@ export default class UserService {
         });
     }
 
+    async deactivateUser(id: string): Promise<void>{
+        const user = await User.findByPk(id);
+        if(!user) throw new ApiError(404, "User ID not found");
+
+        user.is_active = false;
+        user.save();
+        return;
+    }
+
     async getAllUsers(): Promise<UserResponse[]>{
         const users = await User.findAll();
         if(users.length == 0) return [];

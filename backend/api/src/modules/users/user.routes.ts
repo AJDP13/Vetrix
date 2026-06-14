@@ -28,6 +28,11 @@ router.patch("/:id", async(req : Request, res: Response)=>{
     //Update user Details
 })
 
+router.patch(
+    "/:id/deactivate",
+    userController.deactivateUser
+);
+
 router.post( //TODO: Permission check for users.create
     "/",
     validateBody(registerSchema),

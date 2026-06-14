@@ -31,6 +31,16 @@ export default class UserController{
         const {id} = req.params;
     }
 
+    deactivateUser = async(req: Request<GetUserParams>, res:Response) => {
+        const {id} = req.params;
+
+        await this.userService.deactivateUser(id);
+
+        return res.status(200).json({
+            success:true
+        })
+    }
+
     getAllUsers = async (req: Request, res: Response) => {
         const result = await this.userService.getAllUsers();
 
