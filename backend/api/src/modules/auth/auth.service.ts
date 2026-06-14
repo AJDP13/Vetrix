@@ -23,7 +23,7 @@ export default class AuthService {
         })
     }
 
-    private buildUserResponse(user: User): UserResponse{
+    buildUserResponse(user: User): UserResponse{
         return {
             id: user.id,
             username: user.username,

@@ -19,7 +19,10 @@ export default class UserService {
         });
     }
 
-    async getAllUsers(): Promise<[UserResponse]>{
+    async getAllUsers(): Promise<UserResponse[]>{
         const users = await User.findAll();
+        if(users.length == 0) return [];
+
+        return users.map(user=>this.authService.buildUserResponse(user));
     }
 }

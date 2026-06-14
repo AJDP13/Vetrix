@@ -21,7 +21,12 @@ export default class UserController{
         const {id} = req.params;
     }
 
-    getAllUsers = async(req: Request, res: Response) => {
+    getAllUsers = async (req: Request, res: Response) => {
+        const result = await this.userService.getAllUsers();
 
+        return res.status(200).json({
+            success:true,
+            data:result
+        })
     }
 }

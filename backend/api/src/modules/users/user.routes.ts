@@ -8,7 +8,7 @@ router.get("/:id", userController.getUser)
 
 router.get(
     "/",
-    userController.getAllUsers()
+    userController.getAllUsers
 )
 
 router.post("/:id", async(req : Request, res: Response)=>{
