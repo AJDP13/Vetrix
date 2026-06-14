@@ -28,7 +28,7 @@ export default class UserService {
         if(!user) throw new ApiError(404, "User ID not found");
 
         user.is_active = false;
-        user.save();
+        await user.save();
         return;
     }
 
