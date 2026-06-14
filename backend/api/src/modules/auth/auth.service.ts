@@ -9,6 +9,7 @@ import {UserResponse} from "../users/user.types";
 import ApiError from "../../shared/errors/ApiError";
 import TokenService from "./token.service";
 import Token, { TokenType } from "./token.model";
+import {buildUserResponse} from "../users/user.mapper";
 
 export default class AuthService {
     private tokenService: TokenService = new TokenService();
@@ -23,22 +24,11 @@ export default class AuthService {
         })
     }
 
-    buildUserResponse(user: User): UserResponse{
-        return {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name ?? "",
-            is_active: user.is_active
-        }
-    }
-
     private buildLoginResponse(user: User, access_token: string, refresh_token: string): LoginResponse{
         return {
             access_token,
             refresh_token,
-            user: this.buildUserResponse(user)
+            user: buildUserResponse(user)
         }
     }
 
@@ -70,7 +60,7 @@ export default class AuthService {
             password_hash
         });
 
-        return this.buildUserResponse(user);
+        return buildUserResponse(user);
     }
 
     async login(data: LoginDto): Promise<LoginResponse>{
@@ -115,7 +105,7 @@ export default class AuthService {
 
         if(!user) throw new ApiError(404, "User not found");
 
-        return this.buildUserResponse(user);
+        return buildUserResponse(user);
     }
 
     async refreshToken(token_str: string): Promise<LoginResponse>{
@@ -129,6 +119,7 @@ export default class AuthService {
 
         const user = await User.findByPk(token.user_id);
         if(!user) throw new ApiError(401, "Invalid refresh token");
+        if(!user.is_active) throw new ApiError(401, "User Account Disabled");
 
         await this.tokenService.revokeToken(token);
 

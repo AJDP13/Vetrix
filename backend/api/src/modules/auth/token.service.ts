@@ -24,6 +24,17 @@ export default class TokenService {
         return token;
     }
 
+    async revokeAllUserTokens(user_id: string, tokenType: TokenType): Promise<void>{
+        await Token.update({
+            revoked_at: new Date()
+        }, {
+            where:{
+                user_id,
+                token_type: tokenType
+            }
+        });
+    }
+
     async createToken(userId: string, type: TokenType): Promise<string>{
         const token_str = this.generateToken();
         const token_hash =  await this.hashToken(token_str);

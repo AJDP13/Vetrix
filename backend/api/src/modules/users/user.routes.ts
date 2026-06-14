@@ -3,6 +3,7 @@ import UserController from "./user.controller";
 import {authenticateJwt} from "../../middleware/authenticateJwt.middleware";
 import {validateBody} from "../../middleware/validateBody.middleware";
 import {registerSchema} from "../auth/auth.validation";
+import {changePasswordSchema, updateMeSchema, updateUserSchema} from "./user.validation";
 
 const router: Router = express.Router();
 const userController = new UserController();
@@ -24,9 +25,23 @@ router.get( //TODO: Permission check for users.view
     userController.getAllUsers
 )
 
-router.patch("/:id", async(req : Request, res: Response)=>{
-    //Update user Details
-})
+router.patch( //NOTE: For a user to update their own profile
+    "/me",
+    validateBody(updateMeSchema),
+    userController.patchMe
+)
+
+router.patch( //NOTE: For users to update their own password
+    "/change-password",
+    validateBody(changePasswordSchema),
+    userController.changePassword
+);
+
+router.patch( //NOTE: For admin to update a user's profile //Permission check for users.edit
+    "/:id",
+    validateBody(updateUserSchema),
+    userController.updateUser
+)
 
 router.patch(
     "/:id/deactivate",

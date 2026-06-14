@@ -27,12 +27,25 @@ export interface SearchUsersParams{
     email?: string;
 }
 
-export interface UpdateUserDto{
+export interface UpdateMeDto{
+    id: string;
 
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+}
+
+export interface UpdateUserDto extends UpdateMeDto{
+    //Additional options that normal users cannot just updates
+    password?: string;
+
+    is_active?: boolean
 }
 
 export interface ChangePasswordDto{
-
+    id: string;
+    old_password:string;
+    new_password:string;
 }
 
 export interface UserListResponse{

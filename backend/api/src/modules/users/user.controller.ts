@@ -1,9 +1,9 @@
-import {Request, Response} from "express";
+import {Request, RequestHandler, Response} from "express";
 import UserService from "./user.service";
 import NotFoundError from "../../shared/errors/NotFoundError";
 import { IdParam } from "../../shared/types/route.types";
 import User from "./user.model";
-import {GetUserParams, SearchUsersParams} from "./user.types";
+import {ChangePasswordDto, GetUserParams, SearchUsersParams, UpdateMeDto, UpdateUserDto} from "./user.types";
 
 export default class UserController{
     private userService: UserService = new UserService();
@@ -27,14 +27,59 @@ export default class UserController{
         })
     }
 
+    patchMe = async(req: Request, res: Response) => {
+        const data: UpdateMeDto = {
+            id: req.user!.sub as string,
+            ...req.body,
+        }
+
+        const result = await this.userService.updateMe(data);
+
+        return res.status(200).json({
+            success:true,
+            data:result
+        })
+    }
+
     updateUser = async (req: Request, res: Response) => {
-        const {id} = req.params;
+        const id = req.params.id;
+
+        const data: UpdateUserDto = {
+            id,
+            ...req.body
+        }
+
+        const result = await this.userService.updateUser(data);
+
+        return res.status(200).json({
+            success:true,
+            data:result
+        })
     }
 
     deactivateUser = async(req: Request<GetUserParams>, res:Response) => {
         const {id} = req.params;
 
         await this.userService.deactivateUser(id);
+
+        return res.status(200).json({
+            success:true
+        })
+    }
+
+    changePassword = async(req: Request, res: Response) => {
+        const id:string = req.user!.sub ?? "";
+        const{new_password, old_password} = req.body;
+
+        console.log("PW UserID: " + id);
+
+        const data: ChangePasswordDto = {
+            id,
+            old_password,
+            new_password
+        }
+
+        await this.userService.changePassword(data)
 
         return res.status(200).json({
             success:true
