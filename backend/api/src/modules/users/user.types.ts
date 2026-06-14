@@ -14,6 +14,10 @@ export interface UserResponse {
     last_name: string;
 }
 
+export interface GetUserParams{
+    id: string;
+}
+
 export interface CreateUserDto{
 
 }

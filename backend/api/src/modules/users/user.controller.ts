@@ -3,18 +3,19 @@ import UserService from "./user.service";
 import NotFoundError from "../../shared/errors/NotFoundError";
 import { IdParam } from "../../shared/types/route.types";
 import User from "./user.model";
+import {GetUserParams} from "./user.types";
 
 export default class UserController{
     private userService: UserService = new UserService();
 
-    getUser = async (req: Request, res: Response) => {
-        // const {id} = req.params;
-        //
-        // const user = await this.userService.getUserById(id);
-        //
-        // if(user == null) throw new NotFoundError ("User not found");
-        //
-        // return res.json(user)
+    getUser = async (req: Request<GetUserParams>, res: Response) => {
+        const {id} = req.params;
+
+        const user = await this.userService.getUserById(id);
+
+        if(user == null) throw new NotFoundError ("User not found");
+
+        return res.json(user)
     }
 
     updateUser = async (req: Request, res: Response) => {
