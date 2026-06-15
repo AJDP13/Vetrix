@@ -1,4 +1,4 @@
-import {CreateRoleDto} from "./rbac.types";
+import {CreateRoleDto, RoleResponse} from "./rbac.types";
 import Role from "./role.model";
 import sequelize from "../../config/database";
 import Permission from "./permission.model";
@@ -43,7 +43,16 @@ export default class RBACService{
             console.error(err)
             throw new ApiError(500, "Server error when creating role");
         }
+    }
 
+    async getRoles(): Promise<RoleResponse[]>{
+        const roles = await Role.findAll({
+            include:{
+                model: Permission,
+                as: "permissions"
+            }
+        });
 
+        return roles.map(r=>buildRoleResponse(r));
     }
 }

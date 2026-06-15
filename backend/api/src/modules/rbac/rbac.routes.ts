@@ -11,8 +11,14 @@ router.use(authenticateJwt);
 
 const rbacController: RBACController = new RBACController();
 
+router.get(
+    "/roles",
+    hasPermission(PermissionId.ROLES_VIEW),
+    rbacController.viewRoles
+);
+
 router.post( //Create Role Endpoint - TODO: Permission check roles.create
-    "/create-role",
+    "/roles",
     validateBody(createRoleSchema),
     hasPermission(PermissionId.ROLES_CREATE),
     rbacController.createRole
