@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from "express";
+import express, { Router } from "express";
 import UserController from "./user.controller";
 import {authenticateJwt} from "../../middleware/authenticateJwt.middleware";
 import {validateBody} from "../../middleware/validateBody.middleware";
@@ -10,12 +10,12 @@ const userController = new UserController();
 
 router.use(authenticateJwt); //All /user endpoints will need JWT Authentication
 
-router.get(
+router.get( //TODO: Permission check for users.view
     "/search",
     userController.searchUsers
 );
 
-router.get(
+router.get( //TODO: Permission check for users.view
     "/:id",
     userController.getUser
 );
@@ -43,7 +43,7 @@ router.patch( //NOTE: For admin to update a user's profile //Permission check fo
     userController.updateUser
 )
 
-router.patch(
+router.patch( //TODO: Permission check for users.edit
     "/:id/deactivate",
     userController.deactivateUser
 );
