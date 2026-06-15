@@ -52,7 +52,7 @@ export default class RBACController {
         const result: RoleResponse = await this.rbacService.updateRole(data);
 
         return res.status(200).json({
-            succes:true,
+            success:true,
             data:result
         })
     }

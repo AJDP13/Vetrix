@@ -23,7 +23,7 @@ router.get(
     rbacController.getRole
 )
 
-router.patch(
+router.patch( //Updates role information (name, desc, perms, priority)
     "/roles/:roleId",
     validateBody(updateRoleSchema),
     hasPermission(PermissionId.ROLES_EDIT),
