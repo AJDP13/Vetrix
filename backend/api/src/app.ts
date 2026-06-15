@@ -1,12 +1,14 @@
 import express from "express";
 import sequelize from "./config/database";
-import { SequelizeStorage, Umzug } from "umzug";
 import env from "./config/env";
 import { errorHandler } from "./middleware/error.middleware";
 
 import authRoutes from "./modules/auth/auth.routes";
 import userRoutes from "./modules/users/user.routes";
 import { JwtPayload } from "jsonwebtoken";
+import rbacRoutes from "./modules/rbac/rbac.routes";
+import Role from "./modules/rbac/role.model";
+import {setupAssociations} from "./database/associations";
 
 const app = express();
 
@@ -30,6 +32,8 @@ async function start(): Promise<void> {
             // alter:true
         });
 
+        setupAssociations();
+
         console.log("Database connection success");
 
         app.listen(port, ()=>{
@@ -46,5 +50,7 @@ start();
 /*Import Routes*/
 app.use("/auth", authRoutes)
 app.use("/users", userRoutes)
+app.use("/rbac", rbacRoutes);
 
+//Import Error Handling
 app.use(errorHandler);

@@ -13,7 +13,10 @@ export function setupAssociations() {
         as: "tokens"
     });
     User.belongsToMany(Role,{
-        through: UserRole
+        through: UserRole,
+        foreignKey: "user_id",
+        otherKey: "role_id",
+        as: "roles"
     })
 
     //Token associations
@@ -24,16 +27,24 @@ export function setupAssociations() {
 
     //Role associations
     Role.belongsToMany(User,{
-        through: UserRole
-    })
+        through: UserRole,
+        foreignKey: "role_id",
+        otherKey: "user_id",
+        as: "users"
+    });
+
     Role.belongsToMany(Permission, {
-        through: RolePermission
-    })
+        through: RolePermission,
+        foreignKey: "role_id",
+        otherKey: "permission_id",
+        as: "permissions"
+    });
 
     //Permission Associations
     Permission.belongsToMany(Role, {
-        through: RolePermission
-    })
-
-
+        through: RolePermission,
+        foreignKey: "permission_id",
+        otherKey: "role_id",
+        as: "roles"
+    });
 }
