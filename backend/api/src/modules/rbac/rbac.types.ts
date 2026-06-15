@@ -19,3 +19,12 @@ export interface RoleResponse{
     permissions: PermissionResponse[];
     priority: bigint;
 }
+
+export interface UpdateRoleDto{
+    role_id: string;
+
+    name?: string;
+    description?: string;
+    permissions?: PermissionId[],
+    priority?: bigint
+}

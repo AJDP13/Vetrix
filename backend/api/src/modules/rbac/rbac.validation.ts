@@ -8,3 +8,10 @@ export const createRoleSchema = Joi.object({
     permissions: Joi.array().items(Joi.string().valid(...Object.values(PermissionId))).required(),
     priority: Joi.number().positive().required()
 })
+
+export const updateRoleSchema = Joi.object({
+    name: Joi.string().optional(),
+    description: Joi.string().optional(),
+    permissions: Joi.array().items(Joi.string().valid(...Object.values(PermissionId))).optional(),
+    priority: Joi.number().positive().optional()
+})

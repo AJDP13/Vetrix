@@ -1,6 +1,6 @@
 import express, {Router} from "express";
 import {validateBody} from "../../middleware/validateBody.middleware";
-import {createRoleSchema} from "./rbac.validation";
+import {createRoleSchema, updateRoleSchema} from "./rbac.validation";
 import RBACController from "./rbac.controller";
 import {hasPermission} from "../../middleware/hasPermission.middleware";
 import {PermissionId} from "./permission.model";
@@ -23,7 +23,14 @@ router.get(
     rbacController.getRole
 )
 
-router.post( //Create Role Endpoint - TODO: Permission check roles.create
+router.patch(
+    "/roles/:roleId",
+    validateBody(updateRoleSchema),
+    hasPermission(PermissionId.ROLES_EDIT),
+    rbacController.editRole
+)
+
+router.post( //Create Role Endpoint
     "/roles",
     validateBody(createRoleSchema),
     hasPermission(PermissionId.ROLES_CREATE),
