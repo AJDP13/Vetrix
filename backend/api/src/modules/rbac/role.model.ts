@@ -57,5 +57,13 @@ Role.init({
     tableName: "vt.roles",
     timestamps: true,
     createdAt: "created_at",
-    updatedAt: "updated_at"
+    updatedAt: "updated_at",
+    scopes:{
+        withPermissions:{
+            include:[{
+                model: Permission,
+                as: "permissions"
+            }]
+        }
+    }
 });

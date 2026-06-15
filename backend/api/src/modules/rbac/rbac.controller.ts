@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import RBACService from "./rbac.service";
 import {CreateRoleDto, RoleResponse} from "./rbac.types";
+import ApiError from "../../shared/errors/ApiError";
 
 export default class RBACController {
     rbacService: RBACService = new RBACService();
@@ -22,6 +23,19 @@ export default class RBACController {
         return res.status(200).json({
             success:true,
             data: result
+        })
+    }
+
+    getRole = async(req: Request, res: Response) => {
+        const roleId:string = req.params.roleId as string ?? null;
+
+        if(!roleId) throw new ApiError(400, "Missing parameter RoleID");
+
+        const result = await this.rbacService.getRole(roleId);
+
+        return res.status(200).json({
+            success:true,
+            data:result
         })
     }
 

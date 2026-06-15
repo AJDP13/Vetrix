@@ -55,4 +55,12 @@ export default class RBACService{
 
         return roles.map(r=>buildRoleResponse(r));
     }
+
+    async getRole(id: string): Promise<RoleResponse>{
+        const role = await Role.scope("withPermissions").findByPk(id);
+
+        if(!role) throw new ApiError(404, "Role not found");
+
+        return buildRoleResponse(role);
+    }
 }

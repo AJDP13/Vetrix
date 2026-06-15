@@ -17,6 +17,12 @@ router.get(
     rbacController.viewRoles
 );
 
+router.get(
+    "/roles/:roleId",
+    hasPermission(PermissionId.ROLES_VIEW),
+    rbacController.getRole
+)
+
 router.post( //Create Role Endpoint - TODO: Permission check roles.create
     "/roles",
     validateBody(createRoleSchema),
