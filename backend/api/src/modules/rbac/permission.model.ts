@@ -25,7 +25,7 @@ export enum PermissionId{
 
 export default class Permission extends Model<InferAttributes<Permission>,InferCreationAttributes<Permission>> {
     declare id: string;
-    declare description: string;
+    declare description: CreationOptional<string>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
@@ -38,8 +38,9 @@ Permission.init({
     },
 
     description:{
-      type: DataTypes.TEXT,
-      allowNull: false
+        type: DataTypes.TEXT,
+        allowNull: true,
+        defaultValue: ""
     },
 
     createdAt: DataTypes.DATE,

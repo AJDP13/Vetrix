@@ -9,6 +9,7 @@ import { JwtPayload } from "jsonwebtoken";
 import rbacRoutes from "./modules/rbac/rbac.routes";
 import Role from "./modules/rbac/role.model";
 import {setupAssociations} from "./database/associations";
+import {seedPermissions} from "./modules/rbac/rbac.seed";
 
 const app = express();
 
@@ -51,6 +52,10 @@ start();
 app.use("/auth", authRoutes)
 app.use("/users", userRoutes)
 app.use("/rbac", rbacRoutes);
+
+app.post("/seed", async(req, res) => {
+    await seedPermissions();
+});
 
 //Import Error Handling
 app.use(errorHandler);

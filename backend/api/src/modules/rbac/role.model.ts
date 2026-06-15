@@ -1,4 +1,12 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import {
+    BelongsToManyAddAssociationsMixin,
+    BelongsToManySetAssociationsMixin,
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model
+} from "sequelize";
 import sequelize from "../../config/database";
 import Permission from "./permission.model";
 
@@ -9,8 +17,14 @@ export default class Role extends Model<InferAttributes<Role>,InferCreationAttri
     declare description: CreationOptional<string>;
     declare priority: CreationOptional<bigint>;
 
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
+    declare created_at: CreationOptional<Date>;
+    declare updated_at: CreationOptional<Date>;
+
+    declare permissions?: Permission[];
+
+    declare setPermissions: BelongsToManySetAssociationsMixin<Permission, string>;
+    declare addPermissions: BelongsToManyAddAssociationsMixin<Permission, string>;
+
 }
 
 Role.init({
@@ -36,8 +50,8 @@ Role.init({
         defaultValue: 1
     },
 
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
 },{
     sequelize,
     tableName: "vt.roles",

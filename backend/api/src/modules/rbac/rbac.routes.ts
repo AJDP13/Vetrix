@@ -14,7 +14,7 @@ const rbacController: RBACController = new RBACController();
 router.post( //Create Role Endpoint - TODO: Permission check roles.create
     "/create-role",
     validateBody(createRoleSchema),
-    hasPermission(PermissionId.USERS_CREATE),
+    hasPermission(PermissionId.ROLES_CREATE),
     rbacController.createRole
 );
 
