@@ -4,6 +4,7 @@ import sequelize from "../../config/database";
 import Permission from "./permission.model";
 import ApiError from "../../shared/errors/ApiError";
 import {buildRoleResponse} from "./rbac.mapper";
+import UserRole from "./UserRole.model";
 
 export default class RBACService{
     async createRole(data: CreateRoleDto){
@@ -97,6 +98,23 @@ export default class RBACService{
             await transaction.rollback();
             throw new ApiError(500, "Server error occurred when updating role - changes reverted");
         }
+    }
 
+    async deleteRole(role_id: string): Promise<void>{
+        const role = await Role.findByPk(role_id);
+
+        if(!role) throw new ApiError(404, "Role ID not found");
+
+        const userCount = await UserRole.count({
+            where: {
+                role_id: role.id
+            }
+        });
+
+        if(userCount != 0) throw new ApiError(400, "Role is assigned to users");
+
+        await role.destroy();
+
+        return;
     }
 }

@@ -9,6 +9,7 @@ import {
 } from "sequelize";
 import sequelize from "../../config/database";
 import Permission from "./permission.model";
+import User from "../users/user.model";
 
 export default class Role extends Model<InferAttributes<Role>,InferCreationAttributes<Role>> {
     declare id: CreationOptional<string>;
@@ -19,6 +20,7 @@ export default class Role extends Model<InferAttributes<Role>,InferCreationAttri
 
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
+    declare deleted_at: CreationOptional<Date>;
 
     declare permissions?: Permission[];
 
@@ -52,17 +54,29 @@ Role.init({
 
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE,
+    deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true
+    }
 },{
     sequelize,
     tableName: "vt.roles",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
+    deletedAt: "deleted_at",
+    paranoid: true,
     scopes:{
         withPermissions:{
             include:[{
                 model: Permission,
                 as: "permissions"
+            }]
+        },
+        withUsers:{
+            include: [{
+                model: User,
+                as: "users",
             }]
         }
     }

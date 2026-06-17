@@ -17,6 +17,13 @@ router.get(
     rbacController.viewRoles
 );
 
+router.post( //Create Role Endpoint
+    "/roles",
+    validateBody(createRoleSchema),
+    hasPermission(PermissionId.ROLES_CREATE),
+    rbacController.createRole
+);
+
 router.get(
     "/roles/:roleId",
     hasPermission(PermissionId.ROLES_VIEW),
@@ -30,11 +37,10 @@ router.patch( //Updates role information (name, desc, perms, priority)
     rbacController.editRole
 )
 
-router.post( //Create Role Endpoint
-    "/roles",
-    validateBody(createRoleSchema),
-    hasPermission(PermissionId.ROLES_CREATE),
-    rbacController.createRole
-);
+router.delete(
+    "/roles/:roleId",
+    hasPermission(PermissionId.ROLES_DELETE),
+    rbacController.deleteRole
+)
 
 export default router;

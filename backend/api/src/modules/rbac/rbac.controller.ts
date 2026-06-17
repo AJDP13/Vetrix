@@ -57,4 +57,16 @@ export default class RBACController {
         })
     }
 
+    deleteRole = async (req: Request, res: Response) => {
+        const roleId: string = req.params.roleId as string ?? null;
+
+        if(!roleId) throw new ApiError(400, "Missing Role ID Parameter");
+
+        await this.rbacService.deleteRole(roleId);
+
+        return res.status(200).json({
+            success:true
+        })
+    }
+
 }

@@ -8,10 +8,17 @@ const {db} = env;
 const sequelize = new Sequelize(
     db.name,
     db.user,
-    db.password
-, {
+    db.password,
+    {
     host: db.host,
-    dialect: "mysql"
+    port: db.port,
+    dialect: "mysql",
+    pool:{
+        max: 10,
+        min: 2,
+        acquire: 10000,
+        idle: 10000
+    }
 })
 
 export default sequelize
