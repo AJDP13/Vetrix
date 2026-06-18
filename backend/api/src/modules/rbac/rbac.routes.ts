@@ -45,6 +45,12 @@ router.delete(
 
 //User Roles Management
 router.get(
+    "/users/:id/permissions",
+    hasPermission(PermissionId.ROLES_VIEW),
+    rbacController.getUserPermissions
+);
+
+router.get(
     "/users/:id/roles",
     hasPermission(PermissionId.ROLES_VIEW),
     rbacController.getUserRoles

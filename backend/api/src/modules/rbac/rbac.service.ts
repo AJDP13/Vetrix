@@ -8,28 +8,15 @@ import UserRole from "./UserRole.model";
 import User from "../users/user.model";
 
 export default class RBACService{
-    private async getUserPermissions(user_id: string): Promise<PermissionResponse[]>{
-        const permissions = await Permission.findAll({
-            include: [{
-                model: Role,
-                as: "roles",
-                required: true,
-                include: [{
-                    model: User,
-                    as: "users",
-                    where: {
-                        id: user_id
-                    },
-                    required: true
-                }]
-            }]
+    async createRole(data: CreateRoleDto){
+        const name_exists = await Role.findOne({
+            where:{
+                name: data.name
+            }
         });
 
-        return permissions.map(buildPermissionResponse);
-    }
+        if(name_exists) throw new ApiError(409, "Role name already exists");
 
-
-    async createRole(data: CreateRoleDto){
         const transaction = await sequelize.transaction();
 
         try{
@@ -62,9 +49,10 @@ export default class RBACService{
 
             return buildRoleResponse(role);
         }catch(err){
-            await transaction.rollback();
-            console.error(err)
-            throw new ApiError(500, "Server error when creating role");
+            try{
+                await transaction.rollback();
+            }catch(e){}
+            throw err;
         }
     }
 
@@ -88,6 +76,14 @@ export default class RBACService{
     }
 
     async updateRole(data: UpdateRoleDto): Promise<RoleResponse>{
+        const name_exists = await Role.findOne({
+            where:{
+                name: data.name
+            }
+        });
+
+        if(name_exists) throw new ApiError(409, "Role name already exists");
+
         const transaction = await sequelize.transaction();
 
         try{
@@ -97,7 +93,7 @@ export default class RBACService{
 
             if(data.name) role.name = data.name
             if(data.description) role.description = data.description
-            if(data.priority) role.priority = data.priority;
+            if(data.priority !== undefined) role.priority = data.priority;
             if(data.permissions){
                 const permissions = await Permission.findAll({
                     where:{
@@ -116,9 +112,11 @@ export default class RBACService{
             await transaction.commit();
 
             return buildRoleResponse(role);
-        }catch(e){
-            await transaction.rollback();
-            throw new ApiError(500, "Server error occurred when updating role - changes reverted");
+        }catch(err){
+            try{
+                await transaction.rollback();
+            }catch(e2){}
+            throw err;
         }
     }
 
@@ -138,6 +136,26 @@ export default class RBACService{
         await role.destroy();
 
         return;
+    }
+
+    async getUserPermissions(user_id: string): Promise<PermissionResponse[]>{
+        const permissions = await Permission.findAll({
+            include: [{
+                model: Role,
+                as: "roles",
+                required: true,
+                include: [{
+                    model: User,
+                    as: "users",
+                    where: {
+                        id: user_id
+                    },
+                    required: true
+                }]
+            }]
+        });
+
+        return permissions.map(buildPermissionResponse);
     }
 
     async getUserRoles(id: string): Promise<RoleResponse[]>{
@@ -160,6 +178,12 @@ export default class RBACService{
     }
 
     async updateUserRoles(data: UpdateUserRolesDto): Promise<RoleResponse[]>{
+        const uniqueRoles = new Set(data.roles);
+
+        if (uniqueRoles.size !== data.roles.length) {
+            throw new ApiError(400,"Duplicate roles supplied");
+        }
+
         const user = await User.findByPk(data.user_id);
 
         if (!user) {

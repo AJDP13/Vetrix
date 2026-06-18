@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import RBACService from "./rbac.service";
-import {CreateRoleDto, RoleResponse, UpdateRoleDto, UpdateUserRolesDto} from "./rbac.types";
+import {CreateRoleDto, PermissionResponse, RoleResponse, UpdateRoleDto, UpdateUserRolesDto} from "./rbac.types";
 import ApiError from "../../shared/errors/ApiError";
 
 export default class RBACController {
@@ -66,6 +66,16 @@ export default class RBACController {
 
         return res.status(200).json({
             success:true
+        })
+    }
+
+    getUserPermissions = async(req:Request, res: Response) => {
+        const id: string = req.params.id as string;
+        const result: PermissionResponse[] = await this.rbacService.getUserPermissions(id);
+
+        return res.status(200).json({
+            success:true,
+            data:result
         })
     }
 
