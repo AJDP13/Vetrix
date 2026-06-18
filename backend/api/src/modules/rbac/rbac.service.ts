@@ -1,13 +1,34 @@
-import {CreateRoleDto, RoleResponse, UpdateRoleDto, UpdateUserRolesDto} from "./rbac.types";
+import {CreateRoleDto, PermissionResponse, RoleResponse, UpdateRoleDto, UpdateUserRolesDto} from "./rbac.types";
 import Role from "./role.model";
 import sequelize from "../../config/database";
 import Permission from "./permission.model";
 import ApiError from "../../shared/errors/ApiError";
-import {buildRoleResponse} from "./rbac.mapper";
+import {buildPermissionResponse, buildRoleResponse} from "./rbac.mapper";
 import UserRole from "./UserRole.model";
 import User from "../users/user.model";
 
 export default class RBACService{
+    private async getUserPermissions(user_id: string): Promise<PermissionResponse[]>{
+        const permissions = await Permission.findAll({
+            include: [{
+                model: Role,
+                as: "roles",
+                required: true,
+                include: [{
+                    model: User,
+                    as: "users",
+                    where: {
+                        id: user_id
+                    },
+                    required: true
+                }]
+            }]
+        });
+
+        return permissions.map(buildPermissionResponse);
+    }
+
+
     async createRole(data: CreateRoleDto){
         const transaction = await sequelize.transaction();
 
