@@ -28,3 +28,8 @@ export interface UpdateRoleDto{
     permissions?: PermissionId[],
     priority?: bigint
 }
+
+export interface UpdateUserRolesDto{
+    user_id: string;
+    roles: string[];
+}

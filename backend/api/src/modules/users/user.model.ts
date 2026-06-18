@@ -1,5 +1,13 @@
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import {
+    BelongsToManySetAssociationsMixin,
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model
+} from "sequelize";
 import sequelize from "../../config/database";
+import Role from "../rbac/role.model";
 
 export default class User extends Model<InferAttributes<User>,InferCreationAttributes<User>> {
     declare id: CreationOptional<string>;
@@ -14,6 +22,10 @@ export default class User extends Model<InferAttributes<User>,InferCreationAttri
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
+
+    declare roles?: Role[];
+
+    declare setRoles: BelongsToManySetAssociationsMixin<Role, string>;
 }
 
 User.init({

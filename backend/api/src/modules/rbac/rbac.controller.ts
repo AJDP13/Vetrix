@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import RBACService from "./rbac.service";
-import {CreateRoleDto, RoleResponse, UpdateRoleDto} from "./rbac.types";
+import {CreateRoleDto, RoleResponse, UpdateRoleDto, UpdateUserRolesDto} from "./rbac.types";
 import ApiError from "../../shared/errors/ApiError";
 
 export default class RBACController {
@@ -69,4 +69,30 @@ export default class RBACController {
         })
     }
 
+    getUserRoles = async(req: Request, res: Response) => {
+        const id:string = req.params.id as string;
+        const result: RoleResponse[] = await this.rbacService.getUserRoles(id);
+
+        return res.status(200).json({
+            success:true,
+            data:result
+        })
+    }
+
+    updateUserRoles = async(req: Request, res: Response) => {
+        const id:string = req.params.id as string;
+        const roles: string[] = req.body.roles;
+
+        const data: UpdateUserRolesDto = {
+            user_id: id,
+            roles
+        }
+
+        const result: RoleResponse[] = await this.rbacService.updateUserRoles(data);
+
+        return res.status(200).json({
+            success:true,
+            data: result
+        })
+    }
 }

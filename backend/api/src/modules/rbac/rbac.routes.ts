@@ -1,6 +1,6 @@
 import express, {Router} from "express";
 import {validateBody} from "../../middleware/validateBody.middleware";
-import {createRoleSchema, updateRoleSchema} from "./rbac.validation";
+import {createRoleSchema, updateRoleSchema, updateUserRolesSchema} from "./rbac.validation";
 import RBACController from "./rbac.controller";
 import {hasPermission} from "../../middleware/hasPermission.middleware";
 import {PermissionId} from "./permission.model";
@@ -41,6 +41,20 @@ router.delete(
     "/roles/:roleId",
     hasPermission(PermissionId.ROLES_DELETE),
     rbacController.deleteRole
+)
+
+//User Roles Management
+router.get(
+    "/users/:id/roles",
+    hasPermission(PermissionId.ROLES_VIEW),
+    rbacController.getUserRoles
+);
+
+router.patch(
+    "/users/:id/roles",
+    validateBody(updateUserRolesSchema),
+    hasPermission(PermissionId.ROLES_MANAGE_USERS),
+    rbacController.updateUserRoles
 )
 
 export default router;

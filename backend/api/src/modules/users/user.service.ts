@@ -1,6 +1,5 @@
 import User from "./user.model";
 import {ChangePasswordDto, UpdateMeDto, UpdateUserDto, UserResponse} from "./user.types";
-import AuthService from "../auth/auth.service";
 import ApiError from "../../shared/errors/ApiError";
 import {RegisterDto} from "../auth/auth.types";
 import bcrypt from "bcrypt";

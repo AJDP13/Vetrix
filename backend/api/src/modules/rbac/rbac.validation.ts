@@ -15,3 +15,7 @@ export const updateRoleSchema = Joi.object({
     permissions: Joi.array().items(Joi.string().valid(...Object.values(PermissionId))).optional(),
     priority: Joi.number().positive().optional()
 })
+
+export const updateUserRolesSchema = Joi.object({
+    roles: Joi.array().items(Joi.string().valid(...Object.values(Permissions))).required()
+})

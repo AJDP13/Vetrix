@@ -1,10 +1,11 @@
-import {CreateRoleDto, RoleResponse, UpdateRoleDto} from "./rbac.types";
+import {CreateRoleDto, RoleResponse, UpdateRoleDto, UpdateUserRolesDto} from "./rbac.types";
 import Role from "./role.model";
 import sequelize from "../../config/database";
 import Permission from "./permission.model";
 import ApiError from "../../shared/errors/ApiError";
 import {buildRoleResponse} from "./rbac.mapper";
 import UserRole from "./UserRole.model";
+import User from "../users/user.model";
 
 export default class RBACService{
     async createRole(data: CreateRoleDto){
@@ -116,5 +117,57 @@ export default class RBACService{
         await role.destroy();
 
         return;
+    }
+
+    async getUserRoles(id: string): Promise<RoleResponse[]>{
+        const user = await User.findByPk(id, {
+            include: [{
+                model: Role,
+                as: "roles",
+                include: [{
+                    model: Permission,
+                    as: "permissions"
+                }]
+            }]
+        });
+
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+
+        return (user?.roles || []).map(r=>buildRoleResponse(r));
+    }
+
+    async updateUserRoles(data: UpdateUserRolesDto): Promise<RoleResponse[]>{
+        const user = await User.findByPk(data.user_id);
+
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+
+        const roles = await Role.findAll({
+            where: {
+                id: data.roles
+            }
+        });
+
+        if (roles.length !== data.roles.length) {
+            throw new ApiError(400,"One or more roles are invalid");
+        }
+
+        await user.setRoles(roles);
+
+        const updatedUser = await User.findByPk(data.user_id, {
+            include: [{
+                model: Role,
+                as: "roles",
+                include: [{
+                    model: Permission,
+                    as: "permissions"
+                }]
+            }]
+        });
+
+        return updatedUser?.roles?.map(buildRoleResponse) ?? [];
     }
 }

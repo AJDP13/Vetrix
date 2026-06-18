@@ -7,6 +7,8 @@ export enum PermissionId{
     ROLES_EDIT = "roles.edit",
     ROLES_DELETE = "roles.delete",
 
+    ROLES_MANAGE_USERS = "roles.manage_users",
+
     USERS_CREATE = "users.create",
     USERS_VIEW = "users.view",
     USERS_EDIT = "users.edit",

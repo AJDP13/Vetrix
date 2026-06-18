@@ -1,9 +1,11 @@
-import express, { Router } from "express";
+import express, {Router} from "express";
 import UserController from "./user.controller";
 import {authenticateJwt} from "../../middleware/authenticateJwt.middleware";
 import {validateBody} from "../../middleware/validateBody.middleware";
 import {registerSchema} from "../auth/auth.validation";
 import {changePasswordSchema, updateMeSchema, updateUserSchema} from "./user.validation";
+import {hasPermission} from "../../middleware/hasPermission.middleware";
+import {PermissionId} from "../rbac/permission.model";
 
 const router: Router = express.Router();
 const userController = new UserController();
@@ -12,16 +14,19 @@ router.use(authenticateJwt); //All /user endpoints will need JWT Authentication
 
 router.get( //TODO: Permission check for users.view
     "/search",
+    hasPermission(PermissionId.USERS_VIEW),
     userController.searchUsers
 );
 
 router.get( //TODO: Permission check for users.view
     "/:id",
+    hasPermission(PermissionId.USERS_VIEW),
     userController.getUser
 );
 
 router.get( //TODO: Permission check for users.view
     "/",
+    hasPermission(PermissionId.USERS_VIEW),
     userController.getAllUsers
 )
 
@@ -40,17 +45,20 @@ router.patch( //NOTE: For users to update their own password
 router.patch( //NOTE: For admin to update a user's profile //Permission check for users.edit
     "/:id",
     validateBody(updateUserSchema),
+    hasPermission(PermissionId.USERS_EDIT),
     userController.updateUser
 )
 
 router.patch( //TODO: Permission check for users.edit
     "/:id/deactivate",
+    hasPermission(PermissionId.USERS_DEACTIVATE),
     userController.deactivateUser
 );
 
 router.post( //TODO: Permission check for users.create
     "/",
     validateBody(registerSchema),
+    hasPermission(PermissionId.USERS_CREATE),
     userController.createUser
 )
 

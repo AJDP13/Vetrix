@@ -1,9 +1,7 @@
-import {Request, RequestHandler, Response} from "express";
+import {Request, Response} from "express";
 import UserService from "./user.service";
 import NotFoundError from "../../shared/errors/NotFoundError";
-import { IdParam } from "../../shared/types/route.types";
-import User from "./user.model";
-import {ChangePasswordDto, GetUserParams, SearchUsersParams, UpdateMeDto, UpdateUserDto} from "./user.types";
+import {ChangePasswordDto, SearchUsersParams, UpdateMeDto, UpdateUserDto} from "./user.types";
 
 export default class UserController{
     private userService: UserService = new UserService();
@@ -14,8 +12,8 @@ export default class UserController{
         })
     }
 
-    getUser = async (req: Request<GetUserParams>, res: Response) => {
-        const {id} = req.params;
+    getUser = async (req: Request, res: Response) => {
+        const id = req.params.id as string;
 
         const user = await this.userService.getUserById(id);
 
@@ -57,8 +55,8 @@ export default class UserController{
         })
     }
 
-    deactivateUser = async(req: Request<GetUserParams>, res:Response) => {
-        const {id} = req.params;
+    deactivateUser = async(req: Request, res:Response) => {
+        const id = req.params.id as string;
 
         await this.userService.deactivateUser(id);
 

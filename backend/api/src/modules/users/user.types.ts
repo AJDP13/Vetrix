@@ -1,11 +1,3 @@
-export interface UserAttributes {
-    id: string;
-    username: string;
-    email: string;
-    password_hash: string;
-    is_active: boolean;
-}
-
 export interface UserResponse {
     id:string;
     username: string;
@@ -13,10 +5,6 @@ export interface UserResponse {
     first_name: string;
     last_name: string;
     is_active: boolean;
-}
-
-export interface GetUserParams{
-    id: string;
 }
 
 export interface SearchUsersParams{
@@ -36,7 +24,7 @@ export interface UpdateMeDto{
 }
 
 export interface UpdateUserDto extends UpdateMeDto{
-    //Additional options that normal users cannot just updates
+    //Additional options that normal users cannot just update
     password?: string;
 
     is_active?: boolean
@@ -46,8 +34,4 @@ export interface ChangePasswordDto{
     id: string;
     old_password:string;
     new_password:string;
-}
-
-export interface UserListResponse{
-
 }
