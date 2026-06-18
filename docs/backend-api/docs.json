@@ -1,16 +1,15 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "$Title$",
-    "description": "$Title$",
+    "title": "Vetrix Backend API Docs (v0.1.0)",
+    "description": "Title",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "$https$"
+      "url": "https"
     }
   ],
   "paths": {
-    $END$
   }
 }
