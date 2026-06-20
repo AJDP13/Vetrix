@@ -17,8 +17,8 @@ export default class Token extends Model<InferAttributes<Token>,InferCreationAtt
     declare used_at: Date | null;
     declare revoked_at: Date | null;
 
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
+    declare created_at: CreationOptional<Date>;
+    declare updated_at: CreationOptional<Date>;
 }
 
 Token.init({
@@ -55,8 +55,8 @@ Token.init({
         allowNull: true,
 
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
     },{
     sequelize,
     tableName: "vt.tokens",
