@@ -8,8 +8,8 @@ export default class RolePermission extends Model<InferAttributes<RolePermission
     declare role_id: string;
     declare permission_id: PermissionId;
 
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
+    declare created_at: CreationOptional<Date>;
+    declare updated_at: CreationOptional<Date>;
 }
 
 RolePermission.init({
@@ -29,8 +29,8 @@ RolePermission.init({
         allowNull:false
     },
 
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
 },{
     sequelize,
     tableName: "vt.RolePermission",
