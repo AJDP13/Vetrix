@@ -12,7 +12,7 @@ export interface ClientResponse{
     email: string;
     phone: string;
 
-    //pets: []; //FUTURE
+    //pets: Pet[]; //FUTURE
 }
 
 export interface GetAllClientsDto{
