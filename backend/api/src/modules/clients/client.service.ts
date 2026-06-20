@@ -65,4 +65,16 @@ export default class ClientService{
 
         return buildClientResponse(client);
     }
+
+    async archiveClient(client_id: string): Promise<void>{
+        const client = await Client.findByPk(client_id);
+
+        if(!client) throw new ApiError(404, "Client ID not found");
+
+        await client.destroy();
+
+        //In future require that no active pets are under the client
+
+        return;
+    }
 }

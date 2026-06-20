@@ -58,7 +58,15 @@ export default class ClientController{
     }
 
     archiveClient = async(req: Request, res: Response) => {
+        const id: string = req.params.id as string;
 
+        if(!id) throw new ApiError(400, "Client ID is required");
+
+        await clientService.archiveClient(id);
+
+        return res.status(200).json({
+            success:true
+        })
     }
 
 }
