@@ -7,8 +7,8 @@ export default class UserRole extends Model<InferAttributes<UserRole>,InferCreat
     declare role_id: string;
     declare user_id: string;
 
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
+    declare created_at: CreationOptional<Date>;
+    declare updated_at: CreationOptional<Date>;
 }
 
 UserRole.init({
@@ -28,8 +28,8 @@ UserRole.init({
         allowNull:false
     },
 
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
 },{
     sequelize,
     tableName: "vt.UserRole",
