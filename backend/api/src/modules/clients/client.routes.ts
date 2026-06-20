@@ -9,11 +9,11 @@ const clientController: ClientController = new ClientController();
 
 router.use(authenticateJwt); //All /clients endpoints will need JWT Authentication
 
-router.get( //NOTE: Searches client by parameters
-    "/search",
-    hasPermission(PermissionId.CLIENTS_VIEW),
-    clientController.searchClients
-);
+// router.get( //NOTE: Searches client by parameters
+//     "/search",
+//     hasPermission(PermissionId.CLIENTS_VIEW),
+//     clientController.searchClients
+// );
 
 router.get( //NOTE: Gets client by ID
     "/:id",
