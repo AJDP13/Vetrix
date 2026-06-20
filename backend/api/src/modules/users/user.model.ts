@@ -20,8 +20,8 @@ export default class User extends Model<InferAttributes<User>,InferCreationAttri
 
     declare is_active: CreationOptional<boolean>;
 
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
+    declare created_at: CreationOptional<Date>;
+    declare updated_at: CreationOptional<Date>;
 
     declare roles?: Role[];
 
@@ -66,8 +66,8 @@ User.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
     },{
         sequelize,
         tableName: "vt.users",
