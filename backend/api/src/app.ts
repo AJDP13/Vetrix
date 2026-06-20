@@ -7,9 +7,9 @@ import authRoutes from "./modules/auth/auth.routes";
 import userRoutes from "./modules/users/user.routes";
 import { JwtPayload } from "jsonwebtoken";
 import rbacRoutes from "./modules/rbac/rbac.routes";
-import Role from "./modules/rbac/role.model";
 import {setupAssociations} from "./database/associations";
 import {seedPermissions} from "./modules/rbac/rbac.seed";
+import clientRoutes from "./modules/clients/client.routes";
 
 const app = express();
 
@@ -52,6 +52,7 @@ start();
 app.use("/auth", authRoutes)
 app.use("/users", userRoutes)
 app.use("/rbac", rbacRoutes);
+app.use("/clients", clientRoutes);
 
 app.post("/seed", async(req, res) => {
     await seedPermissions();
