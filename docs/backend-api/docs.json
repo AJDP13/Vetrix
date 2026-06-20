@@ -7,9 +7,70 @@
   },
   "servers": [
     {
-      "url": "https"
+      "description":"Local Vetrix Development API Server",
+      "url": "http://127.0.0.1:3000"
     }
   ],
   "paths": {
+    "/auth/me": {
+      "get": {
+        "summary": "Get current user",
+        "description": "Get the current user's profile",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            },
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string",
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Successful": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "Unauthorised": {
+        "success": "false"
+      }
+    }
   }
 }
