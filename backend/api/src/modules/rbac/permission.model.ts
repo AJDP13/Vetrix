@@ -34,8 +34,8 @@ export default class Permission extends Model<InferAttributes<Permission>,InferC
     declare id: string;
     declare description: CreationOptional<string>;
 
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
+    declare created_at: CreationOptional<Date>;
+    declare updated_at: CreationOptional<Date>;
 }
 
 Permission.init({
@@ -50,8 +50,8 @@ Permission.init({
         defaultValue: ""
     },
 
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
 },{
     sequelize,
     tableName: "vt.permissions",
