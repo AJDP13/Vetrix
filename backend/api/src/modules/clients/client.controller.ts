@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {ClientResponse, CreateClientDto, GetAllClientsDto} from "./client.types";
+import {ClientResponse, CreateClientDto, GetAllClientsDto, UpdateClientDto} from "./client.types";
 import ClientService from "./client.service";
 import ApiError from "../../shared/errors/ApiError";
 
@@ -37,7 +37,14 @@ export default class ClientController{
     }
 
     updateClient = async(req: Request, res: Response) => {
+        const data: UpdateClientDto = req.body;
 
+        const result: ClientResponse = await clientService.updateClient(data);
+
+        return res.status(200).json({
+            success:true,
+            data: result
+        })
     }
 
     createClient = async(req: Request, res:Response) => {
