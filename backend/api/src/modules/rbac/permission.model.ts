@@ -14,6 +14,11 @@ export enum PermissionId{
     USERS_EDIT = "users.edit",
     USERS_DEACTIVATE = "users.deactivate",
 
+    CLIENTS_CREATE = "clients.create",
+    CLIENTS_VIEW = "clients.view",
+    CLIENTS_EDIT = "clients.edit",
+    CLIENTS_ARCHIVE = "clients.archive",
+
     DRUGS_CREATE = "drugs.create",
     DRUGS_VIEW = "drugs.view",
     DRUGS_EDIT = "drugs.edit",
