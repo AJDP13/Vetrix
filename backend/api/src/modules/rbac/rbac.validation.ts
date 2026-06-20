@@ -17,5 +17,5 @@ export const updateRoleSchema = Joi.object({
 })
 
 export const updateUserRolesSchema = Joi.object({
-    roles: Joi.array().items(Joi.string().valid(...Object.values(Permissions))).unique().required()
+    roles: Joi.array().items(Joi.string().valid(...Object.values(PermissionId))).unique().required()
 })
