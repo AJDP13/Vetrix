@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.ts",
+  "type": "module",
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "migrate": "tsx src/config/dbMigrations.ts"
+    "migrate": "tsx src/config/dbMigrations.ts",
+    "test": "npx jest"
   },
   "keywords": [],
   "author": "",
@@ -26,8 +28,11 @@
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   }
