@@ -13,6 +13,7 @@ export default class Pet extends Model<InferAttributes<Pet>,InferCreationAttribu
     declare id: CreationOptional<string>;
 
     declare name: string;
+    declare date_of_birth: Date;
 
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
@@ -33,6 +34,12 @@ Pet.init({
         unique: false,
         allowNull: false
     },
+
+    date_of_birth:{
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE,
     deleted_at: DataTypes.DATE
