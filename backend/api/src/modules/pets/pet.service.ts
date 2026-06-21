@@ -1,23 +1,55 @@
 import ApiError from "../../shared/errors/ApiError";
+import {CreatePetDto, GetAllPetsDto, PetResponse, UpdatePetDto} from "./pet.types";
+import Pet from "./pet.model";
+import {buildPetResponse} from "./pet.mapper";
+import Client from "../clients/client.model";
 
 export default class PetService{
-    async createPet(){
+    async createPet(data: CreatePetDto): Promise<PetResponse>{
+        const owner = await Client.findByPk(data.owner_id);
+
+        if(!owner) throw new ApiError(404, "Client ID not found");
+        
+        const pet = await Pet.create({
+            name: data.name,
+            date_of_birth: data.dob,
+            owner_id: owner.id
+        })
+
+        if(!pet) throw new ApiError(500, "Error when creating new pet");
+
+        return buildPetResponse(pet);
+    }
+
+    async getAllPets(data: GetAllPetsDto): Promise<PetResponse[]>{
+        const pets = await Pet.findAll({
+            offset: (data.page-1) * data.pageLimit,
+            limit: data.pageLimit
+        });
+
+        return pets.map(buildPetResponse);
+    }
+
+    async getPet(pet_id: string): Promise<PetResponse>{
+        const pet = await Pet.findByPk(pet_id);
+
+        if(!pet) throw new ApiError(404, "Pet ID not found");
+
+        return buildPetResponse(pet);
+    }
+
+    async updatePet(data: UpdatePetDto): Promise<PetResponse>{
 
     }
 
-    async getAllPets(){
+    async archivePet(pet_id: string): Promise<void>{
+        const pet = await Pet.findByPk(pet_id);
 
-    }
+        if(!pet) throw new ApiError(404, "Pet ID not found");
 
-    async getPet(){
+        //TODO: Check if pet has any outstanding prescriptions which are currently active
+        await pet.destroy();
 
-    }
-
-    async updatePet(){
-
-    }
-
-    async archivePet(){
-
+        return;
     }
 }

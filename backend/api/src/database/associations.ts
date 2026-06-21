@@ -52,7 +52,7 @@ export function setupAssociations() {
 
     //Client Associations
     Client.hasMany(Pet, {
-        foreignKey:"client_id",
+        foreignKey:"owner_id",
         as: "pets"
     });
 

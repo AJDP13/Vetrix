@@ -1,5 +1,4 @@
 import {
-    BelongsToManySetAssociationsMixin,
     CreationOptional,
     DataTypes,
     InferAttributes,
@@ -14,6 +13,7 @@ export default class Pet extends Model<InferAttributes<Pet>,InferCreationAttribu
 
     declare name: string;
     declare date_of_birth: Date;
+    declare owner_id: string;
 
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
@@ -38,6 +38,11 @@ Pet.init({
     date_of_birth:{
         type: DataTypes.DATE,
         allowNull: false
+    },
+
+    owner_id:{
+        type: DataTypes.UUID,
+        allowNull:false,
     },
 
     created_at: DataTypes.DATE,
