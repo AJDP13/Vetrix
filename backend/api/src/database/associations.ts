@@ -4,6 +4,8 @@ import Role from "../modules/rbac/role.model";
 import UserRole from "../modules/rbac/UserRole.model";
 import Permission, {PermissionId} from "../modules/rbac/permission.model";
 import RolePermission from "../modules/rbac/RolePermission.model";
+import Client from "../modules/clients/client.model";
+import Pet from "../modules/pets/pet.model";
 
 export function setupAssociations() {
 
@@ -46,5 +48,17 @@ export function setupAssociations() {
         foreignKey: "permission_id",
         otherKey: "role_id",
         as: "roles"
+    });
+
+    //Client Associations
+    Client.hasMany(Pet, {
+        foreignKey:"client_id",
+        as: "pets"
+    });
+
+    //Pet Associations
+    Pet.belongsTo(Client, {
+        foreignKey:"pet_id",
+        as:"owner"
     });
 }
