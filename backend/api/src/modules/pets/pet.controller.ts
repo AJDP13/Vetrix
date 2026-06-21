@@ -69,6 +69,15 @@ export default class PetController{
     }
 
     archivePet = async(req: Request, res: Response) => {
+        const id = req.params.id as string;
+
+        if(!id) throw new ApiError(400, "Pet ID required");
+
+        await petService.archivePet(id);
+
+        return res.status(200).json({
+            success:true
+        })
     }
 
 }
