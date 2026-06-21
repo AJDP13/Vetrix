@@ -2,7 +2,6 @@ import express from "express";
 import sequelize from "./config/database";
 import env from "./config/env";
 import { errorHandler } from "./middleware/error.middleware";
-
 import authRoutes from "./modules/auth/auth.routes";
 import userRoutes from "./modules/users/user.routes";
 import { JwtPayload } from "jsonwebtoken";
