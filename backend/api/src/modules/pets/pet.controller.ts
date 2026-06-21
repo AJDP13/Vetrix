@@ -23,6 +23,20 @@ export default class PetController{
     }
 
     getPets = async(req: Request, res: Response)=>{
+        const {pageLimit, page} = req.params;
+
+        if(!pageLimit || !page) throw new ApiError(400, "Invalid Page or Page Limit")
+
+        const result = await petService.getAllPets({
+            page: parseInt(page as string),
+            pageLimit: parseInt(pageLimit as string)
+        });
+
+        return res.status(200).json({
+            success:true,
+            data:result
+        })
+
     }
 
     updatePet = async(req: Request, res: Response) => {
