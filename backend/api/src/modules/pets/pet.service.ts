@@ -39,7 +39,17 @@ export default class PetService{
     }
 
     async updatePet(data: UpdatePetDto): Promise<PetResponse>{
+        const pet = await Pet.findByPk(data.id);
 
+        if(!pet) throw new ApiError(404, "Pet ID not found");
+
+        if(data.name) pet.name = data.name;
+        // if(data.dob) pet.date_of_birth = data.dob.toString();
+
+        await pet.save();
+        await pet.reload();
+
+        return buildPetResponse(pet);
     }
 
     async archivePet(pet_id: string): Promise<void>{

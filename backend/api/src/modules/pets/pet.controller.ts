@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import ApiError from "../../shared/errors/ApiError";
 import PetService from "./pet.service";
-import {CreatePetDto, PetResponse} from "./pet.types";
+import {CreatePetDto, PetResponse, UpdatePetDto} from "./pet.types";
 
 const petService: PetService = new PetService();
 
@@ -26,6 +26,21 @@ export default class PetController{
     }
 
     updatePet = async(req: Request, res: Response) => {
+        const id = req.params.id as string;
+
+        if(!id) throw new ApiError(400, "Pet ID required");
+
+        const data: UpdatePetDto = {
+            id,
+            ...req.body
+        }
+
+        const result = await petService.updatePet(data);
+
+        return res.status(200).json({
+            success:true,
+            data: result
+        })
     }
 
     createPet = async(req: Request, res:Response) => {
