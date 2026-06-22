@@ -59,7 +59,7 @@ export function setupAssociations() {
 
     //Pet Associations
     Pet.belongsTo(Client, {
-        foreignKey:"pet_id",
+        foreignKey:"owner_id",
         as:"owner"
     });
 

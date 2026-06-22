@@ -18,6 +18,13 @@ export default class PetService{
 
         if(!pet) throw new ApiError(500, "Error when creating new pet");
 
+        await pet.reload({
+            include:[{
+                model: Client,
+                as: "owner"
+            }]
+        })
+
         return buildPetResponse(pet);
     }
 

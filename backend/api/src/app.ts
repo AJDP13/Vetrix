@@ -30,11 +30,13 @@ async function start(): Promise<void> {
     try{
         await sequelize.authenticate();
 
+        setupAssociations();
+
         await sequelize.sync({
+            // force: true,
             // alter:true
         });
 
-        setupAssociations();
 
         console.log("Database connection success");
 
@@ -59,6 +61,7 @@ app.use("/prescriptions", prescriptionRoutes);
 
 app.post("/seed", async(req, res) => {
     await seedPermissions();
+    setupAssociations();
 });
 
 //Import Error Handling

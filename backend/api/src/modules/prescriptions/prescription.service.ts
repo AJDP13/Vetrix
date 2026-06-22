@@ -9,6 +9,7 @@ import {
 import Prescription from "./prescription.model";
 import Pet from "../pets/pet.model";
 import {buildPrescriptionResponse} from "./prescription.mapper";
+import Client from "../clients/client.model";
 
 export default class PrescriptionService{
     private async getPrescriptionInternal(id: string): Promise<Prescription>{
@@ -38,7 +39,11 @@ export default class PrescriptionService{
         await prescription.reload({
             include: [{
                 model: Pet,
-                as: "pet"
+                as: "pet",
+                include:[{
+                    model: Client,
+                    as:"owner"
+                }]
             }]
         });
 
