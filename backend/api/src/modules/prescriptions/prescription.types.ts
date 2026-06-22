@@ -34,3 +34,11 @@ export interface GetAllPrescriptionsDto{
     pageLimit: number;
     page: number;
 }
+
+export interface GetAllPrescriptionsResponse{
+    prescriptions: PrescriptionResponse[],
+    total: number,
+    page: number;
+    pageLimit: number;
+    total_pages: number;
+}

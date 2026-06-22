@@ -10,6 +10,7 @@ import {setupAssociations} from "./database/associations";
 import {seedPermissions} from "./modules/rbac/rbac.seed";
 import clientRoutes from "./modules/clients/client.routes";
 import petRoutes from "./modules/pets/pet.routes";
+import prescriptionRoutes from "./modules/prescriptions/prescription.routes";
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use("/users", userRoutes)
 app.use("/rbac", rbacRoutes);
 app.use("/clients", clientRoutes);
 app.use("/pets", petRoutes);
+app.use("/prescriptions", prescriptionRoutes);
 
 app.post("/seed", async(req, res) => {
     await seedPermissions();

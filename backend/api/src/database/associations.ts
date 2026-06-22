@@ -6,6 +6,7 @@ import Permission, {PermissionId} from "../modules/rbac/permission.model";
 import RolePermission from "../modules/rbac/RolePermission.model";
 import Client from "../modules/clients/client.model";
 import Pet from "../modules/pets/pet.model";
+import Prescription from "../modules/prescriptions/prescription.model";
 
 export function setupAssociations() {
 
@@ -61,4 +62,15 @@ export function setupAssociations() {
         foreignKey:"pet_id",
         as:"owner"
     });
+
+    Pet.hasMany(Prescription, {
+        foreignKey: "pet_id",
+        as: "prescriptions"
+    });
+
+    //Prescription Associations
+    Prescription.belongsTo(Pet, {
+        foreignKey: "pet_id",
+        as: "pet"
+    })
 }

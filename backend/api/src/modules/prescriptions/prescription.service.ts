@@ -1,13 +1,14 @@
 import ApiError from "../../shared/errors/ApiError";
 import {
     CreatePrescriptionDto,
-    GetAllPrescriptionsDto,
+    GetAllPrescriptionsDto, GetAllPrescriptionsResponse,
     PrescriptionResponse,
     UpdatePrescriptionDto
 } from "./prescription.types";
 import Prescription from "./prescription.model";
 import Pet from "../pets/pet.model";
 import {buildPrescriptionResponse} from "./prescription.mapper";
+import prescriptionRoutes from "./prescription.routes";
 
 export default class PrescriptionService{
     async createPrescription(data: CreatePrescriptionDto):Promise<PrescriptionResponse>{
@@ -27,14 +28,33 @@ export default class PrescriptionService{
         });
 
         await prescription.reload({
-            include: Pet
+            include: [{
+                model: Pet,
+                as: "pet"
+            }]
         });
 
         return buildPrescriptionResponse(prescription);
     }
 
-    async getAllPrescriptions(data: GetAllPrescriptionsDto):Promise<PrescriptionResponse[]>{
+    async getAllPrescriptions(data: GetAllPrescriptionsDto):Promise<GetAllPrescriptionsResponse>{
+        const {rows, count} = await Prescription.findAndCountAll({
+            limit: data.pageLimit,
+            offset: (data.page-1) * data.pageLimit,
+            include:[{
+                model: Pet,
+                as: "pet"
+            }],
+            order: [["prescribed_at", "DESC"]]
+        });
 
+        return {
+            prescriptions: rows.map(buildPrescriptionResponse),
+            total: count,
+            page: data.page,
+            pageLimit: data.pageLimit,
+            total_pages: Math.ceil(count / data.pageLimit)
+        };
     }
 
     async getPrescription(id: string):Promise<PrescriptionResponse>{
