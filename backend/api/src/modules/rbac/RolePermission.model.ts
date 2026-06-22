@@ -25,7 +25,7 @@ RolePermission.init({
     },
 
     permission_id:{
-        type: DataTypes.UUID,
+        type: DataTypes.STRING,
         allowNull:false
     },
 

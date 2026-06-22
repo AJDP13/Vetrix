@@ -3,6 +3,8 @@ import {CreatePetDto, GetAllPetsDto, PetResponse, UpdatePetDto} from "./pet.type
 import Pet from "./pet.model";
 import {buildPetResponse} from "./pet.mapper";
 import Client from "../clients/client.model";
+import Prescription, {PrescriptionState} from "../prescriptions/prescription.model";
+import {Op} from "sequelize";
 
 export default class PetService{
     async createPet(data: CreatePetDto): Promise<PetResponse>{
@@ -63,8 +65,20 @@ export default class PetService{
         const pet = await Pet.findByPk(pet_id);
 
         if(!pet) throw new ApiError(404, "Pet ID not found");
+        const prescriptionCount = await Prescription.count({
+            where:{
+                pet_id: pet.id,
+                expires_at:{
+                    [Op.gt]: new Date()
+                },
+                state:{
+                    [Op.ne]: PrescriptionState.VOID
+                }
+            }
+        });
 
-        //TODO: Check if pet has any outstanding prescriptions which are currently active
+        if(prescriptionCount > 0) throw new ApiError(400, "Pet still has active or draft prescriptions");
+
         await pet.destroy();
 
         return;

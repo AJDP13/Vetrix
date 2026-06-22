@@ -9,6 +9,12 @@ import sequelize from "../../config/database";
 import Client from "../clients/client.model";
 import Pet from "../pets/pet.model";
 
+export enum PrescriptionState{
+    VOID = "void",
+    DRAFT = "draft",
+    ACTIVE = "active"
+}
+
 export default class Prescription extends Model<InferAttributes<Prescription>,InferCreationAttributes<Prescription>> {
     declare id: CreationOptional<string>;
 
@@ -22,6 +28,8 @@ export default class Prescription extends Model<InferAttributes<Prescription>,In
     declare prescribing_practice: CreationOptional<string>; //To become part of reference data later - Vet practice info will be imported from national database
 
     declare notes: string | null;
+
+    declare state: PrescriptionState
 
 
     declare created_at: CreationOptional<Date>;
@@ -81,6 +89,13 @@ Prescription.init({
     notes:{
         type: DataTypes.TEXT,
         allowNull: true
+    },
+
+    state:{
+        type: DataTypes.ENUM,
+        values: Object.keys(PrescriptionState),
+        defaultValue: PrescriptionState.DRAFT,
+        allowNull:false
     },
 
     created_at: DataTypes.DATE,

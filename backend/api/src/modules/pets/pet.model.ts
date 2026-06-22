@@ -3,10 +3,11 @@ import {
     DataTypes,
     InferAttributes,
     InferCreationAttributes,
-    Model
+    Model, NonAttribute
 } from "sequelize";
 import sequelize from "../../config/database";
 import Client from "../clients/client.model";
+import Prescription from "../prescriptions/prescription.model";
 
 export default class Pet extends Model<InferAttributes<Pet>,InferCreationAttributes<Pet>> {
     declare id: CreationOptional<string>;
@@ -19,7 +20,8 @@ export default class Pet extends Model<InferAttributes<Pet>,InferCreationAttribu
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date>;
 
-    declare owner?: Client;
+    declare owner?: NonAttribute<Client>;
+    declare prescriptions: NonAttribute<Prescription>
 }
 
 Pet.init({
@@ -55,5 +57,19 @@ Pet.init({
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-    deletedAt: "deleted_at"
+    deletedAt: "deleted_at",
+    scopes:{
+        withPrescriptions:{
+            include:[{
+                model: Prescription,
+                as: "prescriptions"
+            }]
+        },
+        withOwner:{
+            include:[{
+                model: Client,
+                as: "owner"
+            }]
+        }
+    }
 });
