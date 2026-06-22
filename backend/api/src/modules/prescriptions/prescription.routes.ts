@@ -20,7 +20,7 @@ router.get( //NOTE: Gets prescription by ID
 router.get( //NOTE: Gets all Prescriptions
     "/",
     hasPermission(PermissionId.PRESCRIPTIONS_VIEW),
-    prescriptionController.getAllPrescriptions
+    prescriptionController.searchPrescriptions
 )
 
 router.patch( //NOTE: Updates a current Prescription - limited info updateable

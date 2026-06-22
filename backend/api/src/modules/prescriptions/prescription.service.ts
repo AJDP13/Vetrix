@@ -1,16 +1,24 @@
 import ApiError from "../../shared/errors/ApiError";
 import {
     CreatePrescriptionDto,
-    GetAllPrescriptionsDto, GetAllPrescriptionsResponse,
+    SearchPrescriptionsDto,
+    SearchPrescriptionsResponse,
     PrescriptionResponse,
     UpdatePrescriptionDto
 } from "./prescription.types";
 import Prescription from "./prescription.model";
 import Pet from "../pets/pet.model";
 import {buildPrescriptionResponse} from "./prescription.mapper";
-import prescriptionRoutes from "./prescription.routes";
 
 export default class PrescriptionService{
+    private async getPrescriptionInternal(id: string): Promise<Prescription>{
+        const prescription = await Prescription.findByPk(id);
+
+        if(!prescription) throw new ApiError(404, "Prescription ID not found");
+
+        return prescription;
+    }
+
     async createPrescription(data: CreatePrescriptionDto):Promise<PrescriptionResponse>{
         const pet = await Pet.findByPk(data.pet_id);
 
@@ -37,7 +45,7 @@ export default class PrescriptionService{
         return buildPrescriptionResponse(prescription);
     }
 
-    async getAllPrescriptions(data: GetAllPrescriptionsDto):Promise<GetAllPrescriptionsResponse>{
+    async searchPrescriptions(data: SearchPrescriptionsDto):Promise<SearchPrescriptionsResponse>{
         const {rows, count} = await Prescription.findAndCountAll({
             limit: data.pageLimit,
             offset: (data.page-1) * data.pageLimit,
@@ -58,13 +66,27 @@ export default class PrescriptionService{
     }
 
     async getPrescription(id: string):Promise<PrescriptionResponse>{
+        const prescription = await this.getPrescriptionInternal(id);
 
+        return buildPrescriptionResponse(prescription);
     }
 
     async updatePrescription(data: UpdatePrescriptionDto):Promise<PrescriptionResponse>{
+        const prescription = await this.getPrescriptionInternal(data.id);
+
+        if(data.prescribing_practice) prescription.prescribing_practice = data.prescribing_practice;
+        if(data.notes) prescription.notes = data.notes;
+
+        await prescription.save();
+
+        return buildPrescriptionResponse(prescription);
     }
 
     async archivePrescription(id: string):Promise<void>{
+        const prescription = await this.getPrescriptionInternal(id);
 
+        await prescription.destroy();
+
+        return;
     }
 }

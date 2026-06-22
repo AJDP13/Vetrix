@@ -3,7 +3,7 @@ import ApiError from "../../shared/errors/ApiError";
 import PrescriptionService from "./prescription.service";
 import {
     CreatePrescriptionDto,
-    GetAllPrescriptionsDto,
+    SearchPrescriptionsDto,
     PrescriptionResponse,
     UpdatePrescriptionDto
 } from "./prescription.types";
@@ -25,17 +25,17 @@ export default class PrescriptionController {
         })
     }
 
-    getAllPrescriptions = async (req: Request, res: Response) => {
+    searchPrescriptions = async (req: Request, res: Response) => {
         const {pageLimit, page} = req.params;
 
         if (!pageLimit || !page) throw new ApiError(400, "Invalid Page or Page Limit")
 
-        const data: GetAllPrescriptionsDto = {
+        const data: SearchPrescriptionsDto = {
             pageLimit: parseInt(pageLimit as string),
             page: parseInt(page as string)
         };
 
-        const result = await prescriptionService.getAllPrescriptions(data);
+        const result = await prescriptionService.searchPrescriptions(data);
 
         return res.status(200).json({
             success:true,
@@ -76,7 +76,7 @@ export default class PrescriptionController {
 
         await prescriptionService.archivePrescription(id);
 
-        return res.status(200).json({
+        return res.status(204).json({
             success:true
         })
     }

@@ -30,12 +30,27 @@ export interface UpdatePrescriptionDto{
     notes: string;
 }
 
-export interface GetAllPrescriptionsDto{
+export interface SearchPrescriptionsDto{
     pageLimit: number;
     page: number;
+
+    //V2 - Filters + Sort
+
+    // petId?: string;
+    //
+    // active?: boolean;
+    // expired?: boolean
+    //
+    // prescribedBy?: string;
+    //
+    // prescribedAfter?: Date;
+    // prescribedBefore?: Date;
+    //
+    // expiresAfter?: Date;
+    // expiresBefore?: Date;
 }
 
-export interface GetAllPrescriptionsResponse{
+export interface SearchPrescriptionsResponse{
     prescriptions: PrescriptionResponse[],
     total: number,
     page: number;
