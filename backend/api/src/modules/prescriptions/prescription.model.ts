@@ -3,7 +3,7 @@ import {
     DataTypes,
     InferAttributes,
     InferCreationAttributes,
-    Model
+    Model, NonAttribute
 } from "sequelize";
 import sequelize from "../../config/database";
 import Client from "../clients/client.model";
@@ -16,19 +16,19 @@ export default class Prescription extends Model<InferAttributes<Prescription>,In
 
     declare prescribed_at: Date;
     declare expires_at: Date;
-    declare max_repeats: number;
-    declare repeat_interval_days: number;
+    declare max_repeats: CreationOptional<number>;
+    declare repeat_interval_days: CreationOptional<number>;
     declare prescribed_by: CreationOptional<string>;
     declare prescribing_practice: CreationOptional<string>; //To become part of reference data later - Vet practice info will be imported from national database
 
-    declare notes: string;
+    declare notes: string | null;
 
 
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date>;
 
-    declare pet?: CreationOptional<Pet>;
+    declare pet: NonAttribute<Pet>;
 }
 
 Prescription.init({
