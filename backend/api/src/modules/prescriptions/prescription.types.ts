@@ -1,4 +1,5 @@
 import {PetResponse} from "../pets/pet.types";
+import {PrescriptionState} from "./prescription.model";
 
 export interface CreatePrescriptionDto{
     pet_id: string;
@@ -8,7 +9,8 @@ export interface CreatePrescriptionDto{
     repeat_interval_days?: number;
     prescribed_by?: string;
     prescribing_practice?: string;
-    notes: string|null
+    notes: string|null,
+    state: PrescriptionState;
 }
 
 export interface PrescriptionResponse{
@@ -22,6 +24,7 @@ export interface PrescriptionResponse{
     prescribing_practice: string;
     notes: string;
     updated_at: Date;
+    state: PrescriptionState;
 }
 
 export interface UpdatePrescriptionDto{

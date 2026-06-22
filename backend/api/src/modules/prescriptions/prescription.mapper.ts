@@ -13,7 +13,8 @@ export function buildPrescriptionResponse(p: Prescription): PrescriptionResponse
         prescribed_by: p.prescribed_by,
         prescribing_practice: p.prescribing_practice,
         notes: p.notes ?? "",
-        updated_at: p.updated_at
+        updated_at: p.updated_at,
+        state: p.state
     };
 
     return data;

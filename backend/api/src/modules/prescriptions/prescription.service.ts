@@ -33,7 +33,8 @@ export default class PrescriptionService{
             ...(data.repeat_interval_days ? {repeat_interval_days: data.repeat_interval_days} : {}),
             ...(data.prescribed_by ? {prescribed_by: data.prescribed_by} : {}),
             ...(data.prescribing_practice ? {prescribing_practice: data.prescribing_practice} : {}),
-            notes: data.notes
+            notes: data.notes,
+            state: data.state
         });
 
         await prescription.reload({
