@@ -7,6 +7,7 @@ import {
 } from "sequelize";
 import sequelize from "../../config/database";
 import Pet from "../pets/pet.model";
+import Client from "../clients/client.model";
 
 export enum PrescriptionState{
     VOID = "void",
@@ -96,7 +97,7 @@ Prescription.init({
 
     state:{
         type: DataTypes.ENUM,
-        values: Object.keys(PrescriptionState),
+        values: Object.values(PrescriptionState),
         defaultValue: PrescriptionState.DRAFT,
         allowNull:false
     },
@@ -111,5 +112,15 @@ Prescription.init({
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-    deletedAt: "deleted_at"
+    deletedAt: "deleted_at",
+    scopes:{
+        withPetAndOwner: () => ({
+            include: [{
+                association: "pet",
+                include: [{
+                    association: "owner"
+                }]
+            }]
+        })
+    }
 });

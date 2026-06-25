@@ -13,7 +13,7 @@ import Client from "../clients/client.model";
 
 export default class PrescriptionService{
     private async getPrescriptionInternal(id: string): Promise<Prescription>{
-        const prescription = await Prescription.findByPk(id);
+        const prescription = await Prescription.scope("withPetAndOwner").findByPk(id);
 
         if(!prescription) throw new ApiError(404, "Prescription ID not found");
 

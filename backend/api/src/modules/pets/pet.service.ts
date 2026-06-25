@@ -40,7 +40,7 @@ export default class PetService{
     }
 
     async getPet(pet_id: string): Promise<PetResponse>{
-        const pet = await Pet.findByPk(pet_id);
+        const pet = await Pet.scope("withOwner").findByPk(pet_id);
 
         if(!pet) throw new ApiError(404, "Pet ID not found");
 
