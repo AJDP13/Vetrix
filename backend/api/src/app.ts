@@ -61,6 +61,10 @@ app.use("/prescriptions", prescriptionRoutes);
 
 app.post("/seed", async(req, res) => {
     await seedPermissions();
+
+    return res.json({
+        success:true
+    })
 });
 
 //Import Error Handling

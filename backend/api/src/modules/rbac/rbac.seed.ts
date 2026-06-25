@@ -8,14 +8,16 @@ export async function seedPermissions() {
     const transaction = await sequelize.transaction();
     const permissions = Object.values(PermissionId);
 
-    for (const permission of permissions) {
-        await Permission.findOrCreate({
-            where: {
-                id: permission,
-            },
-            transaction
-        });
-    }
+    await Permission.bulkCreate(permissions.map(p=>{
+        return {
+            id: p,
+            description: p
+        }
+    }), {
+        fields: ["id", "description"],
+        updateOnDuplicate: ["description"],
+        transaction
+    })
 
     //Default SysAdmin role
     const [role, created] = await Role.findOrCreate({
@@ -27,18 +29,23 @@ export async function seedPermissions() {
         transaction
     });
 
-    if(created) await role.setPermissions(permissions);
+    if(created) await role.setPermissions(permissions, {
+        transaction
+    });
 
     //Default SysAdmin User
-    const [sysAdmin, sysAdminCreated]: [User, boolean] = await User.findOrCreate({
-        where:{
+    const [sysAdmin, sysCreated] = await User.findOrCreate({
+        where: {
+            email: "admin@aerotrixlabs.com",
+        },
+        defaults: {
             username: "administrator",
             first_name: "System Administrator",
+            password_hash: await bcrypt.hash("admin", 10),
             email: "admin@aerotrixlabs.com",
-            password_hash: await bcrypt.hash("admin", 10)
         },
-        transaction
-    })
+        transaction,
+    });
 
     await transaction.commit();
 }
