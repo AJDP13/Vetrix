@@ -9,6 +9,6 @@ import Foundation
 
 public struct APIResponse<T:Decodable>: Decodable{
 	public let success: Bool
-	public let data: T?
+	public let data: T
 	public let message: String?
 }
