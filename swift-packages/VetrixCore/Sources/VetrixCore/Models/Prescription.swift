@@ -8,9 +8,9 @@
 import Foundation
 
 public enum PrescriptionState: String, Codable, Sendable {
-	case ACTIVE = "active"
-	case DRAFT = "draft"
-	case VOID = "void"
+	case active = "active"
+	case draft = "draft"
+	case void = "void"
 }
 
 public struct Prescription: Codable, Sendable {
