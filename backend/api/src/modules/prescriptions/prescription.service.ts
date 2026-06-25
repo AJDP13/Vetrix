@@ -52,9 +52,11 @@ export default class PrescriptionService{
     }
 
     async searchPrescriptions(data: SearchPrescriptionsDto):Promise<SearchPrescriptionsResponse>{
+        const MAX_PAGE_LIMIT = 100;
+        const pageLimit = Math.min(MAX_PAGE_LIMIT, data.pageLimit)
         const {rows, count} = await Prescription.scope("withPetAndOwner").findAndCountAll({
             limit: data.pageLimit,
-            offset: (data.page-1) * data.pageLimit,
+            offset: (data.page-1) * pageLimit,
             order: [["prescribed_at", "DESC"]]
         });
 
@@ -62,8 +64,8 @@ export default class PrescriptionService{
             prescriptions: rows.map(buildPrescriptionResponse),
             total: count,
             page: data.page,
-            pageLimit: data.pageLimit,
-            total_pages: Math.ceil(count / data.pageLimit)
+            pageLimit,
+            total_pages: Math.ceil(count / pageLimit)
         };
     }
 
