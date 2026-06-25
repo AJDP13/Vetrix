@@ -13,11 +13,11 @@ public final class HTTPClient{
 	private let authentication: AuthenticationManager
 	
 	init(
-		confiuration: APIConfiguration,
+		configuration: APIConfiguration,
 		session: URLSession,
 		authentication: AuthenticationManager
 	){
-		self.configuration = confiuration
+		self.configuration = configuration
 		self.session = session
 		self.authentication = authentication
 	}
