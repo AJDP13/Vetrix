@@ -24,7 +24,7 @@ export interface UpdateMeDto{
 }
 
 export interface UpdateUserDto extends UpdateMeDto{
-    //Additional options that normal users cannot just update
+    //Additional options that normal users cannot just plainly update without verification
     password?: string;
 
     is_active?: boolean

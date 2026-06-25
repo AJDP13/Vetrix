@@ -14,15 +14,17 @@ export function errorHandler(
         return res.status(
             err.statusCode
         ).json({
-            succes:false,
+            success:false,
             status_code:err.statusCode,
-            message: err.message
+            message: err.message,
+            data: null
         });
     }
 
     return res.status(500).json({
         success:false,
         status_code: 500,
-        message: "Internal Server Error"
+        message: "Internal Server Error",
+        data:null
     });
 }

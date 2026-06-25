@@ -13,7 +13,7 @@ export default class UserController{
     }
 
     getUser = async (req: Request, res: Response) => {
-        const id = req.params.id as string;
+        const id = (req.params.id as string).toLowerCase();
 
         const user = await this.userService.getUserById(id);
 
@@ -40,7 +40,7 @@ export default class UserController{
     }
 
     updateUser = async (req: Request, res: Response) => {
-        const id = req.params.id;
+        const id = (req.params.id as string).toLowerCase();
 
         const data: UpdateUserDto = {
             id,
@@ -56,7 +56,7 @@ export default class UserController{
     }
 
     deactivateUser = async(req: Request, res:Response) => {
-        const id = req.params.id as string;
+        const id = (req.params.id as string).toLowerCase();
 
         await this.userService.deactivateUser(id);
 
