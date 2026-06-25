@@ -47,3 +47,4 @@ private struct UpdateUserRequest: Encodable, Sendable {
 	let password: String?
 	let isActive: String?
 }
+
