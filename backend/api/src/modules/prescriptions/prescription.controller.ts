@@ -26,7 +26,7 @@ export default class PrescriptionController {
     }
 
     searchPrescriptions = async (req: Request, res: Response) => {
-        const {pageLimit, page} = req.params;
+        const {pageLimit, page} = req.query;
 
         if (!pageLimit || !page) throw new ApiError(400, "Invalid Page or Page Limit")
 

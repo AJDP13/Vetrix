@@ -52,13 +52,9 @@ export default class PrescriptionService{
     }
 
     async searchPrescriptions(data: SearchPrescriptionsDto):Promise<SearchPrescriptionsResponse>{
-        const {rows, count} = await Prescription.findAndCountAll({
+        const {rows, count} = await Prescription.scope("withPetAndOwner").findAndCountAll({
             limit: data.pageLimit,
             offset: (data.page-1) * data.pageLimit,
-            include:[{
-                model: Pet,
-                as: "pet"
-            }],
             order: [["prescribed_at", "DESC"]]
         });
 
