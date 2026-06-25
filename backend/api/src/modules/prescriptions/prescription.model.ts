@@ -6,7 +6,6 @@ import {
     Model, NonAttribute
 } from "sequelize";
 import sequelize from "../../config/database";
-import Client from "../clients/client.model";
 import Pet from "../pets/pet.model";
 
 export enum PrescriptionState{
@@ -37,6 +36,10 @@ export default class Prescription extends Model<InferAttributes<Prescription>,In
     declare deleted_at: CreationOptional<Date>;
 
     declare pet: NonAttribute<Pet>;
+
+    isActiveAndValid(): boolean{
+        return this.state == PrescriptionState.ACTIVE && (this.expires_at > new Date(Date.now()));
+    }
 }
 
 Prescription.init({
