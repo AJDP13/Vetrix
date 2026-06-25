@@ -61,7 +61,6 @@ app.use("/prescriptions", prescriptionRoutes);
 
 app.post("/seed", async(req, res) => {
     await seedPermissions();
-    setupAssociations();
 });
 
 //Import Error Handling
