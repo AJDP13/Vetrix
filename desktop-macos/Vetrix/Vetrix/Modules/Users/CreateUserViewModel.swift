@@ -18,6 +18,8 @@ public final class CreateUserViewModel{
 	public var phone: String = ""
 	public var isActive: Bool = true
 	
+	public var isLoading: Bool = false
+	
 	private let api: VetrixAPI
 	
 	
@@ -25,11 +27,20 @@ public final class CreateUserViewModel{
 		self.api=api
 	}
 	
+	var isPasswordValid: Bool {
+		return !self.password.isEmpty && self.password.count >= 8
+	}
+	
 	func canSubmit() -> Bool{
-		return !(firstName.isEmpty && lastName.isEmpty && email.isEmpty && username.isEmpty && phone.isEmpty)
+		return !(firstName.isEmpty && lastName.isEmpty && email.isEmpty && username.isEmpty && phone.isEmpty) && self.isPasswordValid
 	}
 	
 	func createUser() async throws {
+		isLoading = true
 		
+		defer {
+			isLoading = false
+		}
+		let _ = try await self.api.user.create(username: self.username, email: self.email, password: self.password, firstName: self.firstName, lastName: self.lastName)
 	}
 }

@@ -12,6 +12,8 @@ struct UsersView: View {
 	@State var vm: UsersViewModel
 	private var createVm: CreateUserViewModel
 	
+	@State private var showCreateUser = false
+	
 	init(api: VetrixAPI){
 		_vm = State(initialValue: UsersViewModel(api: api))
 		createVm = CreateUserViewModel(api: api)
@@ -39,7 +41,7 @@ struct UsersView: View {
 				.toolbar{
 					ToolbarItem(placement: .primaryAction){
 						Button{
-							vm.toggleShowCreateUser()
+							showCreateUser.toggle()
 						} label: {
 							Image(systemName: "plus")
 						}
@@ -62,7 +64,7 @@ struct UsersView: View {
 		.task{
 			await vm.loadUsers()
 		}
-		.sheet(isPresented: $vm.showCreateUser){
+		.sheet(isPresented: $showCreateUser){
 			CreateUserView(vm: createVm)
 		}
     }

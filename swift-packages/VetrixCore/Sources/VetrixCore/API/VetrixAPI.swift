@@ -14,11 +14,13 @@ public final class VetrixAPI {
 	public let auth: AuthenticationService
 
 	public let appSession: SessionManager
+	public let errorManager: ErrorManager
 	private let http: HTTPClient
 
 	public init(configuration: APIConfiguration) {
 
 		self.appSession = SessionManager()
+		self.errorManager = ErrorManager()
 
 		self.http = HTTPClient(
 			configuration: configuration,

@@ -28,7 +28,6 @@ public final class UsersViewModel{
 			user.email.localizedCaseInsensitiveContains(userSearchText)
 		}
 	}
-	public var showCreateUser: Bool = false
 	
 	private let api: VetrixAPI
 	
@@ -49,9 +48,5 @@ public final class UsersViewModel{
 		}catch {
 			self.error = error
 		}
-	}
-	
-	func toggleShowCreateUser(){
-		self.showCreateUser.toggle()
 	}
 }

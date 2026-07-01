@@ -11,54 +11,65 @@ import VetrixCore
 struct CreateUserView: View {
 	@State var vm: CreateUserViewModel
 	
+	@Environment(\.dismiss) private var dismiss
+	
 	
     var body: some View {
-		VStack{
-			Text("Create New User")
-				.font(.title2)
-			
-			Form{
-				Section{
-					TextField("First Name", text: $vm.firstName)
-					TextField("Last Name", text: $vm.lastName)
-				}
+		if vm.isLoading {
+			ProgressView()
+			Text("Attempting to Create User")
+		}else{
+			VStack{
+				Text("Create New User")
+					.font(.title2)
 				
-				Section{
-					TextField("Email", text: $vm.email)
-					TextField("Phone", text: $vm.phone)
-				} header: {
-					Text("Personal Information")
+				Form{
+					Section{
+						TextField("First Name", text: $vm.firstName)
+						TextField("Last Name", text: $vm.lastName)
+					}
+					
+					Section{
+						TextField("Email", text: $vm.email)
+						TextField("Phone", text: $vm.phone)
+					} header: {
+						Text("Personal Information")
+					}
+					
+					Section{
+						TextField("Username", text: $vm.username)
+						SecureField("Password", text: $vm.password)
+						Toggle("Active", isOn: $vm.isActive)
+							.toggleStyle(.checkbox)
+					} header: {
+						Text("Authentication Information")
+					} footer :{
+						if !vm.isPasswordValid {
+							Text("Invalid Password. Please use a minimum of 8 characters")
+								.foregroundStyle(.red)
+						}
+					}
 				}
+				.formStyle(.grouped)
 				
-				Section{
-					TextField("Username", text: $vm.username)
-					SecureField("Password", text: $vm.password)
-					Toggle("Active", isOn: $vm.isActive)
-						.toggleStyle(.checkbox)
-				} header: {
-					Text("Authentication Information")
-				} footer :{
-					Text("Invalid Password. Please use a minimum of 8 characters")
-						.foregroundStyle(.red)
+				HStack{
+					Spacer()
+					
+					Button("Cancel"){
+						dismiss()
+					}
+					
+					Button("Create"){
+						Task{
+							try await vm.createUser()
+						}
+					}
+					.keyboardShortcut(.defaultAction)
+					.disabled(!vm.canSubmit())
 				}
 			}
-			.formStyle(.grouped)
-			
-			HStack{
-				Spacer()
-				
-				Button("Cancel"){
-					
-				}
-				
-				Button("Create"){
-					
-				}
-				.keyboardShortcut(.defaultAction)
-				.disabled(!vm.canSubmit())
-			}
+			.padding()
 		}
-		.padding()
     }
 }
 
