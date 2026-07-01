@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Permission: Codable{
-	public let id: UUID
+public struct Permission: Codable, Sendable{
+	public let id: String
 	public let description: String
 }

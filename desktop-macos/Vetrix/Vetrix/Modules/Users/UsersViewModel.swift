@@ -29,7 +29,7 @@ public final class UsersViewModel{
 		}
 	}
 	
-	private let api: VetrixAPI
+	public let api: VetrixAPI
 	
 	init(api: VetrixAPI, users: [User] = []){
 		self.api = api

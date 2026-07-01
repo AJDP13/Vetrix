@@ -66,6 +66,7 @@ struct UsersView: View {
 		}
 		.sheet(isPresented: $showCreateUser){
 			CreateUserView(vm: createVm)
+				.globalErrorAlert(api: vm.api)
 		}
     }
 }

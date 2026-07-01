@@ -12,14 +12,35 @@ struct RootView: View {
 	@State var api: VetrixAPI
 
     var body: some View {
-		if !api.appSession.isAuthenticated {
-			LoginView(api: api)
-		}else if let user = api.appSession.user {
-			MainView(api: api)
-		}else{
-			ProgressView("Loading Session...")
+		Group{
+			if !api.appSession.isAuthenticated {
+				LoginView(api: api)
+			}else if let user = api.appSession.user {
+				MainView(api: api)
+			}else{
+				ProgressView("Loading Session...")
+			}
 		}
+		.globalErrorAlert(api: api)
     }
+}
+
+extension View {
+	func globalErrorAlert(api: VetrixAPI) -> some View {
+		alert(
+			"Error",
+			isPresented: Binding(
+				get: { api.errorManager.error != nil },
+				set: { if !$0 { api.errorManager.clear() } }
+			)
+		) {
+			Button("OK") {
+				api.errorManager.clear()
+			}
+		} message: {
+			Text(api.errorManager.error?.displayMessage ?? "")
+		}
+	}
 }
 
 #Preview {

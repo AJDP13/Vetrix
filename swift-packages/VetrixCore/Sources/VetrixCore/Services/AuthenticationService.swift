@@ -48,6 +48,7 @@ private struct LoginRequest: Encodable, Sendable {
 
 private struct LoginResponse: Decodable {
 	let user: User
+	let permissions: [Permission]?
 	let accessToken: String
 	let refreshToken: String
 }

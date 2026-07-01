@@ -52,6 +52,11 @@ struct CreateUserView: View {
 				}
 				.formStyle(.grouped)
 				
+				if let error = vm.errorMessage{
+					Text(error)
+						.foregroundStyle(.red)
+				}
+				
 				HStack{
 					Spacer()
 					
@@ -61,7 +66,9 @@ struct CreateUserView: View {
 					
 					Button("Create"){
 						Task{
-							try await vm.createUser()
+							if await vm.createUser(){
+								dismiss()
+							}
 						}
 					}
 					.keyboardShortcut(.defaultAction)

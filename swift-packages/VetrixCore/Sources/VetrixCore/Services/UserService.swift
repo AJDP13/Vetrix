@@ -46,6 +46,11 @@ public final class UserService{
 			response: [User].self
 		)
 	}
+	
+	public func me() async throws -> User{
+		let resp: UserResponse = try await http.send(method: .get, path: "/auth/me", response: UserResponse.self)
+		return User(id: resp.id, username: resp.username, email: resp.email, firstName: resp.firstName, lastName: resp.lastName, isActive: resp.isActive, roles: resp.roles, permissions: resp.permissions)
+	}
 }
 
 //Request Structs
@@ -63,3 +68,14 @@ private struct UpdateUserRequest: Encodable, Sendable {
 	let isActive: String?
 }
 
+private struct UserResponse: Decodable, Sendable {
+	let id: UUID
+	let firstName: String
+	let lastName: String
+	let email: String
+	let username: String
+	let phone: String
+	let isActive: Bool
+	let roles: [Role]?
+	let permissions: [Permission]?
+}
