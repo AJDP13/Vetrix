@@ -9,7 +9,7 @@ import Foundation
 import VetrixCore
 
 @Observable
-public final class UserViewModel{
+public final class UsersViewModel{
 	
 	
 	public var isLoading: Bool = false
@@ -28,6 +28,7 @@ public final class UserViewModel{
 			user.email.localizedCaseInsensitiveContains(userSearchText)
 		}
 	}
+	public var showCreateUser: Bool = false
 	
 	private let api: VetrixAPI
 	
@@ -48,5 +49,9 @@ public final class UserViewModel{
 		}catch {
 			self.error = error
 		}
+	}
+	
+	func toggleShowCreateUser(){
+		self.showCreateUser.toggle()
 	}
 }

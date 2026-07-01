@@ -1,5 +1,5 @@
 //
-//  NavigationDestination.swift
+//  Workspace.swift
 //  Vetrix
 //
 //  Created by Arun Dutta-Plummer on 26/06/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NavigationDestination{
+enum Workspace: String, Hashable, CaseIterable {
 	case dashboard
 	case users
 	case clients

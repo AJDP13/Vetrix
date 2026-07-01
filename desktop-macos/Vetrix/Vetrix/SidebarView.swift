@@ -8,11 +8,29 @@
 import SwiftUI
 
 struct SidebarView: View {
+	@Bindable var vm: MainViewModel
+	
+	
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+		VStack(alignment: .leading){
+			Button("Dashboard"){
+				vm.destination = .dashboard
+			}
+			
+			Button("Users"){
+				vm.destination = .users
+			}
+			
+			Spacer()
+			
+			Button("Settings"){
+				vm.destination = .settings
+			}
+		}
+		.frame(width: 220)
     }
 }
 
 #Preview {
-    SidebarView()
+	SidebarView(vm: MainViewModel())
 }

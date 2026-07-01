@@ -7,19 +7,22 @@
 
 import Foundation
 
+private struct EmptyRequest: Encodable {}
+private struct EmptyResponse: Decodable {}
+
 public final class HTTPClient{
 	private let configuration: APIConfiguration
 	private let session: URLSession
-	private let authentication: AuthenticationManager
+	private let appSession: SessionManager
 	
 	init(
 		configuration: APIConfiguration,
 		session: URLSession,
-		authentication: AuthenticationManager
+		appSession: SessionManager
 	){
 		self.configuration = configuration
 		self.session = session
-		self.authentication = authentication
+		self.appSession = appSession
 	}
 	
 	public func send<Request: Encodable, Response: Decodable>(
@@ -39,7 +42,7 @@ public final class HTTPClient{
 		
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		
-		if let token = authentication.accessToken{
+		if let token = appSession.accessToken{
 			request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 		}
 		
@@ -54,21 +57,15 @@ public final class HTTPClient{
 				throw APIError.invalidResponse
 			}
 			
-			switch response.statusCode{
-				case 200...399:
-					break
+			if !(200...299).contains(response.statusCode){
+				let error = try? JSON.decoder.decode(
+					APIFailureResponse.self,
+					from: data
+				)
 				
-				case 401:
-					throw APIError.unauthenticated
-				
-				case 403:
-					throw APIError.forbidden
-					
-				case 404:
-					throw APIError.notFound
-				
-				default:
-					throw APIError.server("HTTP \(response.statusCode)")
+				throw APIError.api(
+					statusCode: response.statusCode,
+					message: error?.message ?? HTTPURLResponse.localizedString(forStatusCode:response.statusCode))
 			}
 			
 			do{
@@ -78,11 +75,52 @@ public final class HTTPClient{
 				)
 				
 				return decoded.data
-			}catch let error as APIError{
-				throw error
-			} catch{
-				throw APIError.network(error)
+			}catch let error as DecodingError{
+				throw APIError.decoding(error)
 			}
+		} catch let error as APIError{
+			throw error
+		} catch let error as URLError{
+			throw APIError.network(error)
+		} catch {
+			throw APIError.unknown(error)
 		}
+	}
+	
+	public func send<Response: Decodable>(
+		method: HTTPMethod,
+		path: String,
+		response: Response.Type
+	) async throws -> Response {
+		try await send(
+			method: method,
+			path: path,
+			body: Optional<EmptyRequest>.none,
+			response: response
+		)
+	}
+	
+	public func send(
+		method: HTTPMethod,
+		path: String
+	) async throws {
+		_ = try await send(
+			method: method,
+			path: path,
+			response: EmptyResponse.self
+		)
+	}
+	
+	public func send<Request: Encodable>(
+		method: HTTPMethod,
+		path: String,
+		body: Request
+	) async throws {
+		_ = try await send(
+			method: method,
+			path: path,
+			body: body,
+			response: EmptyResponse.self
+		)
 	}
 }

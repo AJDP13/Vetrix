@@ -9,13 +9,18 @@ import SwiftUI
 import Foundation
 
 struct OutlinedTextFieldStyle: TextFieldStyle {
-	@State var icon: Image?
+	let icon: Image?
 	
 	func _body(configuration: TextField<Self._Label>) -> some View{
 		HStack{
-			if icon != nill{
-				icon?.foregroundStyle(Color(UIColor))
-			}
+			icon?.foregroundStyle(.gray)
+			configuration
+				.textFieldStyle(.plain)
+		}
+		.padding()
+		.overlay{
+			RoundedRectangle(cornerRadius: 8)
+				.stroke(.gray, lineWidth: 2)
 		}
 	}
 }

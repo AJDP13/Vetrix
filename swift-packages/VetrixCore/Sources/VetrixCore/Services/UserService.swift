@@ -31,6 +31,21 @@ public final class UserService{
 		
 		return try await http.send(method: .post, path: "/users", body: request, response: User.self)
 	}
+	
+	public func get(
+		id: UUID
+	) async throws -> User{
+		let response = try await http.send(method: .get, path: "/users/\(id)", response: User.self)
+		return response
+	}
+	
+	public func getAll() async throws -> [User] {
+		return try await http.send(
+			method: .get,
+			path: "/users",
+			response: [User].self
+		)
+	}
 }
 
 //Request Structs

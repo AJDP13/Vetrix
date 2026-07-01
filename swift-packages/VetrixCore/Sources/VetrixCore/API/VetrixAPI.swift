@@ -7,29 +7,26 @@
 
 import Foundation
 
+@Observable
 public final class VetrixAPI {
 
 	public let user: UserService
+	public let auth: AuthenticationService
 
-	private let authentication: AuthenticationManager
+	public let appSession: SessionManager
 	private let http: HTTPClient
 
 	public init(configuration: APIConfiguration) {
 
-		self.authentication = AuthenticationManager()
+		self.appSession = SessionManager()
 
 		self.http = HTTPClient(
 			configuration: configuration,
 			session: .shared,
-			authentication: authentication
+			appSession: appSession
 		)
 
 		self.user = UserService(http: http)
+		self.auth = AuthenticationService(http: http, appSession: appSession)
 	}
-	
-	public var isAuthenticated: Bool {
-		self.authentication.accessToken != nil
-	}
-	
-	
 }
