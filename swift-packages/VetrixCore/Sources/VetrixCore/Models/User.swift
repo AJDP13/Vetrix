@@ -53,4 +53,16 @@ public struct User: Identifiable, Codable, Sendable {
 			)
 		]
 	)
+	
+	public func hasPermission(perm_id: String) -> Bool{
+		guard self.permissions != nil else {return false} //Ensure there are perms in the object
+		
+		for permission in self.permissions! {
+			if(permission.id == perm_id){
+				return true
+			}
+		}
+		
+		return false
+	}
 }
