@@ -5,6 +5,7 @@ import {buildPetResponse} from "./pet.mapper";
 import Client from "../clients/client.model";
 import Prescription, {PrescriptionState} from "../prescriptions/prescription.model";
 import {Op} from "sequelize";
+import { PaginatedResponse } from "../../shared/types/response.types";
 
 export default class PetService{
     async createPet(data: CreatePetDto): Promise<PetResponse>{
@@ -30,13 +31,21 @@ export default class PetService{
         return buildPetResponse(pet);
     }
 
-    async getAllPets(data: GetAllPetsDto): Promise<PetResponse[]>{
-        const pets = await Pet.findAll({
+    async getAllPets(data: GetAllPetsDto): Promise<PaginatedResponse<PetResponse>>{
+        const {rows, count} = await Pet.scope("withOwner").findAndCountAll({
             offset: (data.page-1) * data.pageLimit,
             limit: data.pageLimit
         });
 
-        return pets.map(buildPetResponse);
+        const totalPages = Math.ceil(count/data.pageLimit)
+
+        return{
+            items: rows.map(buildPetResponse),
+            total: count,
+            page: Math.min(data.page, totalPages),
+            pageLimit: data.pageLimit,
+            totalPages
+        }
     }
 
     async getPet(pet_id: string): Promise<PetResponse>{

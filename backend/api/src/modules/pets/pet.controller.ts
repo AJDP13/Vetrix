@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import ApiError from "../../shared/errors/ApiError";
 import PetService from "./pet.service";
 import {CreatePetDto, PetResponse, UpdatePetDto} from "./pet.types";
+import env from "../../config/env"
 
 const petService: PetService = new PetService();
 
@@ -23,13 +24,19 @@ export default class PetController{
     }
 
     getPets = async(req: Request, res: Response)=>{
-        const {pageLimit, page} = req.params;
+        if(!req.query.pageLimit || !req.query.page) throw new ApiError(400, "Invalid Page or Page Limit")
+        
+        var pageLimit = Math.min(
+            parseInt(req.query.pageLimit as string),
+            env.constants.max_page_limit_pets
+        );
+        var page = parseInt(req.query.page as string)
 
-        if(!pageLimit || !page) throw new ApiError(400, "Invalid Page or Page Limit")
+        pageLimit = Math.min()
 
         const result = await petService.getAllPets({
-            page: parseInt(page as string),
-            pageLimit: parseInt(pageLimit as string)
+            page,
+            pageLimit
         });
 
         return res.status(200).json({

@@ -15,6 +15,12 @@ const env = {
         user: process.env.DB_USER || "",
         password: process.env.DB_PASSWORD || "",
         dialect: process.env.DB_DIALECT || ""
+    },
+    constants:{
+        max_page_limit_pets: 100,
+        max_page_limit_users: 100,
+        max_page_limit_prescriptions: 50,
+        max_page_limit_clients: 100
     }
 };
 
