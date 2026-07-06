@@ -7,9 +7,6 @@ import env from "../../config/env"
 const petService: PetService = new PetService();
 
 export default class PetController{
-    searchPets = async(req: Request, res: Response)=>{
-    }
-
     getPet = async(req: Request, res: Response) => {
         const id = req.params.id as string;
 
