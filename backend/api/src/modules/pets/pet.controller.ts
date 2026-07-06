@@ -29,8 +29,6 @@ export default class PetController{
         );
         var page = parseInt(req.query.page as string)
 
-        pageLimit = Math.min()
-
         const result = await petService.searchAllPets({
             page,
             pageLimit
