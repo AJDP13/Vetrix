@@ -31,11 +31,11 @@ public struct User: Identifiable, Codable, Sendable {
 				description: "Testng Preview Role",
 				permissions: [
 					Permission(
-						id: "users.create",
+						id: .createUsers,
 						description: "Test"
 					),
 					Permission(
-						id: "users.view",
+						id: .viewUsers,
 						description: "test"
 					)
 				],
@@ -44,17 +44,17 @@ public struct User: Identifiable, Codable, Sendable {
 		],
 		permissions: [
 			Permission(
-				id: "users.create",
+				id: .createUsers,
 				description: "Test"
 			),
 			Permission(
-				id: "users.view",
+				id: .viewUsers,
 				description: "test"
 			)
 		]
 	)
 	
-	public func hasPermission(perm_id: String) -> Bool{
+	public func hasPermission(perm_id: PermissionId) -> Bool{
 		guard self.permissions != nil else {return false} //Ensure there are perms in the object
 		
 		for permission in self.permissions! {

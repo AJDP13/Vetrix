@@ -39,13 +39,15 @@ struct UsersView: View {
 					.searchable(text: $vm.userSearchText)
 				}
 				.toolbar{
-					ToolbarItem(placement: .primaryAction){
-						Button{
-							showCreateUser.toggle()
-						} label: {
-							Image(systemName: "plus")
+					if(vm.api.appSession.user!.hasPermission(perm_id: "users.create")){
+						ToolbarItem(placement: .primaryAction){
+							Button{
+								showCreateUser.toggle()
+							} label: {
+								Image(systemName: "plus")
+							}
+							.help("Create User")
 						}
-						.help("Create User")
 					}
 					
 					ToolbarItem(placement: .primaryAction){
