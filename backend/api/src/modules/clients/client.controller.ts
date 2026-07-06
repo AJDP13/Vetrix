@@ -1,15 +1,12 @@
 import {Request, Response} from "express";
-import {ClientResponse, CreateClientDto, GetAllClientsDto, UpdateClientDto} from "./client.types";
+import {ClientResponse, CreateClientDto, SearchAllClientsDto, UpdateClientDto} from "./client.types";
 import ClientService from "./client.service";
 import ApiError from "../../shared/errors/ApiError";
+import env from "../../config/env"
 
 const clientService = new ClientService();
 
 export default class ClientController{
-    searchClients = async(req: Request, res: Response)=>{
-
-    }
-
     getClient = async(req: Request, res: Response) => {
         const id = req.params.id as string;
 
@@ -23,12 +20,21 @@ export default class ClientController{
         })
     }
 
-    getClients = async(req: Request, res: Response)=>{
-        const params: GetAllClientsDto = {
-            page: parseInt(req.params.page as string),
-            pageLimit: parseInt(req.params.pageLimit as string)
+    searchClients = async(req: Request, res: Response)=>{
+        if(!req.query.pageLimit || !req.query.page) throw new ApiError(400, "Invalid Page or Page Limit")
+        
+        var pageLimit = Math.min(
+            parseInt(req.query.pageLimit as string),
+            env.constants.max_page_limit_clients
+        );
+        var page = parseInt(req.query.page as string)
+
+        const params: SearchAllClientsDto = {
+            page,
+            pageLimit
         };
-        const result = await clientService.getAllClients(params);
+
+        const result = await clientService.searchAllClients(params);
 
         return res.status(200).json({
             success:true,

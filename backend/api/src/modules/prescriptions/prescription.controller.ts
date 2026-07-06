@@ -31,7 +31,7 @@ export default class PrescriptionController {
         
         var pageLimit = Math.min(
             parseInt(req.query.pageLimit as string),
-            env.constants.max_page_limit_pets
+            env.constants.max_page_limit_prescriptions
         );
         var page = parseInt(req.query.page as string)
 

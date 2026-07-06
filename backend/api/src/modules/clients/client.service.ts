@@ -1,7 +1,8 @@
-import {ClientResponse, CreateClientDto, GetAllClientsDto, UpdateClientDto} from "./client.types";
+import {ClientResponse, CreateClientDto, SearchAllClientsDto, UpdateClientDto} from "./client.types";
 import Client from "./client.model";
 import ApiError from "../../shared/errors/ApiError";
 import {buildClientResponse} from "./client.mapper";
+import { PaginatedResponse } from "../../shared/types/response.types";
 
 export default class ClientService{
     async createClient(data: CreateClientDto): Promise<ClientResponse>{
@@ -22,13 +23,21 @@ export default class ClientService{
         return buildClientResponse(client);
     }
 
-    async getAllClients(data: GetAllClientsDto): Promise<ClientResponse[]>{
-        const clients = await Client.findAll({
+    async searchAllClients(data: SearchAllClientsDto): Promise<PaginatedResponse<ClientResponse>>{
+        const {rows, count} = await Client.findAndCountAll({
             limit: data.pageLimit,
             offset: data.pageLimit * (data.page-1)
         });
 
-        return clients.map(buildClientResponse);
+        const totalPages = Math.ceil(count/data.pageLimit)
+        
+        return{
+            items: rows.map(buildClientResponse),
+            total: count,
+            page: Math.min(data.page, totalPages),
+            pageLimit: data.pageLimit,
+            totalPages
+        }
     }
 
     async getClient(client_id: string): Promise<ClientResponse>{

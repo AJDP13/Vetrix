@@ -24,7 +24,7 @@ router.get( //NOTE: Gets client by ID
 router.get( //NOTE: Gets all Clients
     "/",
     hasPermission(PermissionId.CLIENTS_VIEW),
-    clientController.getClients
+    clientController.searchClients
 )
 
 router.patch( //NOTE: Updates a current Client
