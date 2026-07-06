@@ -31,7 +31,7 @@ export default class PetService{
         return buildPetResponse(pet);
     }
 
-    async getAllPets(data: GetAllPetsDto): Promise<PaginatedResponse<PetResponse>>{
+    async searchAllPets(data: GetAllPetsDto): Promise<PaginatedResponse<PetResponse>>{
         const {rows, count} = await Pet.scope("withOwner").findAndCountAll({
             offset: (data.page-1) * data.pageLimit,
             limit: data.pageLimit

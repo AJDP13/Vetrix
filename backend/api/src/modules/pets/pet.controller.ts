@@ -23,7 +23,7 @@ export default class PetController{
         })
     }
 
-    getPets = async(req: Request, res: Response)=>{
+    searchPets = async(req: Request, res: Response)=>{
         if(!req.query.pageLimit || !req.query.page) throw new ApiError(400, "Invalid Page or Page Limit")
         
         var pageLimit = Math.min(
@@ -34,7 +34,7 @@ export default class PetController{
 
         pageLimit = Math.min()
 
-        const result = await petService.getAllPets({
+        const result = await petService.searchAllPets({
             page,
             pageLimit
         });
