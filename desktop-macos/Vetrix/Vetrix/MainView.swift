@@ -15,24 +15,32 @@ struct MainView: View {
 	@State private var selection: Workspace? = .dashboard
 	
 	let navLinks: [WorkspaceItem] = [
-		WorkspaceItem(id: .dashboard, title: "Dashboard", systemImage: "house"),
-		WorkspaceItem(id: .users, title: "Users", systemImage: "person.2")
+		WorkspaceItem(id: .dashboard, title: "Dashboard", systemImage: "house", requiredPermissionId: nil),
+		WorkspaceItem(id: .users, title: "Users", systemImage: "person.2", requiredPermissionId: .viewUsers)
 	]
 	
     var body: some View {
-		NavigationSplitView{
-			List(navLinks, selection: $selection){ item in
-				Label(item.title, systemImage: item.systemImage)
-					.tag(item.id)
+		if api.appSession.user != nil {
+			NavigationSplitView{
+				List(navLinks, selection: $selection){ item in
+					if item.requiredPermissionId == nil || api.appSession.user!.hasPermission(perm_id: item.requiredPermissionId!){
+						Label(item.title, systemImage: item.systemImage)
+							.tag(item.id)
+					}
+				}
+			} detail: {
+				switch selection {
+					case .dashboard:
+						Text("DashboardView")
+					case .users:
+						UsersView(api: api)
+					default:
+						Text("OtherView")
+				}
 			}
-		} detail: {
-			switch selection {
-				case .dashboard:
-					Text("DashboardView")
-				case .users:
-					UsersView(api: api)
-				default:
-					Text("OtherView")
+		}else{
+			VStack{
+				Text("An unknown error has occurred. Please restart the application")
 			}
 		}
     }

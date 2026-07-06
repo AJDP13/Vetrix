@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import VetrixCore
 
 struct WorkspaceItem: Identifiable {
 	let id: Workspace
 	let title: String
 	let systemImage: String
+	let requiredPermissionId: PermissionId?
 }
