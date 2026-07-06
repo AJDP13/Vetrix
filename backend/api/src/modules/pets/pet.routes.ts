@@ -25,7 +25,7 @@ router.get( //NOTE: Gets pet by ID
 router.get( //NOTE: Gets all Pets
     "/",
     hasPermission(PermissionId.PETS_VIEW),
-    petController.getPets
+    petController.searchPets
 )
 
 router.patch( //NOTE: Updates a current Pet

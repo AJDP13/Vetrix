@@ -52,11 +52,3 @@ export interface SearchPrescriptionsDto{
     // expiresAfter?: Date;
     // expiresBefore?: Date;
 }
-
-export interface SearchPrescriptionsResponse{
-    prescriptions: PrescriptionResponse[],
-    total: number,
-    page: number;
-    pageLimit: number;
-    total_pages: number;
-}

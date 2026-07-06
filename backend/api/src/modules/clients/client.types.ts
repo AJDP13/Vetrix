@@ -15,7 +15,7 @@ export interface ClientResponse{
     //pets: Pet[]; //FUTURE
 }
 
-export interface GetAllClientsDto{
+export interface SearchAllClientsDto{
     page: number;
     pageLimit: number;
 }
