@@ -10,6 +10,7 @@ import Prescription from "./prescription.model";
 import Pet from "../pets/pet.model";
 import {buildPrescriptionResponse} from "./prescription.mapper";
 import Client from "../clients/client.model";
+import { PaginatedResponse } from "../../shared/types/response.types";
 
 export default class PrescriptionService{
     private async getPrescriptionInternal(id: string): Promise<Prescription>{
@@ -51,7 +52,7 @@ export default class PrescriptionService{
         return buildPrescriptionResponse(prescription);
     }
 
-    async searchPrescriptions(data: SearchPrescriptionsDto):Promise<SearchPrescriptionsResponse>{
+    async searchPrescriptions(data: SearchPrescriptionsDto):Promise<PaginatedResponse<Prescription>>{
         const MAX_PAGE_LIMIT = 100;
         const pageLimit = Math.min(MAX_PAGE_LIMIT, data.pageLimit)
         const {rows, count} = await Prescription.scope("withPetAndOwner").findAndCountAll({

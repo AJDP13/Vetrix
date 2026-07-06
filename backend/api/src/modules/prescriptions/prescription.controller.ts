@@ -7,6 +7,7 @@ import {
     PrescriptionResponse,
     UpdatePrescriptionDto
 } from "./prescription.types";
+import env from "../../config/env"
 
 const prescriptionService: PrescriptionService = new PrescriptionService();
 
@@ -26,13 +27,17 @@ export default class PrescriptionController {
     }
 
     searchPrescriptions = async (req: Request, res: Response) => {
-        const {pageLimit, page} = req.query;
-
-        if (!pageLimit || !page) throw new ApiError(400, "Invalid Page or Page Limit")
+        if(!req.query.pageLimit || !req.query.page) throw new ApiError(400, "Invalid Page or Page Limit")
+        
+        var pageLimit = Math.min(
+            parseInt(req.query.pageLimit as string),
+            env.constants.max_page_limit_pets
+        );
+        var page = parseInt(req.query.page as string)
 
         const data: SearchPrescriptionsDto = {
-            pageLimit: parseInt(pageLimit as string),
-            page: parseInt(page as string)
+            pageLimit,
+            page
         };
 
         const result = await prescriptionService.searchPrescriptions(data);
