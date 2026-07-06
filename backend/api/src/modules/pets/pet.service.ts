@@ -1,5 +1,5 @@
 import ApiError from "../../shared/errors/ApiError";
-import {CreatePetDto, GetAllPetsDto, PetResponse, UpdatePetDto} from "./pet.types";
+import {CreatePetDto, SearchPetsDto, PetResponse, UpdatePetDto} from "./pet.types";
 import Pet from "./pet.model";
 import {buildPetResponse} from "./pet.mapper";
 import Client from "../clients/client.model";
@@ -31,7 +31,7 @@ export default class PetService{
         return buildPetResponse(pet);
     }
 
-    async searchAllPets(data: GetAllPetsDto): Promise<PaginatedResponse<PetResponse>>{
+    async searchAllPets(data: SearchPetsDto): Promise<PaginatedResponse<PetResponse>>{
         const {rows, count} = await Pet.scope("withOwner").findAndCountAll({
             offset: (data.page-1) * data.pageLimit,
             limit: data.pageLimit

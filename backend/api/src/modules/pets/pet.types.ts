@@ -21,7 +21,7 @@ export interface UpdatePetDto{
     dob?: string;
 }
 
-export interface GetAllPetsDto{
+export interface SearchPetsDto{
     page: number;
     pageLimit: number;
 }
