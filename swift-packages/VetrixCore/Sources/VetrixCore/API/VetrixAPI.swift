@@ -12,6 +12,8 @@ public final class VetrixAPI {
 
 	public let user: UserService
 	public let auth: AuthenticationService
+	public let client: ClientService
+	public let pet: PetService
 
 	public let appSession: SessionManager
 	public let errorManager: ErrorManager
@@ -30,5 +32,7 @@ public final class VetrixAPI {
 
 		self.user = UserService(http: http)
 		self.auth = AuthenticationService(http: http, appSession: appSession)
+		self.client = ClientService(http: http)
+		self.pet = PetService(http: http)
 	}
 }
