@@ -10,6 +10,7 @@ import Foundation
 enum Workspace: String, Hashable, CaseIterable {
 	case dashboard
 	case users
+	case prescriptions
 	case clients
 	case pets
 	case inventory
