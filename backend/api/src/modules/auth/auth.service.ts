@@ -64,7 +64,7 @@ export default class AuthService {
     }
 
     async login(data: LoginDto): Promise<LoginResponse>{
-        const user = await User.findOne({
+        const user = await User.scope("withRoles").findOne({
             where:{
                 username: data.username
             }
@@ -101,7 +101,7 @@ export default class AuthService {
     }
 
     async me(id: string): Promise<UserResponse>{
-        const user = await User.findByPk(id);
+        const user = await User.scope("withRoles").findByPk(id);
 
         if(!user) throw new ApiError(404, "User not found");
 
