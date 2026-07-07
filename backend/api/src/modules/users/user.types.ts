@@ -1,3 +1,5 @@
+import { PermissionResponse, RoleResponse } from "../rbac/rbac.types";
+
 export interface UserResponse {
     id:string;
     username: string;
@@ -5,6 +7,8 @@ export interface UserResponse {
     first_name: string;
     last_name: string;
     is_active: boolean;
+    roles: RoleResponse[]
+    permissions: PermissionResponse[]
 }
 
 export interface SearchUsersParams{

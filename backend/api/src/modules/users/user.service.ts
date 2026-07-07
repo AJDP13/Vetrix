@@ -11,7 +11,7 @@ export default class UserService {
     private tokenService: TokenService = new TokenService();
 
     async getUserById (id: string): Promise<UserResponse | null>{
-        const user = await User.findByPk(id);
+        const user = await User.scope("withRoles").findByPk(id);
         if(!user) return null
 
         return buildUserResponse(user);
