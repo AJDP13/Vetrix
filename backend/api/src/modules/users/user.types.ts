@@ -1,3 +1,6 @@
+import Role from "../rbac/role.model"
+import Permission from "../rbac/permission.model"
+
 export interface UserResponse {
     id:string;
     username: string;
@@ -5,6 +8,8 @@ export interface UserResponse {
     first_name: string;
     last_name: string;
     is_active: boolean;
+    roles: Role[]
+    permissions: Permission[]
 }
 
 export interface SearchUsersParams{
