@@ -78,15 +78,10 @@ User.init({
             withRoles: () => ({
             include: [{
                 association: "roles",
-            }],
-            withRolesAndPermissions: ()=> ({
                 include:[{
-                    association: "roles",
-                    include:[{
-                        association: "permissions"
-                    }]
+                    association: "permissions"
                 }]
-            })
+            }]
         })
         }
     });
