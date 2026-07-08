@@ -35,6 +35,8 @@ struct MainView: View {
 						Text("DashboardView")
 					case .users:
 						UsersView(api: api)
+					case .prescriptions:
+						PrescriptionsView(api: api)
 					default:
 						Text("OtherView")
 				}

@@ -31,6 +31,7 @@ struct LoginView: View {
 				}
 			}
 			.disabled(!loginVM.canLogin)
+			.keyboardShortcut(.defaultAction)
 			
 			if let error = loginVM.errorMessage{
 				Text(error)

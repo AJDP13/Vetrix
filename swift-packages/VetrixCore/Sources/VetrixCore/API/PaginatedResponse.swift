@@ -8,8 +8,9 @@
 import Foundation
 
 public struct PaginatedResponse<T: Decodable>: Decodable {
-	let items: [T]
-	let page: Int
-	let pageSize: Int
-	let total: Int
+	public let items: [T]
+	public let page: Int
+	public let pageLimit: Int
+	public let total: Int
+	public let totalPages: Int
 }

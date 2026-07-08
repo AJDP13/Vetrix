@@ -2,6 +2,10 @@ import Prescription from "./prescription.model";
 import {PrescriptionResponse} from "./prescription.types";
 import {buildPetResponse} from "../pets/pet.mapper";
 
+function formatDate(date: Date): string {
+    return date.toISOString().replace(/\.\d{3}Z$/, "Z");
+}
+
 export function buildPrescriptionResponse(p: Prescription): PrescriptionResponse{
     const data: PrescriptionResponse = {
         id: p.id,
