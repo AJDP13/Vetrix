@@ -10,7 +10,11 @@ import VetrixCore
 
 @Observable
 class PagedListViewModel<T>{
-	let pagination = PaginationState()
+	let pagination: PaginationState
+	
+	init(_ pagination: PaginationState = PaginationState()){
+		self.pagination = pagination
+	}
 	
 	var items: [T] = []
 	
@@ -21,19 +25,21 @@ class PagedListViewModel<T>{
 		fatalError("Override")
 	}
 	
+	private func load(page: Int) async throws {
+		try await reload()
+	}
+	
 	func nextPage() async throws {
 		guard pagination.hasNextPage else {return}
 		
+		try await self.load(page: self.pagination.page+1)
 		pagination.page += 1
-		
-		try await reload()
 	}
 	
 	func previousPage() async throws {
 		guard pagination.hasPreviousPage else {return}
 		
+		try await self.load(page: self.pagination.page-1)
 		pagination.page -= 1
-		
-		try await reload()
 	}
 }

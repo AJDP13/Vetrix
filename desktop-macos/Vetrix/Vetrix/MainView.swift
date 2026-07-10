@@ -29,6 +29,8 @@ struct MainView: View {
 							.tag(item.id)
 					}
 				}
+				Spacer()
+				Text("Welcome, \(api.appSession.user!.firstName)")
 			} detail: {
 				switch selection {
 					case .dashboard:

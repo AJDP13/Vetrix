@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Pet: Codable, Sendable {
+public struct Pet: Codable, Sendable, Identifiable {
 	public let id: UUID
 	public let name: String
 	public let dob: Date

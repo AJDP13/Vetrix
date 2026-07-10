@@ -14,6 +14,10 @@ final class PrescriptionsViewModel: PagedListViewModel<Prescription>{
 	
 	var selectedPrescriptions = Set<Prescription.ID>()
 	
+	var pageLimit: Int = 50
+	
+	var showCreatePrescriptionWizard: Bool = false
+	
 	private let api: VetrixAPI
 	
 	init(api: VetrixAPI){
@@ -21,6 +25,8 @@ final class PrescriptionsViewModel: PagedListViewModel<Prescription>{
 	}
 	
 	override func reload() async {
+		//Load Page Limit Variable
+		pagination.pageLimit = pageLimit
 		guard !pagination.isLoading else {return}
 		
 		isLoading = true

@@ -7,13 +7,15 @@
 
 import Foundation
 
-public struct Client: Codable, Sendable {
+public struct Client: Codable, Sendable, Identifiable {
 	public let id: UUID
 	public let firstName: String
 	public let lastName: String
 	public let email: String
 	public let phone: String
-	public var fullName: String {firstName + " " + lastName}
+	public var fullName: String {
+		firstName + " " + lastName
+	}
 	
 	public let pets: [Pet]?
 	

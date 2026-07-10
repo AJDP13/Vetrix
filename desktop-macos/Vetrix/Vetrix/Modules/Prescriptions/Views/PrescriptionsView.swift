@@ -10,15 +10,20 @@ import VetrixCore
 
 struct PrescriptionsView: View{
 	@State private var vm: PrescriptionsViewModel
+	@State private var createPrescriptionVM: CreatePrescriptionViewModel
 	
 	init(api: VetrixAPI){
 		self.vm = PrescriptionsViewModel(api: api)
+		self.createPrescriptionVM = CreatePrescriptionViewModel(api: api)
 	}
 	
 	var body: some View{
 		//Insert paginated list of Prescriptions
 		PagedView(
 			pagination: vm.pagination,
+			isLoading: vm.isLoading,
+			next:{try? await vm.nextPage()},
+			previous: {try? await vm.previousPage()},
 		){
 			Table(
 				vm.prescriptions,
@@ -53,5 +58,26 @@ struct PrescriptionsView: View{
 		.task{
 			await vm.reload()
 		}
+		.toolbar{
+			ToolbarItem(placement: .primaryAction){
+				Button{
+					vm.showCreatePrescriptionWizard.toggle()
+				} label: {
+					Image(systemName: "plus")
+				}
+				.help("Create Prescription")
+			}
+		}
+		.sheet(isPresented: $vm.showCreatePrescriptionWizard){
+			CreatePrescriptionWorkflow(vm: createPrescriptionVM)
+				.frame(minWidth: 700, minHeight: 500)
+		}
 	}
+}
+
+#Preview {
+	let baseUrl = URL(string: "http://127.0.0.1:3000")!
+	let config = APIConfiguration(baseURL: baseUrl)
+	let api = VetrixAPI(configuration: config)
+	PrescriptionsView(api: api)
 }

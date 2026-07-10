@@ -41,7 +41,7 @@ public enum PermissionId: String, CaseIterable, Codable, Sendable {
 	case deletePrescriptions = "prescriptions.delete"
 }
 
-public struct Permission: Codable, Sendable{
+public struct Permission: Codable, Sendable, Identifiable {
 	public let id: PermissionId
 	public let description: String
 }

@@ -11,6 +11,10 @@ import SwiftUI
 struct PagedView<Content:View>: View{
 	
 	@Bindable var pagination: PaginationState
+	let isLoading: Bool
+	let next: () async -> Void
+	let previous: () async -> Void
+	
 	@ViewBuilder
 	let content: () -> Content
 	
@@ -19,7 +23,18 @@ struct PagedView<Content:View>: View{
 			//MARK: Header and Filters
 			
 			//MARK: Table
-			content()
+			Spacer()
+			
+			if isLoading{
+				VStack{
+					ProgressView()
+					Text("Loading...")
+				}
+			}else{
+				content()
+			}
+			
+			Spacer()
 			
 			//MARK: Footer/PaginationControls
 			HStack{
@@ -27,14 +42,18 @@ struct PagedView<Content:View>: View{
 				
 				ControlGroup{
 					Button("Prev"){
-						
+						Task{
+							await previous()
+						}
 					}
-					.disabled(!pagination.hasPreviousPage)
+					.disabled(!pagination.hasPreviousPage || isLoading)
 					
 					Button("Next"){
-						
+						Task{
+							await next()
+						}
 					}
-					.disabled(!pagination.hasNextPage)
+					.disabled(!pagination.hasNextPage || isLoading)
 				}
 			}
 		}
