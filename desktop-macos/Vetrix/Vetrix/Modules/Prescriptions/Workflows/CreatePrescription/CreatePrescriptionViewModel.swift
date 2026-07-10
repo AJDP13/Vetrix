@@ -74,7 +74,8 @@ final class CreatePrescriptionViewModel{
 	var prescription: DraftPrescription
 	
 	//MARK: Review Prescription
-	
+	var createdPrescription: Prescription?
+	var creationSuccess: Bool?
 	
 	var currentStep: CreatePrescriptionStep = .selectPet
 	
@@ -135,15 +136,28 @@ final class CreatePrescriptionViewModel{
 	}
 	
 	func createPrescription() async {
+		prescription.pet = selectedPet
+		
 		self.errorMessage = ""
 		guard selectedPet != nil && selectedPetId != nil else {
 			errorMessage = "Ensure Pet details are properly selected"
 			return
 		}
 		
+		isLoading = true
+		
+		defer{
+			isLoading = false
+		}
+		
 		do{
-		}catch{
+			createdPrescription = try await api.prescription.create(pet_id: prescription.pet!.id, prescribed_at: prescription.prescribedAt, expires_at: prescription.expiresAt, max_repeats: prescription.maxRepeats, repeat_interval_day: prescription.repeatIntervalDays, prescribed_by: prescription.prescribedBy, prescribing_practice: prescription.prescribingPractice, notes: prescription.notes)
 			
+			creationSuccess = true
+		}catch let error as APIError{
+			errorMessage = error.displayMessage
+		} catch{
+			errorMessage = error.localizedDescription
 		}
 	}
 	

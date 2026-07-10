@@ -24,8 +24,8 @@ public final class PrescriptionService{
 		prescribing_practice: String?,
 		notes: String,
 		state: PrescriptionState = .active
-	) async throws -> PrescriptionResponse{
-		let response = try await http.send(method: .post, path: "/prescriptions", response: PrescriptionResponse.self
+	) async throws -> Prescription{
+		let response = try await http.send(method: .post, path: "/prescriptions", response: Prescription.self
 		)
 		
 		return response
@@ -56,18 +56,4 @@ private struct CreatePrescriptionRequest: Encodable, Sendable {
 }
 
 private struct UpdatePetRequest: Encodable, Sendable {
-}
-
-public struct PrescriptionResponse: Decodable, Sendable {
-	let id: UUID
-	let pet: PetResponse
-	let prescribedAt: Date
-	let expiresAt: Date
-	let maxRepeats: Int
-	let repeatIntervalDays: Int
-	let prescribedBy: String
-	let prescribingPractice: String
-	let notes: String
-	let updatedAt: Date
-	let state: PrescriptionState
 }

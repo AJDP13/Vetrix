@@ -18,6 +18,14 @@ struct ReviewStep: View{
 		
 		if(vm.prescription.pet == nil){
 			Text("Please return to the previous step and ensure all details have been filled in correctly")
+		}else if vm.isLoading{
+			ProgressView()
+				.progressViewStyle(.circular)
+			Text("Creating Prescription...")
+		}else if let success = vm.creationSuccess {
+			Text("Successfully Created Prescription")
+			Text("ID: \(vm.createdPrescription!.id)")
+				.font(.caption)
 		}else{
 			VStack{
 				Text("Step 3: Prescription Review")

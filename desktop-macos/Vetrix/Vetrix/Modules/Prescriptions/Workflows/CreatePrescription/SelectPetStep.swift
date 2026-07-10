@@ -57,7 +57,7 @@ struct SelectPetStep: View{
 				}else{
 					Table(
 						vm.petResults,
-						selection: $vm.selectedPetId
+						selection: $vm.selectedPetId,
 					){
 						TableColumn("ID"){ pet in
 							Text(pet.id.uuidString.lowercased())
