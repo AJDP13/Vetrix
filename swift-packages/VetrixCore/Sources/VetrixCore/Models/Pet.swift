@@ -7,11 +7,13 @@
 
 import Foundation
 
-public struct Pet: Codable, Sendable {
+public struct Pet: Codable, Sendable, Identifiable {
 	public let id: UUID
 	public let name: String
 	public let dob: Date
 	public let ageString: String
 	
 	public let owner: Client
+	
+	public static let preview = Pet(id: UUID(), name: "Pet", dob: Date(), ageString: "12 Years 2 Days", owner: .preview)
 }

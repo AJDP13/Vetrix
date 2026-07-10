@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-public final class SessionManager{
+public final class SessionManager {
 	public var accessToken: String?
 	public var refreshToken: String?
 	public var expiry: Date?

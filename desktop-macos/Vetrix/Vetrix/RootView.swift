@@ -15,7 +15,7 @@ struct RootView: View {
 		Group{
 			if !api.appSession.isAuthenticated {
 				LoginView(api: api)
-			}else if let user = api.appSession.user {
+			}else if let _ = api.appSession.user {
 				MainView(api: api)
 			}else{
 				ProgressView("Loading Session...")

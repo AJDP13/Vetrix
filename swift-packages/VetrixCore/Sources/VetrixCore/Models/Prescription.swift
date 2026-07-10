@@ -13,7 +13,7 @@ public enum PrescriptionState: String, Codable, Sendable {
 	case void = "void"
 }
 
-public struct Prescription: Codable, Sendable {
+public struct Prescription: Identifiable, Codable, Sendable {
 	public let id: UUID
 	public let pet: Pet
 	public let prescribedAt: Date
@@ -25,4 +25,7 @@ public struct Prescription: Codable, Sendable {
 	public let notes: String
 	public let updatedAt: Date
 	public let state: PrescriptionState
+	
+	
+	public static let preview = Prescription(id: UUID(), pet: .preview, prescribedAt: Date(), expiresAt: Date(), maxRepeats: 4, repeatIntervalDays: 30, prescribedBy: "Arun", prescribingPractice: "Aspen Vets Ltd", notes: "No Notes", updatedAt: Date(), state: .active)
 }

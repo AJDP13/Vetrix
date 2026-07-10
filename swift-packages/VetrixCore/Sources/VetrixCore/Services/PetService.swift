@@ -18,28 +18,28 @@ public final class PetService{
 		name: String,
 		date_of_birth: Date,
 		owner: Client
-	) async throws -> User {
+	) async throws -> Pet {
 		let request: CreatePetRequest = CreatePetRequest(
 			name: name,
 			dob: date_of_birth,
 			owner_id: owner.id
 		)
 		
-		return try await http.send(method: .post, path: "/users", body: request, response: User.self)
+		return try await http.send(method: .post, path: "/pets", body: request, response: Pet.self)
 	}
 	
 	public func get(
 		id: UUID
-	) async throws -> User{
-		let response = try await http.send(method: .get, path: "/users/\(id)", response: User.self)
+	) async throws -> Pet{
+		let response = try await http.send(method: .get, path: "/pets/\(id)", response: Pet.self)
 		return response
 	}
 	
-	public func getAll() async throws -> [User] {
+	public func getAll(searchQuery: String, page: Int, pageLimit: Int) async throws ->  PaginatedResponse<Pet> {
 		return try await http.send(
 			method: .get,
-			path: "/users",
-			response: [User].self
+			path: "/pets?page=\(page)&pageLimit=\(pageLimit)",
+			response:  PaginatedResponse<Pet>.self
 		)
 	}
 }
@@ -55,7 +55,7 @@ private struct CreatePetRequest: Encodable, Sendable {
 private struct UpdatePetRequest: Encodable, Sendable {
 }
 
-private struct PetResponse: Decodable, Sendable {
+struct PetResponse: Decodable, Sendable {
 	let id: UUID
 	let name: String
 	let dob: Date

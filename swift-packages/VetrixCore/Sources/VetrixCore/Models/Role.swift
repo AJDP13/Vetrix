@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Role: Codable, Sendable{
+public struct Role: Codable, Sendable, Identifiable {
 	public let id: UUID
 	public let name: String
 	public let description: String

@@ -12,6 +12,4 @@ import VetrixCore
 @Observable
 public final class MainViewModel{
 	var destination: Workspace = .dashboard
-	
-	
 }
