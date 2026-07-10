@@ -17,6 +17,10 @@ public struct User: Identifiable, Codable, Sendable {
 	public let roles: [Role]?
 	public let permissions: [Permission]?
 	
+	public var fullName: String {
+		return firstName + " " + lastName
+	}
+	
 	public static let preview = User(
 		id: UUID(),
 		username: "jdoe",

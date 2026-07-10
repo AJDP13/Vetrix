@@ -9,10 +9,12 @@ import SwiftUI
 import VetrixCore
 
 struct PrescriptionsView: View{
+	private var api: VetrixAPI
 	@State private var vm: PrescriptionsViewModel
 	@State private var createPrescriptionVM: CreatePrescriptionViewModel
 	
 	init(api: VetrixAPI){
+		self.api = api
 		self.vm = PrescriptionsViewModel(api: api)
 		self.createPrescriptionVM = CreatePrescriptionViewModel(api: api)
 	}
@@ -71,6 +73,10 @@ struct PrescriptionsView: View{
 		.sheet(isPresented: $vm.showCreatePrescriptionWizard){
 			CreatePrescriptionWorkflow(vm: createPrescriptionVM)
 				.frame(minWidth: 700, minHeight: 500)
+				.interactiveDismissDisabled()
+				.onDisappear{
+					self.createPrescriptionVM = CreatePrescriptionViewModel(api: api)
+				}
 		}
 	}
 }

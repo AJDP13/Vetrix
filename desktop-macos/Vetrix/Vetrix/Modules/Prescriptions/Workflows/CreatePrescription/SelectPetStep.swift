@@ -29,9 +29,6 @@ struct SelectPetStep: View{
 						.font(.caption)
 				}
 				
-				
-				Spacer()
-				
 				Button("Search"){
 					//Load pet results by using VM function
 					Task{
@@ -44,7 +41,11 @@ struct SelectPetStep: View{
 			Spacer()
 			
 			Group{
-				if vm.petResults.isEmpty {
+				if vm.isLoading{
+					ProgressView()
+						.progressViewStyle(.circular)
+					Text("Searching Pet Database")
+				}else if vm.petResults.isEmpty {
 					ZStack{
 						Image(systemName: "sparkle.magnifyingglass")
 							.resizable()
@@ -54,7 +55,10 @@ struct SelectPetStep: View{
 						Text("No Pets found. Please refine Search criteria")
 					}
 				}else{
-					Table(vm.petResults){
+					Table(
+						vm.petResults,
+						selection: $vm.selectedPetId
+					){
 						TableColumn("ID"){ pet in
 							Text(pet.id.uuidString.lowercased())
 						}

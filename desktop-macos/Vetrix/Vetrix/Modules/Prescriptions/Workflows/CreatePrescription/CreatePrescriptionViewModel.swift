@@ -58,14 +58,23 @@ final class CreatePrescriptionViewModel{
 	var currentProgress: Float {
 		return Float(currentStep.index) / Float(CreatePrescriptionStep.totalSteps-1)
 	}
+	var showDismissConfirmation: Bool = false
 	
 	//MARK: SelectPet Step
+	var selectedPetId: Pet.ID?
 	var petQuery: String = ""
 	var petDOB: Date?
 	var petResults: [Pet] = []
+	var selectedPet: Pet? {
+		guard let id = selectedPetId else { return nil }
+		return petResults.first { $0.id == id }
+	}
 	
 	//MARK: Prescription Details
 	var prescription: DraftPrescription
+	
+	//MARK: Review Prescription
+	
 	
 	var currentStep: CreatePrescriptionStep = .selectPet
 	
@@ -74,7 +83,7 @@ final class CreatePrescriptionViewModel{
 	var canAdvanceToNextStep: Bool {
 		switch(currentStep){
 			case .selectPet:
-				return prescription.pet != nil
+				return selectedPetId != nil
 			case .editPrescription:
 				return prescription.expiresAt != nil && prescription.maxRepeats != nil && prescription.prescribedAt != nil
 			default:
@@ -92,6 +101,7 @@ final class CreatePrescriptionViewModel{
 		guard !self.isLoading else {return}
 		
 		self.isLoading = true
+		selectedPetId = nil
 		
 		defer{
 			self.isLoading = false
@@ -114,14 +124,27 @@ final class CreatePrescriptionViewModel{
 	
 	func previousStep() {
 		guard currentStep.previous != nil else {return}
-		
+		self.errorMessage = ""
 		currentStep = currentStep.previous!
 	}
 	
 	func nextStep() {
 		guard currentStep.next != nil else {return}
-		
+		self.errorMessage = ""
 		currentStep = currentStep.next!
+	}
+	
+	func createPrescription() async {
+		self.errorMessage = ""
+		guard selectedPet != nil && selectedPetId != nil else {
+			errorMessage = "Ensure Pet details are properly selected"
+			return
+		}
+		
+		do{
+		}catch{
+			
+		}
 	}
 	
 }

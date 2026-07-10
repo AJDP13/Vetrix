@@ -10,16 +10,51 @@ import VetrixCore
 
 struct CreatePrescriptionWorkflow: View{
 	@Bindable var vm: CreatePrescriptionViewModel
+	@Environment(\.dismiss) private var dismiss
+
 	
 	var body: some View{
 		//MARK: Header
+		VStack{
+			Text("Create Prescription Wizard")
+				.font(.title)
+			
+			HStack{
+				Text(vm.api.appSession.user?.fullName ?? "Full Name")
+					.font(.caption)
+					.foregroundStyle(.gray)
+				
+				Divider()
+					.frame(height: 10)
+				
+				Text(vm.api.appSession.user?.username ?? "Username")
+					.font(.caption)
+					.foregroundStyle(.gray)
+			}
+			
+			
+			
+//			HStack{
+//				Text("Selected Pet: \(vm.selectedPet != nil ? vm.selectedPet!.name : "None")")
+//					.font(.caption)
+//				
+//				Spacer()
+//				
+//				Text("Owner: \(vm.selectedPet != nil ? vm.selectedPet!.owner.fullName : "N/A")")
+//			}
+			
+			Divider()
+		}
+		.padding(.top)
 		
 		//MARK: Content
 		switch(vm.currentStep){
 			case .selectPet:
 				SelectPetStep(vm: vm)
-			default:
-				Text("Other Step")
+			case .editPrescription:
+				EditPrescriptionStep(vm: vm)
+			case .review:
+				ReviewStep(vm: vm)
 		}
 		
 		Spacer()
@@ -32,7 +67,7 @@ struct CreatePrescriptionWorkflow: View{
 			
 			HStack{
 				Button("Cancel") {
-					
+					vm.showDismissConfirmation.toggle()
 				}
 				
 				Spacer()
@@ -51,10 +86,23 @@ struct CreatePrescriptionWorkflow: View{
 					vm.nextStep()
 				}
 				.keyboardShortcut(.defaultAction)
-				.disabled(vm.canAdvanceToNextStep)
+				.disabled(!vm.canAdvanceToNextStep)
 			}
 			.padding()
 			
+		}
+		.confirmationDialog(
+			"Discard this prescription?",
+			isPresented: $vm.showDismissConfirmation,
+			titleVisibility: .visible
+		) {
+			Button("Discard Changes", role: .destructive) {
+				dismiss()
+			}
+
+			Button("Continue Editing", role: .cancel) { }
+		} message: {
+			Text("Any unsaved changes will be lost.")
 		}
 	}
 }

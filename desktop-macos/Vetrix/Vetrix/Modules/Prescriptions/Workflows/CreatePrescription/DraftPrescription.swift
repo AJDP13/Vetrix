@@ -11,12 +11,12 @@ import VetrixCore
 @Observable
 final class DraftPrescription{
 	var pet: Pet?
-	var prescribedAt: Date?
-	var expiresAt: Date?
-	var maxRepeats: Int?
-	var repeatIntervalDays: Int?
-	var prescribedBy: String?
-	var prescribingPractice: String?
+	var prescribedAt: Date = Date()
+	var expiresAt: Date = Calendar.current.date(byAdding: .month, value: 6, to: Date())!
+	var maxRepeats: Int = 0
+	var repeatIntervalDays: Int = 30
+	var prescribedBy: String = ""
+	var prescribingPractice: String = ""
 	var notes: String = ""
-	var state: PrescriptionState = .draft
+	var state: PrescriptionState = .active
 }
