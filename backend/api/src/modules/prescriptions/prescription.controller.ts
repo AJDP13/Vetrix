@@ -18,7 +18,7 @@ export default class PrescriptionController {
 
         if (!id) throw new ApiError(400, "Prescription ID required");
 
-        const result: PrescriptionResponse = await prescriptionService.getPrescription(id);
+        const result: PrescriptionResponse = await prescriptionService.getPrescription(id.toLowerCase());
 
         return res.status(200).json({
             success:true,
@@ -64,7 +64,9 @@ export default class PrescriptionController {
     }
 
     createPrescription = async (req: Request, res: Response) => {
-        const data: CreatePrescriptionDto = req.body;
+        var data: CreatePrescriptionDto = req.body;
+
+        data.pet_id = data.pet_id.toLowerCase()
 
         const result: PrescriptionResponse = await prescriptionService.createPrescription(data);
 
