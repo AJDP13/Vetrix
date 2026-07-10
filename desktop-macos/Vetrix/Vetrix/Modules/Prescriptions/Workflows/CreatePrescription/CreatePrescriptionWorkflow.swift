@@ -64,37 +64,46 @@ struct CreatePrescriptionWorkflow: View{
 			ProgressView(value: vm.currentProgress)
 				.progressViewStyle(.linear)
 				.padding(.horizontal)
+				.foregroundStyle(
+					vm.currentProgress == 1 && (vm.createdPrescription != nil) ? .green : .blue
+				)
 			
-			HStack{
-				Button("Cancel") {
-					vm.showDismissConfirmation.toggle()
+			if vm.createdPrescription != nil{
+				Button("Done"){
+					dismiss()
 				}
-				
-				Spacer()
-				
-				Text("Step \(vm.currentStep.index + 1) of \(CreatePrescriptionStep.totalSteps)")
-					.foregroundStyle(.secondary)
-				
-				Spacer()
-				
-				Button("Back") {
-					vm.previousStep()
-				}
-				.disabled(vm.currentStep.previous == nil || vm.isLoading)
-				
-				Button(vm.currentStep.next == nil ? "Create" : "Next") {
-					if vm.currentStep.next == nil {
-						Task {
-							await vm.createPrescription()
-						}
-					} else {
-						vm.nextStep()
+			}else{
+				HStack{
+					Button("Cancel") {
+						vm.showDismissConfirmation.toggle()
 					}
+					
+					Spacer()
+					
+					Text("Step \(vm.currentStep.index + 1) of \(CreatePrescriptionStep.totalSteps)")
+						.foregroundStyle(.secondary)
+					
+					Spacer()
+					
+					Button("Back") {
+						vm.previousStep()
+					}
+					.disabled(vm.currentStep.previous == nil || vm.isLoading)
+					
+					Button(vm.currentStep.next == nil ? "Create" : "Next") {
+						if vm.currentStep.next == nil {
+							Task {
+								await vm.createPrescription()
+							}
+						} else {
+							vm.nextStep()
+						}
+					}
+					.keyboardShortcut(.defaultAction)
+					.disabled(!vm.canAdvanceToNextStep || vm.isLoading)
 				}
-				.keyboardShortcut(.defaultAction)
-				.disabled(!vm.canAdvanceToNextStep || vm.isLoading)
+				.padding()
 			}
-			.padding()
 			
 		}
 		.confirmationDialog(
