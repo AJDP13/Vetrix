@@ -25,8 +25,19 @@ public final class PrescriptionService{
 		notes: String,
 		state: PrescriptionState = .active
 	) async throws -> Prescription{
-		let response = try await http.send(method: .post, path: "/prescriptions", response: Prescription.self
+		let request: CreatePrescriptionRequest = CreatePrescriptionRequest(
+			pet_id: pet_id,
+			prescribed_at: prescribed_at,
+			expires_at: expires_at,
+			max_repeats: max_repeats,
+			repeat_interval_days: repeat_interval_day,
+			prescribed_by: prescribed_by,
+			prescribing_practice: prescribing_practice,
+			notes: notes,
+			state: state
 		)
+		
+		let response = try await http.send(method: .post, path: "/prescriptions", body: request, response: Prescription.self)
 		
 		return response
 	}

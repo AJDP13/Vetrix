@@ -56,6 +56,7 @@ struct ReviewStep: View{
 				Text("Please ensure all prescription details are correct and then press create")
 					.font(.caption)
 			}
+			.padding()
 		}
 	}
 }

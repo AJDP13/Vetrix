@@ -80,13 +80,19 @@ struct CreatePrescriptionWorkflow: View{
 				Button("Back") {
 					vm.previousStep()
 				}
-				.disabled(vm.currentStep.previous == nil)
+				.disabled(vm.currentStep.previous == nil || vm.isLoading)
 				
 				Button(vm.currentStep.next == nil ? "Create" : "Next") {
-					vm.nextStep()
+					if vm.currentStep.next == nil {
+						Task {
+							await vm.createPrescription()
+						}
+					} else {
+						vm.nextStep()
+					}
 				}
 				.keyboardShortcut(.defaultAction)
-				.disabled(!vm.canAdvanceToNextStep)
+				.disabled(!vm.canAdvanceToNextStep || vm.isLoading)
 			}
 			.padding()
 			

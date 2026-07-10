@@ -61,7 +61,11 @@ final class CreatePrescriptionViewModel{
 	var showDismissConfirmation: Bool = false
 	
 	//MARK: SelectPet Step
-	var selectedPetId: Pet.ID?
+	var selectedPetId: Pet.ID?{
+		didSet {
+			prescription.pet = petResults.first { $0.id == selectedPetId }
+		}
+	}
 	var petQuery: String = ""
 	var petDOB: Date?
 	var petResults: [Pet] = []
