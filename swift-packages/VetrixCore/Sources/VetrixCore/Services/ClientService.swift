@@ -27,7 +27,7 @@ private struct CreateClientRequest: Encodable, Sendable {
 private struct UpdateClientRequest: Encodable, Sendable {
 }
 
-public struct ClientResponse: Decodable, Sendable {
+struct ClientResponse: Decodable, Sendable {
 	let id: UUID
 	let first_name: String
 	let last_name: String

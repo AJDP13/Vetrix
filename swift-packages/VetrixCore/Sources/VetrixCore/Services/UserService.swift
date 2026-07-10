@@ -68,7 +68,7 @@ private struct UpdateUserRequest: Encodable, Sendable {
 	let isActive: String?
 }
 
-private struct UserResponse: Decodable, Sendable {
+struct UserResponse: Decodable, Sendable {
 	let id: UUID
 	let firstName: String
 	let lastName: String

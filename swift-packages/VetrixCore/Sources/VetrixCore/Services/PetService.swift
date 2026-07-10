@@ -55,7 +55,7 @@ private struct CreatePetRequest: Encodable, Sendable {
 private struct UpdatePetRequest: Encodable, Sendable {
 }
 
-private struct PetResponse: Decodable, Sendable {
+struct PetResponse: Decodable, Sendable {
 	let id: UUID
 	let name: String
 	let dob: Date

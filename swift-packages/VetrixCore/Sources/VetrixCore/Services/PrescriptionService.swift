@@ -14,6 +14,23 @@ public final class PrescriptionService{
 		self.http = http
 	}
 	
+	public func create(
+		pet_id: UUID,
+		prescribed_at: Date,
+		expires_at: Date,
+		max_repeats: Int,
+		repeat_interval_day: Int,
+		prescribed_by: String?,
+		prescribing_practice: String?,
+		notes: String,
+		state: PrescriptionState = .active
+	) async throws -> PrescriptionResponse{
+		let response = try await http.send(method: .post, path: "/prescriptions", response: PrescriptionResponse.self
+		)
+		
+		return response
+	}
+	
 	public func getAll(
 		page: Int = 1,
 		pageLimit: Int = 10
@@ -26,20 +43,31 @@ public final class PrescriptionService{
 
 //Request Structs
 
-private struct CreatePetRequest: Encodable, Sendable {
-	let name: String
-	let dob: Date
-	let owner_id: UUID
+private struct CreatePrescriptionRequest: Encodable, Sendable {
+	let pet_id: UUID
+	let prescribed_at: Date
+	let expires_at: Date
+	let max_repeats: Int
+	let repeat_interval_days: Int
+	let prescribed_by: String?
+	let prescribing_practice: String?
+	let notes: String
+	let state: PrescriptionState
 }
 
 private struct UpdatePetRequest: Encodable, Sendable {
 }
 
-private struct PetResponse: Decodable, Sendable {
+public struct PrescriptionResponse: Decodable, Sendable {
 	let id: UUID
-	let name: String
-	let dob: Date
-	let age_string: String
-	
-	let owner: ClientResponse
+	let pet: PetResponse
+	let prescribedAt: Date
+	let expiresAt: Date
+	let maxRepeats: Int
+	let repeatIntervalDays: Int
+	let prescribedBy: String
+	let prescribingPractice: String
+	let notes: String
+	let updatedAt: Date
+	let state: PrescriptionState
 }
