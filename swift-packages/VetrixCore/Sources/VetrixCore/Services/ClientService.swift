@@ -13,6 +13,21 @@ public final class ClientService{
 	init(http: HTTPClient){
 		self.http = http
 	}
+	
+	public func create(
+		
+	) async throws -> Client {
+		return .preview
+	}
+	
+	public func getAll(
+		page: Int = 1,
+		pageLimit: Int = 10
+	) async throws -> PaginatedResponse<Client>{
+		let response = try await http.send(method: .get, path: "/clients/?page=\(page)&pageLimit=\(pageLimit)", response: PaginatedResponse<Client>.self)
+		
+		return response
+	}
 }
 
 //Request Structs

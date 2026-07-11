@@ -17,7 +17,8 @@ struct MainView: View {
 	let navLinks: [WorkspaceItem] = [
 		WorkspaceItem(id: .dashboard, title: "Dashboard", systemImage: "house", requiredPermissionId: nil),
 		WorkspaceItem(id: .users, title: "Users", systemImage: "person.2", requiredPermissionId: .viewUsers),
-		WorkspaceItem(id: .prescriptions, title: "Prescriptions", systemImage: "text.document", requiredPermissionId: .viewPrescriptions)
+		WorkspaceItem(id: .prescriptions, title: "Prescriptions", systemImage: "text.document", requiredPermissionId: .viewPrescriptions),
+		WorkspaceItem(id: .clients, title: "Clients", systemImage: "user.fill", requiredPermissionId: .viewClients)
 	]
 	
     var body: some View {
@@ -39,6 +40,8 @@ struct MainView: View {
 						UsersView(api: api)
 					case .prescriptions:
 						PrescriptionsView(api: api)
+					case .clients:
+						ClientsView(api:api)
 					default:
 						Text("OtherView")
 				}
