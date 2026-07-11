@@ -18,6 +18,8 @@ export interface ClientResponse{
 export interface SearchAllClientsDto{
     page: number;
     pageLimit: number;
+
+    search?: string;
 }
 
 export interface UpdateClientDto{

@@ -72,6 +72,7 @@ struct CreatePrescriptionWorkflow: View{
 				Button("Done"){
 					dismiss()
 				}
+				.padding()
 			}else{
 				HStack{
 					Button("Cancel") {

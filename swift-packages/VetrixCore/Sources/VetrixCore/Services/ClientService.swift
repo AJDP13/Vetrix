@@ -21,10 +21,11 @@ public final class ClientService{
 	}
 	
 	public func getAll(
+		search: String = "",
 		page: Int = 1,
 		pageLimit: Int = 10
 	) async throws -> PaginatedResponse<Client>{
-		let response = try await http.send(method: .get, path: "/clients/?page=\(page)&pageLimit=\(pageLimit)", response: PaginatedResponse<Client>.self)
+		let response = try await http.send(method: .get, path: "/clients/?page=\(page)&pageLimit=\(pageLimit)&search=\(search)", response: PaginatedResponse<Client>.self)
 		
 		return response
 	}
