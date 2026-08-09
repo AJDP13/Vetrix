@@ -43,6 +43,17 @@ public final class ClientService{
 		
 		return response
 	}
+	
+	public func archive(
+		id: UUID
+	) async throws {
+		let response = try await http.send(
+			method: .delete,
+			path: "/clients/\(id)"
+		)
+		
+		return
+	}
 }
 
 //Request Structs

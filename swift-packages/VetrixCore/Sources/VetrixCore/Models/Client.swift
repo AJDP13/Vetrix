@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Client: Codable, Sendable, Identifiable {
+public struct Client: Codable, Sendable, Identifiable, Hashable {
 	public let id: UUID
 	public let firstName: String
 	public let lastName: String

@@ -38,6 +38,15 @@ struct ClientsView: View{
 					Text(client.fullName)
 				}
 			}
+			.contextMenu(forSelectionType: Client.self) { items in
+				Button("Archive") {
+					guard let client = items.first else { return }
+
+					Task {
+						await vm.archiveItem(id: client.id)
+					}
+				}
+			}
 		}
 		.task{
 			await vm.reload()

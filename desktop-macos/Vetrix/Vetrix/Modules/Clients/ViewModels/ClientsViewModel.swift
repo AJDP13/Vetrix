@@ -48,4 +48,12 @@ final class ClientsViewModel: PagedListViewModel<Client>{
 			api.errorManager.present(error)
 		}
 	}
+	
+	func archiveItem(id: UUID) async {
+		do{
+			let _ = try await api.client.archive(id: id)
+		}catch{
+			api.errorManager.present(error)
+		}
+	}
 }
