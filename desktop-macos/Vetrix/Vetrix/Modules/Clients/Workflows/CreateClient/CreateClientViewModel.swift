@@ -51,14 +51,14 @@ final class CreateClientViewModel{
 	//MARK: UI
 	var errorMessage: String = ""
 	var currentProgress: Float {
-		return Float(currentStep.index) / Float(CreatePrescriptionStep.totalSteps-1)
+		return Float(currentStep.stepNumber) / Float(CreatePrescriptionStep.totalSteps)
 	}
 	var showDismissConfirmation: Bool = false
 	
 	//MARK: Client Details
 	var client: DraftClient
 	
-	//MARK: Review Prescription
+	//MARK: Review Client
 	var createdClient: Client?
 	var creationSuccess: Bool?
 	
@@ -69,10 +69,13 @@ final class CreateClientViewModel{
 	var canAdvanceToNextStep: Bool {
 		switch(currentStep){
 			case .editDetails:
-				return true
+				return (
+					client.firstName != "" &&
+					client.lastName != "" &&
+					client.email != "" &&
+					client.phone != ""
+				)
 			case .review:
-				return true
-			default:
 				return true
 		}
 	}
@@ -104,7 +107,9 @@ final class CreateClientViewModel{
 		}
 		
 		do{
-			createdClient = try await api.client.create()
+			createdClient = try await api.client.create(
+				firstName: client.firstName, lastName: client.lastName, email: client.email, phone: client.phone
+			)
 			
 			creationSuccess = true
 		}catch let error as APIError{

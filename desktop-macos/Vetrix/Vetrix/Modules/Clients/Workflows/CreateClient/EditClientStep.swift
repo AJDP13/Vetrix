@@ -14,6 +14,13 @@ struct EditClientStep: View{
 	var body: some View{
 		Text("Step 1: Edit Client Details")
 			.font(.headline)
+		
+		Form{
+			TextField("First Name", text: $vm.client.firstName)
+			TextField("Last Name", text: $vm.client.lastName)
+			TextField("Email", text: $vm.client.email)
+			TextField("Phone", text: $vm.client.phone)
+		}
 	}
 }
 

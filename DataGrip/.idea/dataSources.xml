@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mariadb://server2.ajtechcity.com:3306/aerotrixlabs_vetrix_dev</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="AHS Development SQL Database" uuid="3c816ada-c39d-4ef9-8629-8760395d38d4">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://server2.ajtechcity.com:3306/aerotrixlabs_ahs_dev</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

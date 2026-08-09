@@ -15,9 +15,23 @@ public final class ClientService{
 	}
 	
 	public func create(
-		
+		firstName: String,
+		lastName: String,
+		email: String,
+		phone: String
 	) async throws -> Client {
-		return .preview
+		let request: CreateClientRequest = CreateClientRequest(
+			first_name: firstName, last_name: lastName, email: email, phone: phone
+		)
+		
+		let response = try await http.send(
+			method: .post,
+			path: "/clients",
+			body:request,
+			response: Client.self
+		)
+		
+		return response
 	}
 	
 	public func getAll(

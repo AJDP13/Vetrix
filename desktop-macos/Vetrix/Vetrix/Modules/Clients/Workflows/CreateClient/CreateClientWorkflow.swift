@@ -33,27 +33,19 @@ struct CreateClientWorkflow: View{
 			}
 			
 			
-			
-//			HStack{
-//				Text("Selected Pet: \(vm.selectedPet != nil ? vm.selectedPet!.name : "None")")
-//					.font(.caption)
-//				
-//				Spacer()
-//				
-//				Text("Owner: \(vm.selectedPet != nil ? vm.selectedPet!.owner.fullName : "N/A")")
-//			}
-			
 			Divider()
 		}
 		.padding(.top)
 		
 		//MARK: Content
-		switch(vm.currentStep){
-			case .editDetails:
-				EditClientStep(vm: vm)
-			case .review:
-				ReviewClientStep(vm: vm)
-		}
+		Group{
+			switch(vm.currentStep){
+				case .editDetails:
+					EditClientStep(vm: vm)
+				case .review:
+					ReviewClientStep(vm: vm)
+			}
+		}.padding()
 		
 		Spacer()
 		

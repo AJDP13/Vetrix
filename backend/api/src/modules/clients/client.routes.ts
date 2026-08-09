@@ -3,6 +3,8 @@ import {authenticateJwt} from "../../middleware/authenticateJwt.middleware";
 import ClientController from "./client.controller";
 import {hasPermission} from "../../middleware/hasPermission.middleware";
 import {PermissionId} from "../rbac/permission.model";
+import { validateBody } from "../../middleware/validateBody.middleware";
+import { createClientSchema, updateClientSchema } from "./clients.validation";
 
 const router: Router = express.Router();
 const clientController: ClientController = new ClientController();
@@ -29,12 +31,14 @@ router.get( //NOTE: Gets all Clients
 
 router.patch( //NOTE: Updates a current Client
     "/:id",
+    validateBody(updateClientSchema),
     hasPermission(PermissionId.CLIENTS_EDIT),
     clientController.updateClient
 )
 
 router.post( //NOTE: Creates a new Client
     "/",
+    validateBody(createClientSchema),
     hasPermission(PermissionId.CLIENTS_CREATE),
     clientController.createClient
 )
