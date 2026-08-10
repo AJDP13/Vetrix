@@ -3,6 +3,7 @@ import Client from "./client.model";
 import ApiError from "../../shared/errors/ApiError";
 import {buildClientResponse} from "./client.mapper";
 import { PaginatedResponse } from "../../shared/types/response.types";
+import { Op } from "sequelize";
 
 export default class ClientService{
     async createClient(data: CreateClientDto): Promise<ClientResponse>{
@@ -24,9 +25,21 @@ export default class ClientService{
     }
 
     async searchAllClients(data: SearchAllClientsDto): Promise<PaginatedResponse<ClientResponse>>{
+        var where_query: any = {}
+
+        if (data.search) {
+            where_query[Op.or] = [
+                { first_name: { [Op.like]: `%${data.search}%` } },
+                { last_name: { [Op.like]: `%${data.search}%` } },
+                { email: { [Op.like]: `%${data.search}%` } },
+                { phone: { [Op.like]: `%${data.search}%` } },
+            ];
+        }
+
         const {rows, count} = await Client.findAndCountAll({
             limit: data.pageLimit,
-            offset: data.pageLimit * (data.page-1)
+            offset: data.pageLimit * (data.page-1),
+            where: where_query
         });
 
         const totalPages = Math.ceil(count/data.pageLimit)

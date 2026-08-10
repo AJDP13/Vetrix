@@ -27,11 +27,22 @@ export default class ClientController{
             parseInt(req.query.pageLimit as string),
             env.constants.max_page_limit_clients
         );
+
+        pageLimit = Math.max(
+            1,
+            pageLimit
+        )
+
         var page = parseInt(req.query.page as string)
+        page = Math.max(
+            1,
+            page
+        )
 
         const params: SearchAllClientsDto = {
             page,
-            pageLimit
+            pageLimit,
+            search: req.query.search as string
         };
 
         const result = await clientService.searchAllClients(params);
