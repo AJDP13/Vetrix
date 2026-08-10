@@ -16,9 +16,7 @@ public final class PaginationState{
 	var total = 0
 	var totalPages = 0
 	
-	var search = ""
-	
-	var isLoading = false
+	var query = ""
 	
 	var hasNextPage: Bool{
 		page < totalPages

@@ -27,7 +27,6 @@ final class PrescriptionsViewModel: PagedListViewModel<Prescription>{
 	override func reload() async {
 		//Load Page Limit Variable
 		pagination.pageLimit = pageLimit
-		guard !pagination.isLoading else {return}
 		
 		isLoading = true
 		errorMessage = nil

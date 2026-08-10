@@ -26,6 +26,7 @@ struct ClientsView: View{
 			isLoading: vm.isLoading,
 			next:{try? await vm.nextPage()},
 			previous: {try? await vm.previousPage()},
+			search: {await vm.reload()}
 		){
 			Table(
 				vm.clients,

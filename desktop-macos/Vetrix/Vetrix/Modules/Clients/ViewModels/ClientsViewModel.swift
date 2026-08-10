@@ -27,7 +27,6 @@ final class ClientsViewModel: PagedListViewModel<Client>{
 	override func reload() async {
 		//Load Page Limit Variable
 		pagination.pageLimit = pageLimit
-		guard !pagination.isLoading else {return}
 		
 		isLoading = true
 		errorMessage = nil
@@ -37,9 +36,10 @@ final class ClientsViewModel: PagedListViewModel<Client>{
 		}
 		
 		do{
-			let response = try await api.client.getAll(
+			let response = try await api.client.search(
+				search: pagination.query,
 				page: pagination.page,
-				pageLimit: pagination.pageLimit
+				pageLimit: pagination.pageLimit,
 			)
 			
 			clients = response.items

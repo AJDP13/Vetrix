@@ -34,7 +34,7 @@ public final class ClientService{
 		return response
 	}
 	
-	public func getAll(
+	public func search(
 		search: String = "",
 		page: Int = 1,
 		pageLimit: Int = 10

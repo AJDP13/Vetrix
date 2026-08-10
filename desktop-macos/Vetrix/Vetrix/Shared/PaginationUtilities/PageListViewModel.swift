@@ -26,6 +26,7 @@ class PagedListViewModel<T>{
 	}
 	
 	private func load(page: Int) async throws {
+		guard !isLoading else {return}
 		try await reload()
 	}
 	

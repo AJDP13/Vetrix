@@ -14,6 +14,7 @@ struct PagedView<Content:View>: View{
 	let isLoading: Bool
 	let next: () async -> Void
 	let previous: () async -> Void
+	let search: () async -> Void
 	
 	@ViewBuilder
 	let content: () -> Content
@@ -21,6 +22,19 @@ struct PagedView<Content:View>: View{
 	var body: some View{
 		VStack{
 			//MARK: Header and Filters
+			
+			HStack{
+				TextField(
+					"Search",
+					text: $pagination.query
+				)
+				.textFieldStyle(.roundedBorder)
+				.onSubmit {
+					Task{
+						await search()
+					}
+				}
+			}
 			
 			//MARK: Table
 			Spacer()
