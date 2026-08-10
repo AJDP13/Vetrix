@@ -24,4 +24,6 @@ export interface UpdatePetDto{
 export interface SearchPetsDto{
     page: number;
     pageLimit: number;
+
+    search?: string;
 }

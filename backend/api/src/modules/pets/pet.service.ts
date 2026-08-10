@@ -32,7 +32,21 @@ export default class PetService{
     }
 
     async searchAllPets(data: SearchPetsDto): Promise<PaginatedResponse<PetResponse>>{
+
+        var where_query: any = {}
+
+        if (data.search) {
+            where_query[Op.or] = [
+                { name: { [Op.like]: `%${data.search}%` } },
+                { date_of_birth: { [Op.like]: `%${data.search}%` } },
+                { id: { [Op.like]: `%${data.search}%` } },
+                { '$owner.first_name$': { [Op.like]: data.search } },
+                { '$owner.last_name$': { [Op.like]: data.search } },
+            ];
+        }
+
         const {rows, count} = await Pet.scope("withOwner").findAndCountAll({
+            where: where_query,
             offset: (data.page-1) * data.pageLimit,
             limit: data.pageLimit
         });

@@ -27,11 +27,22 @@ export default class PetController{
             parseInt(req.query.pageLimit as string),
             env.constants.max_page_limit_pets
         );
+
+        pageLimit = Math.max(
+            1,
+            pageLimit
+        )
+
         var page = parseInt(req.query.page as string)
+        page = Math.max(
+            1,
+            page
+        )
 
         const result = await petService.searchAllPets({
             page,
-            pageLimit
+            pageLimit,
+            search: req.query.search as string
         });
 
         return res.status(200).json({
