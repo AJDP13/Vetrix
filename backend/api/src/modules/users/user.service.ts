@@ -1,11 +1,11 @@
 import User from "./user.model";
-import {ChangePasswordDto, UpdateMeDto, UpdateUserDto, UserResponse} from "./user.types";
+import {ChangePasswordDto, UpdateMeDto, UpdateUserDto, UserResponse, UserSummary} from "./user.types";
 import ApiError from "../../shared/errors/ApiError";
 import {RegisterDto} from "../auth/auth.types";
 import bcrypt from "bcrypt";
 import TokenService from "../auth/token.service";
 import {TokenType} from "../auth/token.model";
-import {buildUserResponse} from "./user.mapper";
+import {buildUserResponse, buildUserSummary} from "./user.mapper";
 
 export default class UserService {
     private tokenService: TokenService = new TokenService();
@@ -34,14 +34,14 @@ export default class UserService {
         return;
     }
 
-    async getAllUsers(): Promise<UserResponse[]>{
+    async getAllUsers(): Promise<UserSummary[]>{
         const users = await User.findAll();
         if(users.length == 0) return [];
 
-        return users.map(user=>buildUserResponse(user));
+        return users.map(user=>buildUserSummary(user));
     }
 
-    async createUser(data: RegisterDto): Promise<UserResponse | null>{
+    async createUser(data: RegisterDto): Promise<UserSummary | null>{
         const existingUsername = await User.findOne({
             where: { username: data.username }
         });
@@ -69,7 +69,7 @@ export default class UserService {
             password_hash
         });
 
-        return buildUserResponse(user);
+        return buildUserSummary(user);
     }
 
     async changePassword(data: ChangePasswordDto): Promise<void>{
