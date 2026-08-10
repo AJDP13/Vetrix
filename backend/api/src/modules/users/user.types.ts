@@ -11,6 +11,15 @@ export interface UserResponse {
     permissions: PermissionResponse[]
 }
 
+export interface UserSummary{
+    id: string;
+    username: string;
+    first_name: string;
+    last_name: string;
+    is_active: boolean;
+    role_count: number;
+}
+
 export interface SearchUsersParams{
     id?: string;
     username?: string;
