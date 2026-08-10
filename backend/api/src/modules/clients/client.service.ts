@@ -33,6 +33,7 @@ export default class ClientService{
                 { last_name: { [Op.like]: `%${data.search}%` } },
                 { email: { [Op.like]: `%${data.search}%` } },
                 { phone: { [Op.like]: `%${data.search}%` } },
+                { id: { [Op.like]: `%${data.search}%` } },
             ];
         }
 
