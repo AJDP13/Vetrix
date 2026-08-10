@@ -33,7 +33,7 @@ export function buildUserSummary(user: User): UserSummary{
         id: user.id,
         username: user.username,
         first_name: user.first_name,
-        last_name: user.last_name,
+        last_name: user.last_name ?? "",
         email: user.email,
         is_active: user.is_active,
         role_count: user.roles?.length ?? 0

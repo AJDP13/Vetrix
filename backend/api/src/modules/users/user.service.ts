@@ -35,7 +35,7 @@ export default class UserService {
     }
 
     async getAllUsers(): Promise<UserSummary[]>{
-        const users = await User.findAll();
+        const users = await User.scope("withRoles").findAll();
         if(users.length == 0) return [];
 
         return users.map(user=>buildUserSummary(user));

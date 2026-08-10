@@ -76,12 +76,17 @@ User.init({
         updatedAt: "updated_at",
         scopes:{
             withRoles: () => ({
-            include: [{
-                association: "roles",
-                include:[{
-                    association: "permissions"
-                }]
-            }]
-        })
+                include: [{
+                    association: "roles",
+                }],
+            }),
+            withRolesAndPermissions: () => ({
+                include: [{
+                    association: "roles",
+                    include:[{
+                        association: "permissions"
+                    }]
+                }],
+            })
         }
     });
