@@ -66,6 +66,42 @@ public final class ClientService{
 		
 		return
 	}
+	
+	public func edit(
+		id: UUID,
+		firstName: String?,
+		lastName: String?,
+		email: String?,
+		phone: String?,
+		address1: String?,
+		address2: String?,
+		address3: String?,
+		city: String?,
+		postcode: String?
+	) async throws -> Client {
+		let request: UpdateClientRequest = UpdateClientRequest(
+			first_name: firstName,
+			last_name: lastName,
+			email: email,
+			phone: phone,
+			address_line_1: address1,
+			address_line_2: address2,
+			address_line_3: address3,
+			address_city: city,
+			address_postcode: postcode
+		)
+		
+		print("Client Edit ID:\(id.uuidString.lowercased())")
+		
+		let response = try await http.send(
+			method: .patch,
+			path: "/clients/\(id.uuidString.lowercased())",
+			body: request,
+			response: Client.self
+		)
+		
+		return response
+	}
 }
 
 //Request Structs
@@ -78,6 +114,15 @@ private struct CreateClientRequest: Encodable, Sendable {
 }
 
 private struct UpdateClientRequest: Encodable, Sendable {
+	let first_name: String?
+	let last_name: String?
+	let email: String?
+	let phone: String?
+	let address_line_1: String?
+	let address_line_2: String?
+	let address_line_3: String?
+	let address_city: String?
+	let address_postcode: String?
 }
 
 struct ClientResponse: Decodable, Sendable {

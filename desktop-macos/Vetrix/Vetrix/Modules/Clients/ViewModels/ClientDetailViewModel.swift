@@ -40,6 +40,35 @@ public final class ClientDetailViewModel{
 		
 		do{
 			client = try await api.client.get(id: self.clientId)
+			
+			if let client = client{
+				firstName = client.firstName
+				lastName = client.lastName
+				email = client.email
+				phone = client.phone
+				address1 = client.addressLine1
+				address2 = client.addressLine2
+				address3 = client.addressLine3
+				addressCity = client.addressCity
+				addressPostcode = client.addressPostcode
+			}
+			
+		}catch{
+			api.errorManager.present(error)
+		}
+	}
+	
+	func saveChanges() async {
+		isLoading = true
+		
+		defer{
+			isLoading = false
+		}
+		
+		do{
+			let updatedClient = try await api.client.edit(id: self.clientId, firstName: self.firstName, lastName: self.lastName, email: self.email, phone: self.phone, address1: self.address1, address2: self.address2, address3: self.address3, city: self.addressCity, postcode: self.addressPostcode)
+			
+			self.client = updatedClient
 		}catch{
 			api.errorManager.present(error)
 		}

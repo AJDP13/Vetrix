@@ -60,6 +60,17 @@ struct ClientsView: View{
 				   let client = vm.clients.first(where: { $0.id == clientId }) {
 					
 					if vm.selectedClients.count == 1 {
+						Button("Open"){
+							selectedClientId = clientId
+							vm.showClientDetailView.toggle()
+						}
+						
+						Button("Create Pet"){
+							
+						}
+						
+						Divider()
+						
 						if client.archived {
 							Button("Restore") {
 	//							Task {

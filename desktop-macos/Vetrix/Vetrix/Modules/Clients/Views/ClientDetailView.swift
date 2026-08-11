@@ -22,15 +22,42 @@ struct ClientDetailView: View{
 		Group{
 			if vm.client != nil {
 				Form{
-					TextField("First Name", text: $vm.firstName)
+					Section{
+						TextField("First Name", text: $vm.firstName)
+						TextField("Last Name", text: $vm.lastName)
+						TextField("Email", text: $vm.email)
+						TextField("Phone", text: $vm.phone)
+					} header: {
+						Text("Contact Information")
+					}
+					
+					Section{
+						TextField("Line 1", text: $vm.address1)
+						TextField("Line 2", text: $vm.address2)
+						TextField("Line 3", text: $vm.address3)
+						TextField("City", text: $vm.addressCity)
+						TextField("Postcode", text: $vm.addressPostcode)
+					} header : {
+						Text("Address Details")
+					}
+					
+					Button("Update"){
+						Task{
+							await vm.saveChanges()
+						}
+					}
 				}
+				.formStyle(.grouped)
 			}else if vm.isLoading{
 				ProgressView("Loading...")
+			}else{
+				Text("No Client has been Selected")
 			}
 		}
 		.task{
 			await vm.reload()
 		}
+		.padding()
 	}
 }
 
