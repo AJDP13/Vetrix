@@ -32,11 +32,14 @@ struct ClientsView: View{
 				vm.clients,
 				selection: $vm.selectedClients
 			){
-				TableColumn("ID"){ client in
-					Text(client.id.uuidString.lowercased())
-				}
 				TableColumn("Name"){ client in
 					Text(client.fullName)
+				}
+				TableColumn("Email"){ client in
+					Text(client.email)
+				}
+				TableColumn("Postcode"){ client in
+					Text(client.addressPostcode)
 				}
 			}
 			.contextMenu(forSelectionType: Client.self) { items in

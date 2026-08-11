@@ -12,6 +12,12 @@ export interface ClientResponse{
     email: string;
     phone: string;
 
+    address_line_1: string;
+    address_line_2: string;
+    address_line_3: string;
+    address_city: string;
+    address_postcode: string;
+
     //pets: Pet[]; //FUTURE
 }
 

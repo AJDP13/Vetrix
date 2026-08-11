@@ -39,11 +39,11 @@ public final class UserService{
 		return response
 	}
 	
-	public func getAll() async throws -> [User] {
+	public func getAll() async throws -> [UserSummary] {
 		return try await http.send(
 			method: .get,
 			path: "/users",
-			response: [User].self
+			response: [UserSummary].self
 		)
 	}
 	

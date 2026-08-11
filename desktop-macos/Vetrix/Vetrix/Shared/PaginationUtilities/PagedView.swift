@@ -51,23 +51,28 @@ struct PagedView<Content:View>: View{
 			Spacer()
 			
 			//MARK: Footer/PaginationControls
-			HStack{
-				Spacer()
+			VStack{
+				Text("Page \(pagination.page) of \(pagination.totalPages)")
+				Text("Showing \(min(pagination.pageLimit, pagination.total)) of \(pagination.total) items")
 				
-				ControlGroup{
-					Button("Prev"){
-						Task{
-							await previous()
-						}
-					}
-					.disabled(!pagination.hasPreviousPage || isLoading)
+				HStack{
+					Spacer()
 					
-					Button("Next"){
-						Task{
-							await next()
+					ControlGroup{
+						Button("Prev"){
+							Task{
+								await previous()
+							}
 						}
+						.disabled(!pagination.hasPreviousPage || isLoading)
+						
+						Button("Next"){
+							Task{
+								await next()
+							}
+						}
+						.disabled(!pagination.hasNextPage || isLoading)
 					}
-					.disabled(!pagination.hasNextPage || isLoading)
 				}
 			}
 		}

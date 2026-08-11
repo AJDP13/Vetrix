@@ -10,12 +10,30 @@ import VetrixCore
 
 @Observable
 public final class UserDetailViewModel{
-	public var user: User
+	public var user: User?
+	private var userId: UUID
+	private let api: VetrixAPI
 	
-	init(user: User){
-		self.user = user
+	public var isLoading: Bool = false
+	
+	init(_ userId: UUID, api: VetrixAPI){
+		self.userId = userId
+		self.api = api
 	}
 	
+	func reload() async {
+		isLoading = true
+		
+		defer{
+			isLoading = false
+		}
+		
+		do{
+			user = try await api.user.get(id: self.userId)
+		}catch{
+			api.errorManager.present(error)
+		}
+	}
 		
 	//PW Funcs
 	func resetPassword(){

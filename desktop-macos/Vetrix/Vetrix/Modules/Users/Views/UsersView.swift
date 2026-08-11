@@ -30,7 +30,7 @@ struct UsersView: View {
 				NavigationStack{
 					List(vm.filteredUsers){ user in
 						NavigationLink{
-							UserDetailView(user: user)
+							UserDetailView(user.id, api: vm.api)
 								.padding()
 						} label : {
 							UserRow(user: user)

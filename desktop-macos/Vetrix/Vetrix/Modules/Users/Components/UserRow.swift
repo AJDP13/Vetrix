@@ -9,7 +9,7 @@ import SwiftUI
 import VetrixCore
 
 struct UserRow: View {
-	var user: User
+	var user: UserSummary
 	
     var body: some View {
 		HStack(spacing: 16){

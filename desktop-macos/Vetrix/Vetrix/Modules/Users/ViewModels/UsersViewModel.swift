@@ -11,12 +11,11 @@ import VetrixCore
 @Observable
 public final class UsersViewModel{
 	
-	
 	public var isLoading: Bool = false
 	public var error: Error?
 	public var userSearchText: String = ""
-	public var users: [User] = []
-	public var filteredUsers: [User] {
+	public var users: [UserSummary] = []
+	public var filteredUsers: [UserSummary] {
 		guard !userSearchText.isEmpty else {
 			return users
 		}
@@ -31,7 +30,7 @@ public final class UsersViewModel{
 	
 	public let api: VetrixAPI
 	
-	init(api: VetrixAPI, users: [User] = []){
+	init(api: VetrixAPI, users: [UserSummary] = []){
 		self.api = api
 		self.users = users
 	}
