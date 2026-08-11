@@ -58,19 +58,18 @@ public final class ClientDetailViewModel{
 		}
 	}
 	
-	func saveChanges() async {
+	func saveChanges() async -> Client? {
 		isLoading = true
-		
-		defer{
-			isLoading = false
-		}
 		
 		do{
 			let updatedClient = try await api.client.edit(id: self.clientId, firstName: self.firstName, lastName: self.lastName, email: self.email, phone: self.phone, address1: self.address1, address2: self.address2, address3: self.address3, city: self.addressCity, postcode: self.addressPostcode)
 			
 			self.client = updatedClient
+			
+			return updatedClient
 		}catch{
 			api.errorManager.present(error)
+			return nil
 		}
 	}
 }

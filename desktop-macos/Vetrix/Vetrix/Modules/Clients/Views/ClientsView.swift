@@ -111,7 +111,13 @@ struct ClientsView: View{
 		}
 		.sheet(isPresented: $vm.showClientDetailView) {
 			if let clientId = selectedClientId{
-				ClientDetailView(clientId, api: api)
+				ClientDetailView(clientId, api: api) {updatedClient in
+					if let index = vm.clients.firstIndex(
+						where: { $0.id == updatedClient.id }
+					) {
+						vm.clients[index] = updatedClient
+					}
+				}
 			}else{
 				Text("Error: No client Selected")
 			}

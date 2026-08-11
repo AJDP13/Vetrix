@@ -9,18 +9,24 @@ import SwiftUI
 import VetrixCore
 
 struct ClientDetailView: View{
+	@Environment(\.dismiss) private var dismiss
 	@State var vm: ClientDetailViewModel
 	
-	init(_ clientId: UUID, api: VetrixAPI){
+	let onSaved: (Client) -> Void
+	
+	init(_ clientId: UUID, api: VetrixAPI, onSaved: @escaping (Client) -> Void){
 		self._vm = State(initialValue: ClientDetailViewModel(
 			clientId,
 			api: api
 		))
+		self.onSaved = onSaved
 	}
 	
 	var body: some View{
 		Group{
-			if vm.client != nil {
+			if vm.isLoading{
+				ProgressView("Loading...")
+			}else if vm.client != nil {
 				Form{
 					Section{
 						TextField("First Name", text: $vm.firstName)
@@ -43,13 +49,14 @@ struct ClientDetailView: View{
 					
 					Button("Update"){
 						Task{
-							await vm.saveChanges()
+							dismiss() //Still dismiss if nil is returned so any errors are shown
+							if let client = await vm.saveChanges() {
+								onSaved(client)
+							}
 						}
 					}
 				}
 				.formStyle(.grouped)
-			}else if vm.isLoading{
-				ProgressView("Loading...")
 			}else{
 				Text("No Client has been Selected")
 			}
@@ -66,5 +73,7 @@ struct ClientDetailView: View{
 	let baseUrl = URL(string: "http://127.0.0.1:3000")!
 	let config = APIConfiguration(baseURL: baseUrl)
 	let api = VetrixAPI(configuration: config)
-	ClientDetailView(Client.preview.id, api: api)
+	ClientDetailView(Client.preview.id, api: api){ _ in
+			
+	}
 }
