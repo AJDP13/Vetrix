@@ -117,8 +117,10 @@ Prescription.init({
         withPetAndOwner: () => ({
             include: [{
                 association: "pet",
+                paranoid: false,
                 include: [{
-                    association: "owner"
+                    association: "owner",
+                    paranoid: false
                 }]
             }]
         })

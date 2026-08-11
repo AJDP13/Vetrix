@@ -13,6 +13,7 @@ export function buildClientResponse(data: Client): ClientResponse{
         address_line_3: data.address_line_3 ?? "",
         address_city: data.address_city ?? "",
         address_postcode: data.address_postcode ?? "",
+        archived: data.deleted_at != null
     };
 
     return resp;

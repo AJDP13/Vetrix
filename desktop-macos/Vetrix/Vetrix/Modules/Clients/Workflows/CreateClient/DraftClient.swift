@@ -14,4 +14,10 @@ final class DraftClient {
 	var lastName: String = ""
 	var email: String = ""
 	var phone: String = ""
+	
+	var address1: String = ""
+	var address2: String = ""
+	var address3: String = ""
+	var addressCity: String = ""
+	var addressPostcode: String = ""
 }

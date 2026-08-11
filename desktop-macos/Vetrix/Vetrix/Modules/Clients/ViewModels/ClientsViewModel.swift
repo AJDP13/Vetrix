@@ -17,6 +17,7 @@ final class ClientsViewModel: PagedListViewModel<Client>{
 	var pageLimit: Int = 50
 	
 	var showCreateClientWizard: Bool = false
+	var showClientDetailView: Bool = false
 	
 	private let api: VetrixAPI
 	
@@ -52,6 +53,10 @@ final class ClientsViewModel: PagedListViewModel<Client>{
 	func archiveItem(id: UUID) async {
 		do{
 			let _ = try await api.client.archive(id: id)
+			if let index = clients.firstIndex(where: { $0.id == id }) {
+				let client = clients[index]
+				clients[index] = client.withArchived(true)
+			}
 		}catch{
 			api.errorManager.present(error)
 		}

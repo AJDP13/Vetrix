@@ -18,6 +18,7 @@ export interface ClientResponse{
     address_city: string;
     address_postcode: string;
 
+    archived: boolean;
     //pets: Pet[]; //FUTURE
 }
 

@@ -44,12 +44,24 @@ public final class ClientService{
 		return response
 	}
 	
+	public func get(
+		id: UUID
+	) async throws -> Client {
+		let response = try await http.send(
+			method: .get,
+			path: "/clients/\(id)",
+			response: Client.self
+		)
+		
+		return response
+	}
+	
 	public func archive(
 		id: UUID
 	) async throws {
 		let response = try await http.send(
 			method: .delete,
-			path: "/clients/\(id)"
+			path: "/clients/\(id.uuidString.lowercased())"
 		)
 		
 		return

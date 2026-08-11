@@ -26,7 +26,7 @@ struct ReviewClientStep: View{
 				.font(.caption)
 		}else{
 			VStack{
-				Text("Step 3: Client Review")
+				Text("Step 2: Client Review")
 					.font(.headline)
 				
 				Spacer()
