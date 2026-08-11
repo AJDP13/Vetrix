@@ -82,6 +82,12 @@ export default class ClientService{
             client.email = data.email
         }
 
+        if(data.address1) client.address_line_1 = data.address1
+        if(data.address2) client.address_line_2 = data.address2
+        if(data.address3) client.address_line_3 = data.address3
+        if(data.addressCity) client.address_city = data.addressCity
+        if(data.addressPostcode) client.address_postcode = data.addressPostcode
+
         await client.save();
 
         await client.reload();
