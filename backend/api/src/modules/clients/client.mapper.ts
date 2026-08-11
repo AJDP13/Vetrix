@@ -7,7 +7,7 @@ export function buildClientResponse(data: Client): ClientResponse{
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
-        phone: data.phone
+        phone: data.phone ?? ""
     };
 
     return resp;

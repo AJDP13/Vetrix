@@ -16,6 +16,12 @@ export default class Client extends Model<InferAttributes<Client>,InferCreationA
     declare email: string;
     declare phone: CreationOptional<string>;
 
+    declare address_line_1: CreationOptional<string>;
+    declare address_line_2: CreationOptional<string>;
+    declare address_line_3: CreationOptional<string>;
+    declare address_city: CreationOptional<string>;
+    declare address_postcode: CreationOptional<string>;
+
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date>;
@@ -48,6 +54,32 @@ Client.init({
         type: DataTypes.STRING,
         allowNull: true
     },
+
+    address_line_1: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    address_line_2: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    address_line_3: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    address_city: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    address_postcode: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
     created_at: DataTypes.DATE,
     updated_at: DataTypes.DATE,
     deleted_at: DataTypes.DATE
