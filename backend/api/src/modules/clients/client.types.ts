@@ -37,9 +37,9 @@ export interface UpdateClientDto{
     email?: string;
     phone?: string;
 
-    address1: string;
-    address2: string;
-    address3: string;
-    addressCity: string;
-    addressPostcode: string;
+    address_line_1?: string;
+    address_line_2?: string;
+    address_line_3?: string;
+    address_city?: string;
+    address_postcode?: string;
 }

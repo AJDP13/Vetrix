@@ -8,13 +8,13 @@ export const createClientSchema = Joi.object({
 })
 
 export const updateClientSchema = Joi.object({
-    first_name: Joi.string().optional(),
-    last_name: Joi.string().optional(),
+    first_name: Joi.string().optional().allow(''),
+    last_name: Joi.string().optional().allow(''),
     email: Joi.string().optional(),
-    phone: Joi.string().optional(),
-    address_line_1: Joi.string().optional(),
-    address_line_2: Joi.string().optional(),
-    address_line_3: Joi.string().optional(),
-    address_city: Joi.string().optional(),
-    address_postcode: Joi.string().optional()
+    phone: Joi.string().optional().allow(''),
+    address_line_1: Joi.string().optional().allow(''),
+    address_line_2: Joi.string().optional().allow(''),
+    address_line_3: Joi.string().optional().allow(''),
+    address_city: Joi.string().optional().allow(''),
+    address_postcode: Joi.string().optional().allow('')
 })

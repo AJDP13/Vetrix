@@ -54,7 +54,10 @@ export default class ClientController{
     }
 
     updateClient = async(req: Request, res: Response) => {
-        const data: UpdateClientDto = req.body;
+        const data: UpdateClientDto = {
+            id: req.params.id as string,
+            ...req.body
+        };
 
         const result: ClientResponse = await clientService.updateClient(data);
 
