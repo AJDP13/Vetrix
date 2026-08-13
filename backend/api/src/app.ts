@@ -59,6 +59,10 @@ app.use("/clients", clientRoutes);
 app.use("/pets", petRoutes);
 app.use("/prescriptions", prescriptionRoutes);
 
+app.get("/health", (req, res) => {
+    res.send("ok")
+})
+
 app.post("/seed", async(req, res) => {
     await seedPermissions();
 
