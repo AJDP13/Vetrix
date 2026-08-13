@@ -5,7 +5,7 @@ export function buildClientResponse(data: Client): ClientResponse{
     const resp: ClientResponse = {
         id: data.id,
         first_name: data.first_name,
-        last_name: data.last_name,
+        last_name: data.last_name ?? "",
         email: data.email,
         phone: data.phone ?? "",
         address_line_1: data.address_line_1 ?? "",

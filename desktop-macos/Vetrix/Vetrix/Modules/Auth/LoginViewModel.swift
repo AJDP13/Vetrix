@@ -12,6 +12,7 @@ import VetrixCore
 final class LoginViewModel{
 	var username = ""
 	var password = ""
+	var server: Server?
 	
 	var isLoading = false
 	var errorMessage: String?

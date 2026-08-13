@@ -21,6 +21,7 @@ public struct Client: Codable, Sendable, Identifiable, Hashable {
 	public let addressPostcode: String
 	
 	public let archived: Bool
+	public let pets: [Pet]?
 	
 	public var fullName: String {
 		if archived {
@@ -29,8 +30,6 @@ public struct Client: Codable, Sendable, Identifiable, Hashable {
 			return firstName + " " + lastName
 		}
 	}
-	
-	public let pets: [Pet]?
 	
 	public static let preview = Client(
 		id: UUID(),
