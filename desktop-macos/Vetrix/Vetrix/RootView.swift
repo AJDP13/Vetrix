@@ -9,7 +9,14 @@ import SwiftUI
 import VetrixCore
 
 struct RootView: View {
-	@State var api: VetrixAPI
+	@State private var api: VetrixAPI
+	
+	init(){
+		let config = APIConfiguration(
+			baseURL: URL(string: "http://127.0.0.1:3000")!
+		)
+		api = VetrixAPI(configuration: config)
+	}
 
     var body: some View {
 		Group{
@@ -47,5 +54,5 @@ extension View {
 	let baseUrl = URL(string: "http://127.0.0.1:3000")!
 	let config = APIConfiguration(baseURL: baseUrl)
 	let api = VetrixAPI(configuration: config)
-	RootView(api: api)
+	RootView()
 }

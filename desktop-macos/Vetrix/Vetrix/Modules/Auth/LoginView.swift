@@ -16,17 +16,46 @@ struct LoginView: View {
 	}
 	
     var body: some View {
+		@Bindable var api = loginVM.api
+		
 		Form{
 			TextField("Username", text: $loginVM.username)
 			SecureField("Password", text: $loginVM.password)
 			
 			
-			Picker("Server", selection: $loginVM.server){
+			Picker("Server", selection: $api.serverService.selectedServerID){
+				ForEach(api.serverService.servers){server in
+					Text(server.name)
+						.tag(Optional(server.id))
+				}
+			}
+			.onChange(of: api.serverService.selectedServerID){_, newServerId in
+				guard let newServerId, let server = loginVM.api.serverService.servers.first(where:{$0.id == newServerId}) else {return}
+				
+				api.serverService.select(server)
+				Task{
+					await api.serverService.ping(server)
+				}
+			}
+			
+			Section("Server Details"){
+				Text("Server URL: \(api.serverService.selectedServer?.url.absoluteString ?? "UNKNOWN")")
+					.disabled(true)
+				
+				Text(
+					"Last Successful Ping: \(api.serverService.selectedServer?.last_ping_success?.formatted(date: .abbreviated, time: .shortened) ?? "Never")"
+				)
+
+				Text(
+					"Last Ping: \(api.serverService.selectedServer?.last_ping?.formatted(date: .abbreviated, time: .shortened) ?? "Never")"
+				)
 			}
 		}
 		.formStyle(.grouped)
 		.padding()
 		.keyboardShortcut(.defaultAction)
+		
+		Text(api.serverService.selectedServer?.url.absoluteString ?? "UNKNOWN URL")
 		
 		Button("Login"){
 			Task{

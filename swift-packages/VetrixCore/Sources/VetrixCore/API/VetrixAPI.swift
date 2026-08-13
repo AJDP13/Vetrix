@@ -9,6 +9,8 @@ import Foundation
 
 @Observable
 public final class VetrixAPI {
+	
+	public var serverService: ServerService
 
 	public let user: UserService
 	public let auth: AuthenticationService
@@ -21,12 +23,17 @@ public final class VetrixAPI {
 	private let http: HTTPClient
 
 	public init(configuration: APIConfiguration) {
+		let serverService = ServerService()
+
+		
+		self.serverService = serverService
 
 		self.appSession = SessionManager()
 		self.errorManager = ErrorManager()
+		let config = APIConfiguration(baseURL: serverService.selectedServer?.url ?? URL(string: "")!)
 
 		self.http = HTTPClient(
-			configuration: configuration,
+			serverService: serverService,
 			session: .shared,
 			appSession: appSession
 		)

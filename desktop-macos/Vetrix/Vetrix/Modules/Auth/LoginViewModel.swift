@@ -23,7 +23,7 @@ final class LoginViewModel{
 		!isLoading
 	}
 	
-	private let api: VetrixAPI
+	public var api: VetrixAPI
 	
 	init(api: VetrixAPI){
 		self.api = api

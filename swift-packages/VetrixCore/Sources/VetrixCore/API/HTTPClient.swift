@@ -11,16 +11,16 @@ private struct EmptyRequest: Encodable {}
 private struct EmptyResponse: Decodable {}
 
 public final class HTTPClient{
-	private let configuration: APIConfiguration
+	private let serverService: ServerService
 	private let session: URLSession
 	private let appSession: SessionManager
 	
-	init(
-		configuration: APIConfiguration,
+	public init(
+		serverService: ServerService,
 		session: URLSession,
 		appSession: SessionManager
 	){
-		self.configuration = configuration
+		self.serverService = serverService
 		self.session = session
 		self.appSession = appSession
 	}
@@ -31,7 +31,7 @@ public final class HTTPClient{
 		body: Request? = nil,
 		response: Response.Type
 	) async throws -> Response {
-		guard let url = URL(string: path, relativeTo: configuration.baseURL) else{
+		guard let url = URL(string: path, relativeTo: serverService.selectedServer?.url) else{
 			throw APIError.invalidURL
 		}
 		
