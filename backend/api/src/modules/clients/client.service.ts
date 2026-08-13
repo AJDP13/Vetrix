@@ -63,14 +63,15 @@ export default class ClientService{
     }
 
     async updateClient(data: UpdateClientDto): Promise<ClientResponse>{
+        console.log("Client ID: " + data.id)
         const client = await Client.findByPk(data.id);
 
         if(!client) throw new ApiError(404, "Client ID not found");
 
-        if(data.first_name) client.first_name = data.first_name;
-        if(data.last_name) client.last_name = data.last_name;
-        if(data.phone) client.phone = data.phone;
-        if(data.email){
+        if(data.first_name!=undefined) client.first_name = data.first_name;
+        if(data.last_name!=undefined) client.last_name = data.last_name;
+        if(data.phone!=undefined) client.phone = data.phone;
+        if(data.email && data.email != client.email){
             const emailFound = await Client.findOne({
                 where:{
                     email: data.email
@@ -81,6 +82,12 @@ export default class ClientService{
 
             client.email = data.email
         }
+
+        if(data.address_line_1!=undefined) client.address_line_1 = data.address_line_1
+        if(data.address_line_2!=undefined) client.address_line_2 = data.address_line_2
+        if(data.address_line_3!=undefined) client.address_line_3 = data.address_line_3
+        if(data.address_city!=undefined) client.address_city = data.address_city
+        if(data.address_postcode!=undefined) client.address_postcode = data.address_postcode
 
         await client.save();
 

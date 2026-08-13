@@ -20,11 +20,16 @@ public struct Client: Codable, Sendable, Identifiable, Hashable {
 	public let addressCity: String
 	public let addressPostcode: String
 	
-	public var fullName: String {
-		firstName + " " + lastName
-	}
-	
+	public let archived: Bool
 	public let pets: [Pet]?
+	
+	public var fullName: String {
+		if archived {
+			return "DELETED USER - \(firstName) \(lastName)"
+		}else{
+			return firstName + " " + lastName
+		}
+	}
 	
 	public static let preview = Client(
 		id: UUID(),
@@ -37,6 +42,24 @@ public struct Client: Codable, Sendable, Identifiable, Hashable {
 		addressLine3: "Line 3",
 		addressCity: "City",
 		addressPostcode: "Postcode",
-		pets: nil
+		archived: false,
+		pets: nil,
 	)
+	
+	public func withArchived(_ archived: Bool) -> Client {
+		Client(
+			id: id,
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			phone: phone,
+			addressLine1: addressLine1,
+			addressLine2: addressLine2,
+			addressLine3: addressLine3,
+			addressCity: addressCity,
+			addressPostcode: addressPostcode,
+			archived: archived,
+			pets: pets
+		)
+	}
 }

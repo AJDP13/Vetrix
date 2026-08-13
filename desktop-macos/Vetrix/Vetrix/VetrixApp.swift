@@ -18,8 +18,8 @@ struct VetrixApp: App {
 		baseUrl = URL(string: "http://127.0.0.1:3000")!
 		config = APIConfiguration(baseURL: baseUrl)
 		api = VetrixAPI(configuration: config)
-		
 	}
+	
     var body: some Scene {
         WindowGroup {
 			RootView(api: api)

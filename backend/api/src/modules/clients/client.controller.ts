@@ -8,7 +8,7 @@ const clientService = new ClientService();
 
 export default class ClientController{
     getClient = async(req: Request, res: Response) => {
-        const id = req.params.id as string;
+        const id = (req.params.id as string).toLowerCase();
 
         if(!id) throw new ApiError(400, "Id parameter is required");
 
@@ -54,7 +54,10 @@ export default class ClientController{
     }
 
     updateClient = async(req: Request, res: Response) => {
-        const data: UpdateClientDto = req.body;
+        const data: UpdateClientDto = {
+            id: req.params.id as string,
+            ...req.body
+        };
 
         const result: ClientResponse = await clientService.updateClient(data);
 
@@ -82,7 +85,8 @@ export default class ClientController{
         await clientService.archiveClient(id);
 
         return res.status(200).json({
-            success:true
+            success:true,
+            data:null
         })
     }
 

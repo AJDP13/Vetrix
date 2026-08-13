@@ -51,7 +51,7 @@ final class CreateClientViewModel{
 	//MARK: UI
 	var errorMessage: String = ""
 	var currentProgress: Float {
-		return Float(currentStep.stepNumber) / Float(CreatePrescriptionStep.totalSteps)
+		return Float(currentStep.index) / Float(CreateClientStep.totalSteps-1)
 	}
 	var showDismissConfirmation: Bool = false
 	

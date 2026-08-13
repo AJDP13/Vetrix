@@ -68,7 +68,8 @@ Pet.init({
         withOwner:{
             include:[{
                 model: Client,
-                as: "owner"
+                as: "owner",
+                paranoid: false
             }]
         }
     }

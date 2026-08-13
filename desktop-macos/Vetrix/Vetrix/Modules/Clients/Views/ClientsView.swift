@@ -12,6 +12,7 @@ struct ClientsView: View{
 	private var api: VetrixAPI
 	@State private var vm: ClientsViewModel
 	@State private var createClientVM: CreateClientViewModel
+	@State private var selectedClientId: UUID?
 	
 	init(api: VetrixAPI){
 		self.api = api
@@ -32,9 +33,21 @@ struct ClientsView: View{
 				vm.clients,
 				selection: $vm.selectedClients
 			){
-				TableColumn("Name"){ client in
+				TableColumn(""){client in
+					//Icon Column to show if user is archived
+					if client.archived{
+						Image(systemName: "archivebox.fill")
+							.foregroundStyle(.red)
+							.help("Archived User")
+							
+					}
+				}
+				.width(min: 24, ideal: 28, max: 32)
+				
+				TableColumn("Full Name"){ client in
 					Text(client.fullName)
 				}
+				
 				TableColumn("Email"){ client in
 					Text(client.email)
 				}
@@ -42,12 +55,35 @@ struct ClientsView: View{
 					Text(client.addressPostcode)
 				}
 			}
-			.contextMenu(forSelectionType: Client.self) { items in
-				Button("Archive") {
-					guard let client = items.first else { return }
-
-					Task {
-						await vm.archiveItem(id: client.id)
+			.contextMenu(forSelectionType: Client.ID.self) { items in
+				if let clientId = items.first,
+				   let client = vm.clients.first(where: { $0.id == clientId }) {
+					
+					if vm.selectedClients.count == 1 {
+						Button("Open"){
+							selectedClientId = clientId
+							vm.showClientDetailView.toggle()
+						}
+						
+						Button("Create Pet"){
+							
+						}
+						
+						Divider()
+						
+						if client.archived {
+							Button("Restore") {
+	//							Task {
+	//								await vm.restoreItem(id: clientId)
+	//							}
+							}
+						} else {
+							Button("Archive") {
+								Task {
+									await vm.archiveItem(id: clientId)
+								}
+							}
+						}
 					}
 				}
 			}
@@ -72,6 +108,19 @@ struct ClientsView: View{
 				.onDisappear{
 					self.createClientVM = CreateClientViewModel(api: api)
 				}
+		}
+		.sheet(isPresented: $vm.showClientDetailView) {
+			if let clientId = selectedClientId{
+				ClientDetailView(clientId, api: api) {updatedClient in
+					if let index = vm.clients.firstIndex(
+						where: { $0.id == updatedClient.id }
+					) {
+						vm.clients[index] = updatedClient
+					}
+				}
+			}else{
+				Text("Error: No client Selected")
+			}
 		}
 	}
 }

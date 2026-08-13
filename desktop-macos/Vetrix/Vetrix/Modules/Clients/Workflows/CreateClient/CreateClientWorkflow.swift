@@ -70,7 +70,7 @@ struct CreateClientWorkflow: View{
 					
 					Spacer()
 					
-					Text("Step \(vm.currentStep.index + 1) of \(CreateClientStep.totalSteps)")
+					Text("Step \(vm.currentStep.stepNumber) of \(CreateClientStep.totalSteps)")
 						.foregroundStyle(.secondary)
 					
 					Spacer()

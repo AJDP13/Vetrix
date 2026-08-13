@@ -18,7 +18,7 @@ struct MainView: View {
 		WorkspaceItem(id: .dashboard, title: "Dashboard", systemImage: "house", requiredPermissionId: nil),
 		WorkspaceItem(id: .users, title: "Users", systemImage: "person.2", requiredPermissionId: .viewUsers),
 		WorkspaceItem(id: .prescriptions, title: "Prescriptions", systemImage: "text.document", requiredPermissionId: .viewPrescriptions),
-		WorkspaceItem(id: .clients, title: "Clients", systemImage: "user.fill", requiredPermissionId: .viewClients)
+		WorkspaceItem(id: .clients, title: "Clients", systemImage: "person.3.sequence", requiredPermissionId: .viewClients)
 	]
 	
     var body: some View {
@@ -32,6 +32,7 @@ struct MainView: View {
 				}
 				Spacer()
 				Text("Welcome, \(api.appSession.user!.firstName)")
+					.padding(.bottom)
 			} detail: {
 				switch selection {
 					case .dashboard:

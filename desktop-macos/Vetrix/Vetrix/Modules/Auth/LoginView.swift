@@ -16,31 +16,58 @@ struct LoginView: View {
 	}
 	
     var body: some View {
-		VStack(alignment: .leading, spacing: 15){
-			Spacer()
-			
+		Form{
 			TextField("Username", text: $loginVM.username)
-				.textFieldStyle(OutlinedTextFieldStyle(icon: Image(systemName: "person.circle")))
-			
 			SecureField("Password", text: $loginVM.password)
-				.textFieldStyle(OutlinedTextFieldStyle(icon: Image(systemName: "lock")))
 			
-			Button("Login"){
-				Task{
-					await loginVM.login()
-				}
+			
+			Picker("Server", selection: $loginVM.server){
 			}
-			.disabled(!loginVM.canLogin)
-			.keyboardShortcut(.defaultAction)
-			
-			if let error = loginVM.errorMessage{
-				Text(error)
-					.foregroundStyle(.red)
-			}
-			
-			Spacer()
 		}
+		.formStyle(.grouped)
 		.padding()
+		.keyboardShortcut(.defaultAction)
+		
+		Button("Login"){
+			Task{
+				await loginVM.login()
+			}
+		}
+		.disabled(!loginVM.canLogin)
+		.keyboardShortcut(.defaultAction)
+		
+		if let error = loginVM.errorMessage{
+			Text(error)
+				.foregroundStyle(.red)
+		}
+		
+		Spacer()
+		
+//		VStack(alignment: .leading, spacing: 15){
+//			Spacer()
+//			
+//			TextField("Username", text: $loginVM.username)
+//				.textFieldStyle(OutlinedTextFieldStyle(icon: Image(systemName: "person.circle")))
+//			
+//			SecureField("Password", text: $loginVM.password)
+//				.textFieldStyle(OutlinedTextFieldStyle(icon: Image(systemName: "lock")))
+//			
+//			Button("Login"){
+//				Task{
+//					await loginVM.login()
+//				}
+//			}
+//			.disabled(!loginVM.canLogin)
+//			.keyboardShortcut(.defaultAction)
+//			
+//			if let error = loginVM.errorMessage{
+//				Text(error)
+//					.foregroundStyle(.red)
+//			}
+//			
+//			Spacer()
+//		}
+//		.padding()
     }
 }
 

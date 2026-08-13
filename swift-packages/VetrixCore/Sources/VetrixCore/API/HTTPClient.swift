@@ -58,6 +58,7 @@ public final class HTTPClient{
 			}
 			
 			if !(200...299).contains(response.statusCode){
+				
 				let error = try? JSON.decoder.decode(
 					APIFailureResponse.self,
 					from: data
