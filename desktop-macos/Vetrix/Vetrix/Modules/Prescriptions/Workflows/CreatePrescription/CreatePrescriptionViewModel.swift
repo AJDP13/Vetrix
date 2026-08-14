@@ -50,7 +50,9 @@ enum CreatePrescriptionStep: Int, CaseIterable{
 
 @MainActor
 @Observable
-final class CreatePrescriptionViewModel{
+final class CreatePrescriptionViewModel: Identifiable{
+	let id = UUID() //For identifiable
+	
 	let api: VetrixAPI;
 	
 	//MARK: UI
@@ -96,9 +98,27 @@ final class CreatePrescriptionViewModel{
 		}
 	}
 	
-	init(api: VetrixAPI){
+	init(
+		api: VetrixAPI,
+		pet: Pet? = nil,
+		startingStep: CreatePrescriptionStep = .selectPet
+	){
 		self.api = api
 		self.prescription = DraftPrescription()
+		self.currentStep = startingStep
+		
+		if let pet{
+			self.petResults = [pet]
+			self.selectedPetId = pet.id
+			self.prescription.pet = pet
+		}
+	}
+	
+	convenience init (
+		api: VetrixAPI,
+		pet: Pet
+	){
+		self.init(api: api, pet: pet, startingStep: .editPrescription)
 	}
 	
 	func reloadPets() async {

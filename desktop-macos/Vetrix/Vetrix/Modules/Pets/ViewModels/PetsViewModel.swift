@@ -18,6 +18,7 @@ final class PetsViewModel: PagedListViewModel<Pet>{
 	
 	var showCreatePetWizard: Bool = false
 	var showPetDetailView: Bool = false
+	var showCreatePrescriptionWizard: Bool = false
 	
 	private let api: VetrixAPI
 	

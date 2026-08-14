@@ -11,6 +11,7 @@ struct PetsView: View{
 	private var api: VetrixAPI
 	@State private var vm: PetsViewModel
 	@State private var createPetVM: CreatePetViewModel
+	@State private var createPrescriptionVM: CreatePrescriptionViewModel?
 	@State private var selectedPetId: UUID?
 	
 	init(api: VetrixAPI){
@@ -66,7 +67,9 @@ struct PetsView: View{
 						}
 						
 						Button("Create Prescription"){
+							self.createPrescriptionVM = CreatePrescriptionViewModel(api: self.api, pet: pet)
 							
+							vm.showCreatePrescriptionWizard.toggle()
 						}
 						
 						Divider()
@@ -121,6 +124,11 @@ struct PetsView: View{
 //			}else{
 //				Text("Error: No client Selected")
 //			}
+		}
+		.sheet(item: $createPrescriptionVM){ prescriptionVM in
+			CreatePrescriptionWorkflow(vm: prescriptionVM)
+				.frame(minWidth: 700, minHeight: 500)
+				.interactiveDismissDisabled()
 		}
 	}
 }
