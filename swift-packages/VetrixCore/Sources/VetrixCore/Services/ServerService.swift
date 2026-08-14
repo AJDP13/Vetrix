@@ -31,8 +31,8 @@ public final class ServerService {
 	}
 	
 	public init(defaults: UserDefaults = .standard, defaultServers: [Server] = [
-		Server("Local Development Server", URL(string: "http://98.0.8.1:3000")!),
-		Server("Local Development Server 2", URL(string: "http://127.0.0.1:3000")!)
+		Server("Vetrix Pre-Production Server", URL(string: "https://vetrix.aerotrixlabs.com/")!),
+		Server("Local Development Server", URL(string: "http://127.0.0.1:3000")!)
 	]){
 		self.servers = defaultServers
 		self.defaults = defaults

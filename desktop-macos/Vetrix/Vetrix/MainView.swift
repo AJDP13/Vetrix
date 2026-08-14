@@ -20,7 +20,7 @@ struct MainView: View {
 		WorkspaceItem(id: .prescriptions, title: "Prescriptions", systemImage: "text.document", requiredPermissionId: .viewPrescriptions),
 		WorkspaceItem(id: .clients, title: "Clients", systemImage: "person.3.sequence", requiredPermissionId: .viewClients),
 		WorkspaceItem(id: .pets, title: "Pets", systemImage: "pawprint", requiredPermissionId: .viewClients),
-		WorkspaceItem(id: .settings, title: "Settings", systemImage: "gear.circle", requiredPermissionId: nil)
+//		WorkspaceItem(id: .settings, title: "Settings", systemImage: "gear.circle", requiredPermissionId: nil)
 	]
 	
     var body: some View {
@@ -38,7 +38,7 @@ struct MainView: View {
 			} detail: {
 				switch selection {
 					case .dashboard:
-						Text("DashboardView")
+						Text("Dashboard under Development")
 					case .users:
 						UsersView(api: api)
 					case .prescriptions:
@@ -48,7 +48,7 @@ struct MainView: View {
 					case .pets:
 						PetsView(api: api)
 					default:
-						Text("OtherView")
+						Text("Select a valid view from the menu")
 				}
 			}
 		}else{
