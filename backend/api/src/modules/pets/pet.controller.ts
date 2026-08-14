@@ -89,7 +89,8 @@ export default class PetController{
         await petService.archivePet(id);
 
         return res.status(200).json({
-            success:true
+            success:true,
+            data: null
         })
     }
 

@@ -31,16 +31,31 @@ public final class PetService{
 	public func get(
 		id: UUID
 	) async throws -> Pet{
-		let response = try await http.send(method: .get, path: "/pets/\(id)", response: Pet.self)
+		let response = try await http.send(method: .get, path: "/pets/\(id.uuidString.lowercased())", response: Pet.self)
 		return response
 	}
 	
-	public func getAll(searchQuery: String, page: Int, pageLimit: Int) async throws ->  PaginatedResponse<Pet> {
+	public func search(
+		search: String = "",
+		page: Int,
+		pageLimit: Int
+	) async throws ->  PaginatedResponse<Pet> {
 		return try await http.send(
 			method: .get,
-			path: "/pets?page=\(page)&pageLimit=\(pageLimit)",
+			path: "/pets?page=\(page)&pageLimit=\(pageLimit)&search=\(search)",
 			response:  PaginatedResponse<Pet>.self
 		)
+	}
+	
+	public func archive(
+		id: UUID
+	) async throws {
+		let response = try await http.send(
+			method: .delete,
+			path: "/pets/\(id.uuidString.lowercased())"
+		)
+		
+		return
 	}
 }
 

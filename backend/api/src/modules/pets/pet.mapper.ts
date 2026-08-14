@@ -10,6 +10,7 @@ export function buildPetResponse(data: Pet): PetResponse{
         dob,
         age_string: "Pet age", //TODO: Update to output correct age in string form
 
-        owner: buildClientResponse(data.owner!)
+        owner: buildClientResponse(data.owner!),
+        archived: data.deleted_at != undefined
     }
 }

@@ -114,7 +114,7 @@ final class CreatePrescriptionViewModel{
 		
 		do{
 			//Limit to top 25 pets since we do not need more than that for a specific search
-			let pets = try await api.pet.getAll(searchQuery: self.petQuery, page: 1, pageLimit: 25)
+			let pets = try await api.pet.search(search: self.petQuery, page: 1, pageLimit: 25)
 			
 			print("Received \(pets.items.count) pets")
 			self.petResults = pets.items

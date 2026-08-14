@@ -12,7 +12,9 @@ export interface PetResponse{
     dob: Date;
     age_string: string;
 
-    owner: ClientResponse
+    owner: ClientResponse;
+
+    archived: boolean;
 }
 
 export interface UpdatePetDto{
