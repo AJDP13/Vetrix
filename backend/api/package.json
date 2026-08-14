@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/app.ts",
     "migrate": "tsx src/config/dbMigrations.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "build": "rm -f dist/api.zip && npx tsc && zip -r dist/api.zip dist"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +32,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "cls-hooked": "^4.2.2",
+    "esbuild": "^0.28.2",
     "jest": "^30.4.2",
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
