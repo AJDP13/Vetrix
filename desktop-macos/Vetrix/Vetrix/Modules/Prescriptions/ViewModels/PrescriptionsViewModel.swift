@@ -17,6 +17,7 @@ final class PrescriptionsViewModel: PagedListViewModel<Prescription>{
 	var pageLimit: Int = 50
 	
 	var showCreatePrescriptionWizard: Bool = false
+	var showPrescriptionDetailView: Bool = false
 	
 	private let api: VetrixAPI
 	
@@ -43,6 +44,18 @@ final class PrescriptionsViewModel: PagedListViewModel<Prescription>{
 			
 			prescriptions = response.items
 			pagination.update(response)
+		}catch{
+			api.errorManager.present(error)
+		}
+	}
+	
+	func archiveItem(id: UUID) async {
+		do{
+			let _ = try await api.prescription.archive(id: id)
+			if let index = prescriptions.firstIndex(where: { $0.id == id }) {
+				let prescription = prescriptions[index]
+				prescriptions[index] = prescription.withArchived(true)
+			}
 		}catch{
 			api.errorManager.present(error)
 		}

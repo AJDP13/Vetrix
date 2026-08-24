@@ -50,6 +50,17 @@ public final class PrescriptionService{
 		
 		return response
 	}
+	
+	public func archive(
+		id: UUID
+	) async throws {
+		let response = try await http.send(
+			method: .delete,
+			path: "/prescriptions/\(id.uuidString.lowercased())"
+		)
+		
+		return
+	}
 }
 
 //Request Structs

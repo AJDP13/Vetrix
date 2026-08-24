@@ -28,4 +28,20 @@ public struct Prescription: Identifiable, Codable, Sendable {
 	
 	
 	public static let preview = Prescription(id: UUID(), pet: .preview, prescribedAt: Date(), expiresAt: Date(), maxRepeats: 4, repeatIntervalDays: 30, prescribedBy: "Arun", prescribingPractice: "Aspen Vets Ltd", notes: "No Notes", updatedAt: Date(), state: .active)
+	
+	public func withArchived(_ archived: Bool) -> Prescription {
+		Prescription(
+			id: id,
+			pet: pet,
+			prescribedAt: prescribedAt,
+			expiresAt: expiresAt,
+			maxRepeats: maxRepeats,
+			repeatIntervalDays: repeatIntervalDays,
+			prescribedBy: prescribedBy,
+			prescribingPractice: prescribingPractice,
+			notes: notes,
+			updatedAt: updatedAt,
+			state: .void
+		)
+	}
 }

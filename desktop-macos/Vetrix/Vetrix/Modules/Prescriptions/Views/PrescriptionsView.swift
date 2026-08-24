@@ -12,6 +12,7 @@ struct PrescriptionsView: View{
 	private var api: VetrixAPI
 	@State private var vm: PrescriptionsViewModel
 	@State private var createPrescriptionVM: CreatePrescriptionViewModel
+	@State private var selectedPrescriptionId: UUID?
 	
 	init(api: VetrixAPI){
 		self.api = api
@@ -26,12 +27,25 @@ struct PrescriptionsView: View{
 			isLoading: vm.isLoading,
 			next:{try? await vm.nextPage()},
 			previous: {try? await vm.previousPage()},
-			search: {await vm.reload()}
+			search: {await vm.reload()},
 		){
 			Table(
 				vm.prescriptions,
 				selection: $vm.selectedPrescriptions
 			){
+				TableColumn(""){prescription in
+					switch(prescription.state){
+						case .draft:
+							Image(systemName: "pencil")
+						case .void:
+							Image(systemName: "archivebox.fill")
+								.foregroundStyle(.red)
+						default:
+							Image(systemName: "")
+					}
+				}
+				.width(min: 24, ideal: 28, max: 32)
+				
 				TableColumn("ID"){ prescription in
 					Text(prescription.id.uuidString.lowercased())
 				}
@@ -60,6 +74,34 @@ struct PrescriptionsView: View{
 		}
 		.task{
 			await vm.reload()
+		}
+		.contextMenu(forSelectionType: Prescription.ID.self) { items in
+			if let prescriptionId = items.first,
+			   let prescription = vm.prescriptions.first(where: { $0.id == prescriptionId }) {
+				
+				if vm.selectedPrescriptions.count == 1 {
+					Button("Open"){
+						selectedPrescriptionId = prescriptionId
+						vm.showPrescriptionDetailView.toggle()
+					}
+					
+					Divider()
+					
+					if prescription.state == .void {
+						Button("Restore") {
+//							Task {
+//								await vm.restoreItem(id: clientId)
+//							}
+						}
+					} else {
+						Button("Void") {
+							Task {
+								await vm.archiveItem(id: prescriptionId)
+							}
+						}
+					}
+				}
+			}
 		}
 		.toolbar{
 			ToolbarItem(placement: .primaryAction){
