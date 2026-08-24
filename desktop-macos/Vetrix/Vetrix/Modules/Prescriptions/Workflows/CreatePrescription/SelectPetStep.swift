@@ -59,12 +59,25 @@ struct SelectPetStep: View{
 						vm.petResults,
 						selection: $vm.selectedPetId,
 					){
+						TableColumn(""){pet in
+							if pet.owner.archived{
+								Image(systemName: "pencil.slash")
+									.foregroundStyle(.red)
+							}
+						}
+						.width(min: 24, ideal: 28, max: 32)
+						
+						
 						TableColumn("ID"){ pet in
 							Text(pet.id.uuidString.lowercased())
 						}
 						
 						TableColumn("Name"){ pet in
 							Text(pet.name)
+						}
+						
+						TableColumn("Owner"){pet in
+							Text(pet.owner.fullName)
 						}
 					}
 				}

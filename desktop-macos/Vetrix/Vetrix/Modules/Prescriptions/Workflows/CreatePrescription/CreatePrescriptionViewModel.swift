@@ -92,7 +92,7 @@ final class CreatePrescriptionViewModel: Identifiable{
 			case .selectPet:
 				return selectedPetId != nil
 			case .editPrescription:
-				return prescription.expiresAt != nil && prescription.maxRepeats != nil && prescription.prescribedAt != nil
+				return selectedPet?.owner.archived == false
 			default:
 				return true
 		}

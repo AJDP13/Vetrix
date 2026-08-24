@@ -21,9 +21,11 @@ export default class PrescriptionService{
     }
 
     async createPrescription(data: CreatePrescriptionDto):Promise<PrescriptionResponse>{
-        const pet = await Pet.findByPk(data.pet_id);
+        const pet = await Pet.scope("withOwner").findByPk(data.pet_id);
 
         if(!pet) throw new ApiError(404, "Pet ID not found");
+
+        if(pet.owner && pet.owner.deleted_at) throw new ApiError(409, "Pet's Owner has been archived")
 
         const prescription: Prescription = await Prescription.create({
             pet_id: pet.id,
