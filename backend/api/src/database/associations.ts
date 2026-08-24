@@ -10,6 +10,7 @@ import Prescription from "../modules/prescriptions/prescription.model";
 import ExternalClient from "../modules/external/models/ExternalClient";
 import ExternalConnection from "../modules/external/models/ExternalConnection";
 import Order from "../modules/orders/order.model";
+import ExternalOrder from "../modules/external/models/ExternalOrder";
 
 export function setupAssociations() {
 
@@ -89,8 +90,8 @@ export function setupAssociations() {
 
     //ExternalClient Associations
     ExternalClient.belongsTo(ExternalConnection, {
-        foreignKey: "provider_id",
-        as: "provider"
+        foreignKey: "connection_id",
+        as: "connection"
     })
 
     ExternalClient.belongsTo(Client, {
@@ -100,8 +101,24 @@ export function setupAssociations() {
 
     //ExternalConnection Associations
     ExternalConnection.hasMany(ExternalClient, {
-        foreignKey: "provider_id",
+        foreignKey: "connection_id",
         as: "external_clients"
+    })
+
+    ExternalConnection.hasMany(ExternalOrder, {
+        foreignKey: "connection_id",
+        as: "external_orders"
+    })
+
+    //ExternalOrder Associations
+    ExternalOrder.belongsTo(Order, {
+        foreignKey: "order_id",
+        as: "order"
+    })
+
+    ExternalOrder.belongsTo(ExternalConnection, {
+        foreignKey: "connection_id",
+        as: "connection"
     })
 
     //Order Associations
@@ -110,5 +127,8 @@ export function setupAssociations() {
         as: "client"
     })
 
-    
+    Order.hasOne(ExternalOrder, {
+        foreignKey: "order_id",
+        as: "external_order"
+    })
 }
