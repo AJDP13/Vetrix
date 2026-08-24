@@ -2,11 +2,14 @@ import User from "../modules/users/user.model";
 import Token from "../modules/auth/token.model";
 import Role from "../modules/rbac/role.model";
 import UserRole from "../modules/rbac/UserRole.model";
-import Permission, {PermissionId} from "../modules/rbac/permission.model";
+import Permission from "../modules/rbac/permission.model";
 import RolePermission from "../modules/rbac/RolePermission.model";
 import Client from "../modules/clients/client.model";
 import Pet from "../modules/pets/pet.model";
 import Prescription from "../modules/prescriptions/prescription.model";
+import ExternalClient from "../modules/external/models/ExternalClient";
+import ExternalConnection from "../modules/external/models/ExternalConnection";
+import Order from "../modules/orders/order.model";
 
 export function setupAssociations() {
 
@@ -57,6 +60,16 @@ export function setupAssociations() {
         as: "pets"
     });
 
+    Client.hasOne(ExternalClient, {
+        foreignKey: "client_id",
+        as: "external_client"
+    })
+
+    Client.hasMany(Order, {
+        foreignKey: "client_id",
+        as: "orders"
+    })
+
     //Pet Associations
     Pet.belongsTo(Client, {
         foreignKey:"owner_id",
@@ -73,4 +86,29 @@ export function setupAssociations() {
         foreignKey: "pet_id",
         as: "pet"
     })
+
+    //ExternalClient Associations
+    ExternalClient.belongsTo(ExternalConnection, {
+        foreignKey: "provider_id",
+        as: "provider"
+    })
+
+    ExternalClient.belongsTo(Client, {
+        foreignKey: "client_id",
+        as: "client"
+    })
+
+    //ExternalConnection Associations
+    ExternalConnection.hasMany(ExternalClient, {
+        foreignKey: "provider_id",
+        as: "external_clients"
+    })
+
+    //Order Associations
+    Order.belongsTo(Client, {
+        foreignKey: "client_id",
+        as: "client"
+    })
+
+    
 }

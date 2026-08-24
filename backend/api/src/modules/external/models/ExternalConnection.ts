@@ -7,7 +7,10 @@ import {
     Model
 } from "sequelize";
 import sequelize from "../../../config/database";
-import { ExternalProvider } from "./ExternalProvider";
+
+export enum ExternalProvider{
+    SHOPIFY = "shopify"
+}
 
 export default class ExternalConnection extends Model<InferAttributes<ExternalConnection>,InferCreationAttributes<ExternalConnection>> {
     declare id: CreationOptional<string>;
